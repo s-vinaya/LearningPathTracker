@@ -1,0 +1,200 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\haris\\OneDrive\\Desktop\\Kanini\\React\\LearningPathTracker\\EMPBACKEND\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{3CBCCC78-2A4A-45D2-8F07-9CA9D83FF2C0}|EMPBACKEND\\EMPBACKEND.csproj|c:\\users\\haris\\onedrive\\desktop\\kanini\\react\\learningpathtracker\\empbackend\\empbackend\\services\\learningpathservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CBCCC78-2A4A-45D2-8F07-9CA9D83FF2C0}|EMPBACKEND\\EMPBACKEND.csproj|solutionrelative:empbackend\\services\\learningpathservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CBCCC78-2A4A-45D2-8F07-9CA9D83FF2C0}|EMPBACKEND\\EMPBACKEND.csproj|c:\\users\\haris\\onedrive\\desktop\\kanini\\react\\learningpathtracker\\empbackend\\empbackend\\controllers\\learningpathcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CBCCC78-2A4A-45D2-8F07-9CA9D83FF2C0}|EMPBACKEND\\EMPBACKEND.csproj|solutionrelative:empbackend\\controllers\\learningpathcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CBCCC78-2A4A-45D2-8F07-9CA9D83FF2C0}|EMPBACKEND\\EMPBACKEND.csproj|c:\\users\\haris\\onedrive\\desktop\\kanini\\react\\learningpathtracker\\empbackend\\empbackend\\dtos\\otpcodedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CBCCC78-2A4A-45D2-8F07-9CA9D83FF2C0}|EMPBACKEND\\EMPBACKEND.csproj|solutionrelative:empbackend\\dtos\\otpcodedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CBCCC78-2A4A-45D2-8F07-9CA9D83FF2C0}|EMPBACKEND\\EMPBACKEND.csproj|c:\\users\\haris\\onedrive\\desktop\\kanini\\react\\learningpathtracker\\empbackend\\empbackend\\services\\otpcodeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CBCCC78-2A4A-45D2-8F07-9CA9D83FF2C0}|EMPBACKEND\\EMPBACKEND.csproj|solutionrelative:empbackend\\services\\otpcodeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CBCCC78-2A4A-45D2-8F07-9CA9D83FF2C0}|EMPBACKEND\\EMPBACKEND.csproj|c:\\users\\haris\\onedrive\\desktop\\kanini\\react\\learningpathtracker\\empbackend\\empbackend\\interfaces\\services\\iotpcodeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CBCCC78-2A4A-45D2-8F07-9CA9D83FF2C0}|EMPBACKEND\\EMPBACKEND.csproj|solutionrelative:empbackend\\interfaces\\services\\iotpcodeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CBCCC78-2A4A-45D2-8F07-9CA9D83FF2C0}|EMPBACKEND\\EMPBACKEND.csproj|c:\\users\\haris\\onedrive\\desktop\\kanini\\react\\learningpathtracker\\empbackend\\empbackend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CBCCC78-2A4A-45D2-8F07-9CA9D83FF2C0}|EMPBACKEND\\EMPBACKEND.csproj|solutionrelative:empbackend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CBCCC78-2A4A-45D2-8F07-9CA9D83FF2C0}|EMPBACKEND\\EMPBACKEND.csproj|c:\\users\\haris\\onedrive\\desktop\\kanini\\react\\learningpathtracker\\empbackend\\empbackend\\services\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CBCCC78-2A4A-45D2-8F07-9CA9D83FF2C0}|EMPBACKEND\\EMPBACKEND.csproj|solutionrelative:empbackend\\services\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CBCCC78-2A4A-45D2-8F07-9CA9D83FF2C0}|EMPBACKEND\\EMPBACKEND.csproj|c:\\users\\haris\\onedrive\\desktop\\kanini\\react\\learningpathtracker\\empbackend\\empbackend\\services\\learningplanservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CBCCC78-2A4A-45D2-8F07-9CA9D83FF2C0}|EMPBACKEND\\EMPBACKEND.csproj|solutionrelative:empbackend\\services\\learningplanservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CBCCC78-2A4A-45D2-8F07-9CA9D83FF2C0}|EMPBACKEND\\EMPBACKEND.csproj|c:\\users\\haris\\onedrive\\desktop\\kanini\\react\\learningpathtracker\\empbackend\\empbackend\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{3CBCCC78-2A4A-45D2-8F07-9CA9D83FF2C0}|EMPBACKEND\\EMPBACKEND.csproj|solutionrelative:empbackend\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 195,
+          "SelectedChildIndex": 7,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{e8034f19-ab72-4f06-83fd-f6832b41aa63}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "LearningPathService.cs",
+              "DocumentMoniker": "C:\\Users\\haris\\OneDrive\\Desktop\\Kanini\\React\\LearningPathTracker\\EMPBACKEND\\EMPBACKEND\\Services\\LearningPathService.cs",
+              "RelativeDocumentMoniker": "EMPBACKEND\\Services\\LearningPathService.cs",
+              "ToolTip": "C:\\Users\\haris\\OneDrive\\Desktop\\Kanini\\React\\LearningPathTracker\\EMPBACKEND\\EMPBACKEND\\Services\\LearningPathService.cs",
+              "RelativeToolTip": "EMPBACKEND\\Services\\LearningPathService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-29T12:08:11.201Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "LearningPathController.cs",
+              "DocumentMoniker": "C:\\Users\\haris\\OneDrive\\Desktop\\Kanini\\React\\LearningPathTracker\\EMPBACKEND\\EMPBACKEND\\Controllers\\LearningPathController.cs",
+              "RelativeDocumentMoniker": "EMPBACKEND\\Controllers\\LearningPathController.cs",
+              "ToolTip": "C:\\Users\\haris\\OneDrive\\Desktop\\Kanini\\React\\LearningPathTracker\\EMPBACKEND\\EMPBACKEND\\Controllers\\LearningPathController.cs",
+              "RelativeToolTip": "EMPBACKEND\\Controllers\\LearningPathController.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAgwBwAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-29T12:08:02.152Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "OtpCodeService.cs",
+              "DocumentMoniker": "C:\\Users\\haris\\OneDrive\\Desktop\\Kanini\\React\\LearningPathTracker\\EMPBACKEND\\EMPBACKEND\\Services\\OtpCodeService.cs",
+              "RelativeDocumentMoniker": "EMPBACKEND\\Services\\OtpCodeService.cs",
+              "ToolTip": "C:\\Users\\haris\\OneDrive\\Desktop\\Kanini\\React\\LearningPathTracker\\EMPBACKEND\\EMPBACKEND\\Services\\OtpCodeService.cs",
+              "RelativeToolTip": "EMPBACKEND\\Services\\OtpCodeService.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAA1wC4AAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-29T12:05:20.679Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "OtpCodeDto.cs",
+              "DocumentMoniker": "C:\\Users\\haris\\OneDrive\\Desktop\\Kanini\\React\\LearningPathTracker\\EMPBACKEND\\EMPBACKEND\\DTOs\\OtpCodeDto.cs",
+              "RelativeDocumentMoniker": "EMPBACKEND\\DTOs\\OtpCodeDto.cs",
+              "ToolTip": "C:\\Users\\haris\\OneDrive\\Desktop\\Kanini\\React\\LearningPathTracker\\EMPBACKEND\\EMPBACKEND\\DTOs\\OtpCodeDto.cs",
+              "RelativeToolTip": "EMPBACKEND\\DTOs\\OtpCodeDto.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAYwB8AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-29T12:05:05.588Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "IOtpCodeService.cs",
+              "DocumentMoniker": "C:\\Users\\haris\\OneDrive\\Desktop\\Kanini\\React\\LearningPathTracker\\EMPBACKEND\\EMPBACKEND\\Interfaces\\Services\\IOtpCodeService.cs",
+              "RelativeDocumentMoniker": "EMPBACKEND\\Interfaces\\Services\\IOtpCodeService.cs",
+              "ToolTip": "C:\\Users\\haris\\OneDrive\\Desktop\\Kanini\\React\\LearningPathTracker\\EMPBACKEND\\EMPBACKEND\\Interfaces\\Services\\IOtpCodeService.cs",
+              "RelativeToolTip": "EMPBACKEND\\Interfaces\\Services\\IOtpCodeService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-29T12:04:49.037Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "LearningPlanService.cs",
+              "DocumentMoniker": "C:\\Users\\haris\\OneDrive\\Desktop\\Kanini\\React\\LearningPathTracker\\EMPBACKEND\\EMPBACKEND\\Services\\LearningPlanService.cs",
+              "RelativeDocumentMoniker": "EMPBACKEND\\Services\\LearningPlanService.cs",
+              "ToolTip": "C:\\Users\\haris\\OneDrive\\Desktop\\Kanini\\React\\LearningPathTracker\\EMPBACKEND\\EMPBACKEND\\Services\\LearningPlanService.cs",
+              "RelativeToolTip": "EMPBACKEND\\Services\\LearningPlanService.cs",
+              "ViewState": "AgIAAD8AAAAAAAAAAAAqwFUAAABUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-29T11:37:48.342Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "EmailService.cs",
+              "DocumentMoniker": "C:\\Users\\haris\\OneDrive\\Desktop\\Kanini\\React\\LearningPathTracker\\EMPBACKEND\\EMPBACKEND\\Services\\EmailService.cs",
+              "RelativeDocumentMoniker": "EMPBACKEND\\Services\\EmailService.cs",
+              "ToolTip": "C:\\Users\\haris\\OneDrive\\Desktop\\Kanini\\React\\LearningPathTracker\\EMPBACKEND\\EMPBACKEND\\Services\\EmailService.cs",
+              "RelativeToolTip": "EMPBACKEND\\Services\\EmailService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-29T11:37:36.631Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\haris\\OneDrive\\Desktop\\Kanini\\React\\LearningPathTracker\\EMPBACKEND\\EMPBACKEND\\Program.cs",
+              "RelativeDocumentMoniker": "EMPBACKEND\\Program.cs",
+              "ToolTip": "C:\\Users\\haris\\OneDrive\\Desktop\\Kanini\\React\\LearningPathTracker\\EMPBACKEND\\EMPBACKEND\\Program.cs",
+              "RelativeToolTip": "EMPBACKEND\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-29T09:59:02.216Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\haris\\OneDrive\\Desktop\\Kanini\\React\\LearningPathTracker\\EMPBACKEND\\EMPBACKEND\\appsettings.json",
+              "RelativeDocumentMoniker": "EMPBACKEND\\appsettings.json",
+              "ToolTip": "C:\\Users\\haris\\OneDrive\\Desktop\\Kanini\\React\\LearningPathTracker\\EMPBACKEND\\EMPBACKEND\\appsettings.json",
+              "RelativeToolTip": "EMPBACKEND\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-10-29T06:33:13.986Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

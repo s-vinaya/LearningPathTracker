@@ -9,8 +9,11 @@ namespace EMPBACKEND.Models
         public int UserId { get; set; }
         public User User { get; set; } = null!;
         
-        public int CourseId { get; set; }
-        public Course Course { get; set; } = null!;
+        public int? CourseId { get; set; }  // For backward compatibility
+        public Course? Course { get; set; }
+        
+        public int? LearningPathId { get; set; }  // New field for learning paths
+        public LearningPath? LearningPath { get; set; }
         
         public int AssignedBy { get; set; }
         public DateTime AssignedDate { get; set; } = DateTime.UtcNow;

@@ -1,5 +1,5 @@
 using EMPBACKEND.Data;
-using EMPBACKEND.Interfaces;
+using EMPBACKEND.Interfaces.Repositories;
 using EMPBACKEND.Models;
 using Microsoft.EntityFrameworkCore;
 

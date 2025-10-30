@@ -4,6 +4,7 @@ namespace EMPBACKEND.Models
 {
     public class VideoRequest
     {
+        [Key]
         public int Id { get; set; }
         
         public int UserId { get; set; }

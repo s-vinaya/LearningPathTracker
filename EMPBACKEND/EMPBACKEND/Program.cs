@@ -4,6 +4,11 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using EMPBACKEND.Data;
 using EMPBACKEND.Services;
+using EMPBACKEND.Repositories;
+using EMPBACKEND.Interfaces.Repositories;
+using EMPBACKEND.Interfaces.Services;
+using EMPBACKEND.Interfaces;
+using EMPBACKEND.Models;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,18 +39,31 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularApp", policy =>
     {
-        policy.WithOrigins("http://localhost:4200")
+        policy.WithOrigins("http://localhost:4200", "http://localhost:49402", "http://localhost:55980")
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
     });
 });
 
-// Services
-builder.Services.AddScoped<IJwtService, JwtService>();
-builder.Services.AddScoped<IEmailService, EmailService>();
-builder.Services.AddScoped<IFileUploadService, FileUploadService>();
+
+
+// Repository registrations
+builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+builder.Services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ICourseProgressRepository, CourseProgressRepository>();
+
+// Service registrations (some repositories implement service interfaces)
+builder.Services.AddScoped<ICourseService, CourseService>();
+builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<IDailyGoalService, DailyGoalService>();
+builder.Services.AddScoped<ICourseProgressService, CourseProgressService>();
 builder.Services.AddScoped<IPasswordHashingService, PasswordHashingService>();
+builder.Services.AddScoped<EMPBACKEND.Services.IJwtService, JwtService>();
+builder.Services.AddScoped<EMPBACKEND.Services.IEmailService, EmailService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -54,11 +72,12 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Employee Learning Portal API", Version = "v1" });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = "JWT Authorization header using the Bearer scheme",
+        Description = "JWT Authorization header using the Bearer scheme. Enter 'Bearer' [space] and then your token in the text input below.",
         Name = "Authorization",
         In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer"
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT"
     });
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
@@ -92,7 +111,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-// Seed data
-await DataSeedService.SeedDataAsync(app.Services);
+// Data seeding removed temporarily to prevent errors
+// TODO: Add data seeding back after fixing foreign key constraints
 
 app.Run();

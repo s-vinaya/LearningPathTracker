@@ -1,15 +1,9 @@
 using System.Security.Cryptography;
 using System.Text;
+using EMPBACKEND.Interfaces.Services;
 
 namespace EMPBACKEND.Services
 {
-    public interface IPasswordHashingService
-    {
-        string GenerateSalt();
-        string HashPassword(string password, string salt);
-        bool VerifyPassword(string password, string salt, string hashedPassword);
-    }
-
     public class PasswordHashingService : IPasswordHashingService
     {
         public string GenerateSalt()

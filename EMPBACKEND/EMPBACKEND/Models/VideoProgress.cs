@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace EMPBACKEND.Models
 {
     public class VideoProgress
     {
+        [Key]
         public int Id { get; set; }
         
         public int UserId { get; set; }

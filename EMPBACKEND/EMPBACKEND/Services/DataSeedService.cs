@@ -150,6 +150,129 @@ namespace EMPBACKEND.Services
                 _context.Courses.AddRange(courses);
                 await _context.SaveChangesAsync();
             }
+
+            // Seed Assessments
+            if (!_context.Assessments.Any())
+            {
+                var courses = _context.Courses.ToList();
+
+                if (courses.Count >= 3)
+                {
+                    var assessments = new[]
+                    {
+                        new Assessment
+                        {
+                            Title = "C# Programming Quiz",
+                            Questions = "[{\"question\":\"What is C#?\",\"options\":[\"A\",\"B\",\"C\",\"D\"],\"answer\":0}]",
+                            CourseId = courses[0].Id,
+                            PassingScore = 70
+                        },
+                        new Assessment
+                        {
+                            Title = "ASP.NET Core Assessment",
+                            Questions = "[{\"question\":\"What is ASP.NET Core?\",\"options\":[\"A\",\"B\",\"C\",\"D\"],\"answer\":0}]",
+                            CourseId = courses[1].Id,
+                            PassingScore = 75
+                        },
+                        new Assessment
+                        {
+                            Title = "Leadership Skills Test",
+                            Questions = "[{\"question\":\"What is leadership?\",\"options\":[\"A\",\"B\",\"C\",\"D\"],\"answer\":0}]",
+                            CourseId = courses[2].Id,
+                            PassingScore = 80
+                        }
+                    };
+
+                    _context.Assessments.AddRange(assessments);
+                    await _context.SaveChangesAsync();
+                }
+            }
+
+            // Seed Learning Plans
+            if (!_context.LearningPlans.Any())
+            {
+                var admin = _context.Users.FirstOrDefault(u => u.Role == "Admin");
+                var employee1 = _context.Users.FirstOrDefault(u => u.Username == "employee1");
+                var courses = _context.Courses.ToList();
+
+                if (admin != null && employee1 != null && courses.Count >= 3)
+                {
+                    var learningPlans = new[]
+                    {
+                        new LearningPlan
+                        {
+                            UserId = employee1.Id,
+                            CourseId = courses[0].Id,
+                            AssignedBy = admin.Id,
+                            AssignedDate = DateTime.UtcNow.AddDays(-10),
+                            DueDate = DateTime.UtcNow.AddDays(20),
+                            Status = "InProgress"
+                        },
+                        new LearningPlan
+                        {
+                            UserId = employee1.Id,
+                            CourseId = courses[1].Id,
+                            AssignedBy = admin.Id,
+                            AssignedDate = DateTime.UtcNow.AddDays(-5),
+                            DueDate = DateTime.UtcNow.AddDays(25),
+                            Status = "Assigned"
+                        },
+                        new LearningPlan
+                        {
+                            UserId = employee1.Id,
+                            CourseId = courses[2].Id,
+                            AssignedBy = admin.Id,
+                            AssignedDate = DateTime.UtcNow.AddDays(-30),
+                            DueDate = DateTime.UtcNow.AddDays(-5),
+                            Status = "Completed"
+                        }
+                    };
+
+                    _context.LearningPlans.AddRange(learningPlans);
+                    await _context.SaveChangesAsync();
+                }
+            }
+
+            // Seed User Assessments
+            if (!_context.UserAssessments.Any())
+            {
+                var employee1 = _context.Users.FirstOrDefault(u => u.Username == "employee1");
+                var assessments = _context.Assessments.ToList();
+
+                if (employee1 != null && assessments.Count >= 3)
+                {
+                    var userAssessments = new[]
+                    {
+                        new UserAssessment
+                        {
+                            UserId = employee1.Id,
+                            AssessmentId = assessments[0].Id,
+                            Score = 85,
+                            AttemptDate = DateTime.UtcNow.AddDays(-8),
+                            IsPassed = true
+                        },
+                        new UserAssessment
+                        {
+                            UserId = employee1.Id,
+                            AssessmentId = assessments[1].Id,
+                            Score = 92,
+                            AttemptDate = DateTime.UtcNow.AddDays(-3),
+                            IsPassed = true
+                        },
+                        new UserAssessment
+                        {
+                            UserId = employee1.Id,
+                            AssessmentId = assessments[2].Id,
+                            Score = 78,
+                            AttemptDate = DateTime.UtcNow.AddDays(-25),
+                            IsPassed = true
+                        }
+                    };
+
+                    _context.UserAssessments.AddRange(userAssessments);
+                    await _context.SaveChangesAsync();
+                }
+            }
         }
     }
 }

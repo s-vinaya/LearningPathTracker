@@ -55,6 +55,50 @@ namespace EMPBACKEND.Migrations
                     b.ToTable("Assessments");
                 });
 
+            modelBuilder.Entity("EMPBACKEND.Models.AssessmentAttempt", b =>
+                {
+                    b.Property<int>("AttemptId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AttemptId"));
+
+                    b.Property<string>("Answers")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("AssessmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AttemptNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaxScore")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Passed")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SubmittedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TimeSpentMinutes")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AttemptId");
+
+                    b.HasIndex("AssessmentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AssessmentAttempts");
+                });
+
             modelBuilder.Entity("EMPBACKEND.Models.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -79,6 +123,49 @@ namespace EMPBACKEND.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("EMPBACKEND.Models.Certificate", b =>
+                {
+                    b.Property<int>("CertificateId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CertificateId"));
+
+                    b.Property<string>("CertificateNumber")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("CertificateUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ExpiresAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("IssuedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LearningPathId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PathId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CertificateId");
+
+                    b.HasIndex("LearningPathId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Certificates");
                 });
 
             modelBuilder.Entity("EMPBACKEND.Models.Course", b =>
@@ -114,11 +201,56 @@ namespace EMPBACKEND.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<string>("VideoUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("EMPBACKEND.Models.CourseProgress", b =>
+                {
+                    b.Property<int>("ProgressId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProgressId"));
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EnrollmentId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("LastAccessed")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("PercentComplete")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("TimeSpentMinutes")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProgressId");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("EnrollmentId");
+
+                    b.ToTable("CourseProgresses");
                 });
 
             modelBuilder.Entity("EMPBACKEND.Models.DailyGoal", b =>
@@ -222,6 +354,69 @@ namespace EMPBACKEND.Migrations
                     b.ToTable("Enrollments");
                 });
 
+            modelBuilder.Entity("EMPBACKEND.Models.LearningPath", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LearningPaths");
+                });
+
+            modelBuilder.Entity("EMPBACKEND.Models.LearningPathCourse", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsRequired")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("LearningPathId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("LearningPathId");
+
+                    b.ToTable("LearningPathCourses");
+                });
+
             modelBuilder.Entity("EMPBACKEND.Models.LearningPlan", b =>
                 {
                     b.Property<int>("Id")
@@ -236,11 +431,14 @@ namespace EMPBACKEND.Migrations
                     b.Property<DateTime>("AssignedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CourseId")
+                    b.Property<int?>("CourseId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("LearningPathId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -254,9 +452,58 @@ namespace EMPBACKEND.Migrations
 
                     b.HasIndex("CourseId");
 
+                    b.HasIndex("LearningPathId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("LearningPlans");
+                });
+
+            modelBuilder.Entity("EMPBACKEND.Models.Notification", b =>
+                {
+                    b.Property<int>("NotificationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NotificationId"));
+
+                    b.Property<string>("ActionText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ActionUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ReadAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("NotificationId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("EMPBACKEND.Models.OtpCode", b =>
@@ -501,6 +748,44 @@ namespace EMPBACKEND.Migrations
                     b.Navigation("Course");
                 });
 
+            modelBuilder.Entity("EMPBACKEND.Models.AssessmentAttempt", b =>
+                {
+                    b.HasOne("EMPBACKEND.Models.Assessment", "Assessment")
+                        .WithMany()
+                        .HasForeignKey("AssessmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EMPBACKEND.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Assessment");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("EMPBACKEND.Models.Certificate", b =>
+                {
+                    b.HasOne("EMPBACKEND.Models.LearningPath", "LearningPath")
+                        .WithMany()
+                        .HasForeignKey("LearningPathId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EMPBACKEND.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("LearningPath");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("EMPBACKEND.Models.Course", b =>
                 {
                     b.HasOne("EMPBACKEND.Models.Category", "Category")
@@ -510,6 +795,25 @@ namespace EMPBACKEND.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("EMPBACKEND.Models.CourseProgress", b =>
+                {
+                    b.HasOne("EMPBACKEND.Models.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("EMPBACKEND.Models.Enrollment", "Enrollment")
+                        .WithMany("CourseProgresses")
+                        .HasForeignKey("EnrollmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Enrollment");
                 });
 
             modelBuilder.Entity("EMPBACKEND.Models.DailyGoal", b =>
@@ -542,13 +846,34 @@ namespace EMPBACKEND.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("EMPBACKEND.Models.LearningPathCourse", b =>
+                {
+                    b.HasOne("EMPBACKEND.Models.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EMPBACKEND.Models.LearningPath", "LearningPath")
+                        .WithMany("LearningPathCourses")
+                        .HasForeignKey("LearningPathId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("LearningPath");
+                });
+
             modelBuilder.Entity("EMPBACKEND.Models.LearningPlan", b =>
                 {
                     b.HasOne("EMPBACKEND.Models.Course", "Course")
                         .WithMany("LearningPlans")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CourseId");
+
+                    b.HasOne("EMPBACKEND.Models.LearningPath", "LearningPath")
+                        .WithMany("LearningPlans")
+                        .HasForeignKey("LearningPathId");
 
                     b.HasOne("EMPBACKEND.Models.User", "User")
                         .WithMany("LearningPlans")
@@ -557,6 +882,19 @@ namespace EMPBACKEND.Migrations
                         .IsRequired();
 
                     b.Navigation("Course");
+
+                    b.Navigation("LearningPath");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("EMPBACKEND.Models.Notification", b =>
+                {
+                    b.HasOne("EMPBACKEND.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -654,6 +992,18 @@ namespace EMPBACKEND.Migrations
             modelBuilder.Entity("EMPBACKEND.Models.Department", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("EMPBACKEND.Models.Enrollment", b =>
+                {
+                    b.Navigation("CourseProgresses");
+                });
+
+            modelBuilder.Entity("EMPBACKEND.Models.LearningPath", b =>
+                {
+                    b.Navigation("LearningPathCourses");
+
+                    b.Navigation("LearningPlans");
                 });
 
             modelBuilder.Entity("EMPBACKEND.Models.User", b =>

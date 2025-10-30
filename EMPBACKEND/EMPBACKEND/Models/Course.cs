@@ -18,11 +18,14 @@ namespace EMPBACKEND.Models
         
         public int Duration { get; set; } // in minutes
         
+        [StringLength(500)]
+        public string? VideoUrl { get; set; } // YouTube or other video URL
+        
         public int CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
         public bool IsActive { get; set; } = true;
         
-        // Navigation properties
+      
         public ICollection<Video> Videos { get; set; } = new List<Video>();
         public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
         public ICollection<Assessment> Assessments { get; set; } = new List<Assessment>();

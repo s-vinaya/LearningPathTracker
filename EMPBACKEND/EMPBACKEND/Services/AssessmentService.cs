@@ -20,39 +20,13 @@ namespace EMPBACKEND.Services
         public async Task<IEnumerable<AssessmentDto>> GetAllAsync()
         {
             var assessments = await _repository.GetAllAsync();
-<<<<<<< Updated upstream
-            return assessments.Select(a => new AssessmentDto
-            {
-                Id = a.Id,
-                CourseId = a.CourseId,
-                CourseName = a.Course.Title,
-                Title = a.Title,
-                Questions = a.Questions,
-                PassingScore = a.PassingScore,
-                CreatedDate = a.CreatedDate
-            });
-=======
             return _mapper.Map<IEnumerable<AssessmentDto>>(assessments);
->>>>>>> Stashed changes
         }
 
         public async Task<AssessmentDto?> GetByIdAsync(int id)
         {
             var assessment = await _repository.GetByIdAsync(id);
-<<<<<<< Updated upstream
-            return assessment != null ? new AssessmentDto
-            {
-                Id = assessment.Id,
-                CourseId = assessment.CourseId,
-                CourseName = assessment.Course.Title,
-                Title = assessment.Title,
-                Questions = assessment.Questions,
-                PassingScore = assessment.PassingScore,
-                CreatedDate = assessment.CreatedDate
-            } : null;
-=======
             return assessment != null ? _mapper.Map<AssessmentDto>(assessment) : null;
->>>>>>> Stashed changes
         }
 
         public async Task<AssessmentDto> CreateAsync(CreateAssessmentDto assessmentDto)
@@ -80,20 +54,7 @@ namespace EMPBACKEND.Services
         public async Task<IEnumerable<AssessmentDto>> GetByCourseIdAsync(int courseId)
         {
             var assessments = await _repository.GetByCourseIdAsync(courseId);
-<<<<<<< Updated upstream
-            return assessments.Select(a => new AssessmentDto
-            {
-                Id = a.Id,
-                CourseId = a.CourseId,
-                CourseName = a.Course.Title,
-                Title = a.Title,
-                Questions = a.Questions,
-                PassingScore = a.PassingScore,
-                CreatedDate = a.CreatedDate
-            });
-=======
             return _mapper.Map<IEnumerable<AssessmentDto>>(assessments);
->>>>>>> Stashed changes
         }
     }
 }

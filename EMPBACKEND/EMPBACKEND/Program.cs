@@ -7,11 +7,8 @@ using EMPBACKEND.Services;
 using EMPBACKEND.Repositories;
 using EMPBACKEND.Interfaces.Services;
 using EMPBACKEND.Interfaces.Repositories;
-<<<<<<< Updated upstream
-=======
 using EMPBACKEND.Mappings;
 using AutoMapper;
->>>>>>> Stashed changes
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -2,29 +2,19 @@ using EMPBACKEND.DTOs;
 using EMPBACKEND.Interfaces.Services;
 using EMPBACKEND.Interfaces.Repositories;
 using EMPBACKEND.Models;
-<<<<<<< Updated upstream
-=======
 using AutoMapper;
->>>>>>> Stashed changes
 
 namespace EMPBACKEND.Services
 {
     public class LearningPathService : ILearningPathService
     {
         private readonly ILearningPathRepository _repository;
-<<<<<<< Updated upstream
-
-        public LearningPathService(ILearningPathRepository repository)
-        {
-            _repository = repository;
-=======
         private readonly IMapper _mapper;
 
         public LearningPathService(ILearningPathRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
->>>>>>> Stashed changes
         }
 
         public async Task<IEnumerable<LearningPathDto>> GetAllAsync()
@@ -134,8 +124,4 @@ namespace EMPBACKEND.Services
             };
         }
     }
-<<<<<<< Updated upstream
 }
-=======
-}
->>>>>>> Stashed changes

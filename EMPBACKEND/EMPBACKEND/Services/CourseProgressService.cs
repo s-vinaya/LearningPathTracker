@@ -2,29 +2,19 @@ using EMPBACKEND.DTOs;
 using EMPBACKEND.Interfaces.Services;
 using EMPBACKEND.Interfaces.Repositories;
 using EMPBACKEND.Models;
-<<<<<<< Updated upstream
-=======
 using AutoMapper;
->>>>>>> Stashed changes
 
 namespace EMPBACKEND.Services
 {
     public class CourseProgressService : ICourseProgressService
     {
         private readonly ICourseProgressRepository _repository;
-<<<<<<< Updated upstream
-
-        public CourseProgressService(ICourseProgressRepository repository)
-        {
-            _repository = repository;
-=======
         private readonly IMapper _mapper;
 
         public CourseProgressService(ICourseProgressRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
->>>>>>> Stashed changes
         }
 
         public async Task<IEnumerable<CourseProgressDto>> GetAllAsync()
@@ -96,8 +86,4 @@ namespace EMPBACKEND.Services
             };
         }
     }
-<<<<<<< Updated upstream
 }
-=======
-}
->>>>>>> Stashed changes

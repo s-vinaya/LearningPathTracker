@@ -1,10 +1,7 @@
 using EMPBACKEND.DTOs;
 using EMPBACKEND.Interfaces.Services;
 using EMPBACKEND.Models;
-<<<<<<< Updated upstream
-=======
 using AutoMapper;
->>>>>>> Stashed changes
 using EMPBACKEND.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,19 +10,12 @@ namespace EMPBACKEND.Services
     public class DailyGoalService : IDailyGoalService
     {
         private readonly ApplicationDbContext _context;
-<<<<<<< Updated upstream
-
-        public DailyGoalService(ApplicationDbContext context)
-        {
-            _context = context;
-=======
         private readonly IMapper _mapper;
 
         public DailyGoalService(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
->>>>>>> Stashed changes
         }
 
         public async Task<IEnumerable<DailyGoalDto>> GetAllAsync()
@@ -107,8 +97,4 @@ namespace EMPBACKEND.Services
             };
         }
     }
-<<<<<<< Updated upstream
 }
-=======
-}
->>>>>>> Stashed changes

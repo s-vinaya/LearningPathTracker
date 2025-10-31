@@ -2,29 +2,19 @@ using EMPBACKEND.DTOs;
 using EMPBACKEND.Interfaces.Services;
 using EMPBACKEND.Interfaces.Repositories;
 using EMPBACKEND.Models;
-<<<<<<< Updated upstream
-=======
 using AutoMapper;
->>>>>>> Stashed changes
 
 namespace EMPBACKEND.Services
 {
     public class EnrollmentService : IEnrollmentService
     {
         private readonly IEnrollmentRepository _repository;
-<<<<<<< Updated upstream
-
-        public EnrollmentService(IEnrollmentRepository repository)
-        {
-            _repository = repository;
-=======
         private readonly IMapper _mapper;
 
         public EnrollmentService(IEnrollmentRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
->>>>>>> Stashed changes
         }
 
         public async Task<IEnumerable<EnrollmentDto>> GetAllAsync()
@@ -107,8 +97,4 @@ namespace EMPBACKEND.Services
             };
         }
     }
-<<<<<<< Updated upstream
 }
-=======
-}
->>>>>>> Stashed changes

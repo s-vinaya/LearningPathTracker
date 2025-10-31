@@ -5,6 +5,7 @@ using EMPBACKEND.Data;
 using EMPBACKEND.DTOs;
 using EMPBACKEND.Models;
 using EMPBACKEND.Interfaces.Services;
+using AutoMapper;
 using BCrypt.Net;
 using System.Security.Claims;
 
@@ -16,10 +17,12 @@ namespace EMPBACKEND.Controllers
     public class UserController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public UserController(ApplicationDbContext context)
+        public UserController(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -30,23 +33,10 @@ namespace EMPBACKEND.Controllers
             var users = await _context.Users
                 .Where(u => u.Id != currentUserId)
                 .Include(u => u.Department)
-                .Select(u => new UserDto
-                {
-                    Id = u.Id,
-                    Username = u.Username,
-                    FirstName = u.FirstName,
-                    LastName = u.LastName,
-                    Email = u.Email,
-                    Role = u.Role,
-                    DepartmentId = u.DepartmentId,
-                    DepartmentName = u.Department!.Name,
-                    IsActive = u.IsActive,
-                    IsApproved = u.IsApproved,
-                    CreatedDate = u.CreatedDate
-                })
                 .ToListAsync();
 
-            return Ok(users);
+            var userDtos = _mapper.Map<List<UserDto>>(users);
+            return Ok(userDtos);
         }
 
         [HttpGet("{id}")]
@@ -59,20 +49,7 @@ namespace EMPBACKEND.Controllers
             if (user == null)
                 return NotFound();
 
-            var userDto = new UserDto
-            {
-                Id = user.Id,
-                Username = user.Username,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                Role = user.Role,
-                DepartmentId = user.DepartmentId,
-                DepartmentName = user.Department?.Name,
-                IsActive = user.IsActive,
-                IsApproved = user.IsApproved,
-                CreatedDate = user.CreatedDate
-            };
+            var userDto = _mapper.Map<UserDto>(user);
 
             return Ok(userDto);
         }
@@ -87,29 +64,13 @@ namespace EMPBACKEND.Controllers
             if (await _context.Users.AnyAsync(u => u.Username == dto.Username))
                 return BadRequest("Username already exists");
 
-            var user = new User
-            {
-                Username = dto.Username,
-                Email = dto.Email,
-                Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-                Role = dto.Role,
-                DepartmentId = dto.DepartmentId,
-                IsActive = true
-            };
+            var user = _mapper.Map<User>(dto);
+            user.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            var userDto = new UserDto
-            {
-                Id = user.Id,
-                Username = user.Username,
-                Email = user.Email,
-                Role = user.Role,
-                DepartmentId = user.DepartmentId,
-                IsActive = user.IsActive,
-                CreatedDate = user.CreatedDate
-            };
+            var userDto = _mapper.Map<UserDto>(user);
 
             return CreatedAtAction(nameof(GetUser), new { id = user.Id }, userDto);
         }
@@ -128,13 +89,7 @@ namespace EMPBACKEND.Controllers
             if (await _context.Users.AnyAsync(u => u.Username == dto.Username && u.Id != id))
                 return BadRequest("Username already exists");
 
-            user.Username = dto.Username;
-            user.Email = dto.Email;
-            user.Role = dto.Role;
-            user.DepartmentId = dto.DepartmentId;
-            user.IsActive = dto.IsActive;
-            user.IsApproved = dto.IsApproved;
-            user.UpdatedDate = DateTime.UtcNow;
+            _mapper.Map(dto, user);
 
             await _context.SaveChangesAsync();
 
@@ -162,23 +117,10 @@ namespace EMPBACKEND.Controllers
             var users = await _context.Users
                 .Where(u => u.DepartmentId == departmentId)
                 .Include(u => u.Department)
-                .Select(u => new UserDto
-                {
-                    Id = u.Id,
-                    Username = u.Username,
-                    FirstName = u.FirstName,
-                    LastName = u.LastName,
-                    Email = u.Email,
-                    Role = u.Role,
-                    DepartmentId = u.DepartmentId,
-                    DepartmentName = u.Department!.Name,
-                    IsActive = u.IsActive,
-                    IsApproved = u.IsApproved,
-                    CreatedDate = u.CreatedDate
-                })
                 .ToListAsync();
 
-            return Ok(users);
+            var userDtos = _mapper.Map<List<UserDto>>(users);
+            return Ok(userDtos);
         }
 
         [HttpPut("{id}/approve")]
@@ -225,23 +167,10 @@ namespace EMPBACKEND.Controllers
             var users = await _context.Users
                 .Where(u => !u.IsApproved && u.Role == "Employee")
                 .Include(u => u.Department)
-                .Select(u => new UserDto
-                {
-                    Id = u.Id,
-                    Username = u.Username,
-                    FirstName = u.FirstName,
-                    LastName = u.LastName,
-                    Email = u.Email,
-                    Role = u.Role,
-                    DepartmentId = u.DepartmentId,
-                    DepartmentName = u.Department!.Name,
-                    IsActive = u.IsActive,
-                    IsApproved = u.IsApproved,
-                    CreatedDate = u.CreatedDate
-                })
                 .ToListAsync();
 
-            return Ok(users);
+            var userDtos = _mapper.Map<List<UserDto>>(users);
+            return Ok(userDtos);
         }
 
         [HttpPut("{id}/reject")]

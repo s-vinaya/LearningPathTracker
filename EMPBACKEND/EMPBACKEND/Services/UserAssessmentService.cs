@@ -2,16 +2,29 @@ using EMPBACKEND.DTOs;
 using EMPBACKEND.Interfaces.Services;
 using EMPBACKEND.Interfaces.Repositories;
 using EMPBACKEND.Models;
+<<<<<<< Updated upstream
+=======
+using AutoMapper;
+>>>>>>> Stashed changes
 
 namespace EMPBACKEND.Services
 {
     public class UserAssessmentService : IUserAssessmentService
     {
         private readonly IUserAssessmentRepository _repository;
+<<<<<<< Updated upstream
 
         public UserAssessmentService(IUserAssessmentRepository repository)
         {
             _repository = repository;
+=======
+        private readonly IMapper _mapper;
+
+        public UserAssessmentService(IUserAssessmentRepository repository, IMapper mapper)
+        {
+            _repository = repository;
+            _mapper = mapper;
+>>>>>>> Stashed changes
         }
 
         public async Task<IEnumerable<UserAssessmentDto>> GetAllUserAssessmentsAsync()
@@ -158,4 +171,8 @@ namespace EMPBACKEND.Services
             return await _repository.DeleteAsync(id);
         }
     }
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes

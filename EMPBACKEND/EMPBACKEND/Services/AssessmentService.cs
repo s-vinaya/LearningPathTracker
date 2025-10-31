@@ -2,21 +2,25 @@ using EMPBACKEND.DTOs;
 using EMPBACKEND.Interfaces.Repositories;
 using EMPBACKEND.Interfaces.Services;
 using EMPBACKEND.Models;
+using AutoMapper;
 
 namespace EMPBACKEND.Services
 {
     public class AssessmentService : IAssessmentService
     {
         private readonly IAssessmentRepository _repository;
+        private readonly IMapper _mapper;
 
-        public AssessmentService(IAssessmentRepository repository)
+        public AssessmentService(IAssessmentRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<AssessmentDto>> GetAllAsync()
         {
             var assessments = await _repository.GetAllAsync();
+<<<<<<< Updated upstream
             return assessments.Select(a => new AssessmentDto
             {
                 Id = a.Id,
@@ -27,11 +31,15 @@ namespace EMPBACKEND.Services
                 PassingScore = a.PassingScore,
                 CreatedDate = a.CreatedDate
             });
+=======
+            return _mapper.Map<IEnumerable<AssessmentDto>>(assessments);
+>>>>>>> Stashed changes
         }
 
         public async Task<AssessmentDto?> GetByIdAsync(int id)
         {
             var assessment = await _repository.GetByIdAsync(id);
+<<<<<<< Updated upstream
             return assessment != null ? new AssessmentDto
             {
                 Id = assessment.Id,
@@ -42,28 +50,16 @@ namespace EMPBACKEND.Services
                 PassingScore = assessment.PassingScore,
                 CreatedDate = assessment.CreatedDate
             } : null;
+=======
+            return assessment != null ? _mapper.Map<AssessmentDto>(assessment) : null;
+>>>>>>> Stashed changes
         }
 
         public async Task<AssessmentDto> CreateAsync(CreateAssessmentDto assessmentDto)
         {
-            var assessment = new Assessment
-            {
-                CourseId = assessmentDto.CourseId,
-                Title = assessmentDto.Title,
-                Questions = assessmentDto.Questions,
-                PassingScore = assessmentDto.PassingScore,
-                CreatedDate = DateTime.UtcNow
-            };
+            var assessment = _mapper.Map<Assessment>(assessmentDto);
             var created = await _repository.CreateAsync(assessment);
-            return new AssessmentDto
-            {
-                Id = created.Id,
-                CourseId = created.CourseId,
-                Title = created.Title,
-                Questions = created.Questions,
-                PassingScore = created.PassingScore,
-                CreatedDate = created.CreatedDate
-            };
+            return _mapper.Map<AssessmentDto>(created);
         }
 
         public async Task<AssessmentDto> UpdateAsync(int id, UpdateAssessmentDto assessmentDto)
@@ -71,20 +67,9 @@ namespace EMPBACKEND.Services
             var existing = await _repository.GetByIdAsync(id);
             if (existing == null) throw new ArgumentException("Assessment not found");
             
-            existing.Title = assessmentDto.Title;
-            existing.Questions = assessmentDto.Questions;
-            existing.PassingScore = assessmentDto.PassingScore;
-            
+            _mapper.Map(assessmentDto, existing);
             var updated = await _repository.UpdateAsync(existing);
-            return new AssessmentDto
-            {
-                Id = updated.Id,
-                CourseId = updated.CourseId,
-                Title = updated.Title,
-                Questions = updated.Questions,
-                PassingScore = updated.PassingScore,
-                CreatedDate = updated.CreatedDate
-            };
+            return _mapper.Map<AssessmentDto>(updated);
         }
 
         public async Task DeleteAsync(int id)
@@ -95,6 +80,7 @@ namespace EMPBACKEND.Services
         public async Task<IEnumerable<AssessmentDto>> GetByCourseIdAsync(int courseId)
         {
             var assessments = await _repository.GetByCourseIdAsync(courseId);
+<<<<<<< Updated upstream
             return assessments.Select(a => new AssessmentDto
             {
                 Id = a.Id,
@@ -105,6 +91,9 @@ namespace EMPBACKEND.Services
                 PassingScore = a.PassingScore,
                 CreatedDate = a.CreatedDate
             });
+=======
+            return _mapper.Map<IEnumerable<AssessmentDto>>(assessments);
+>>>>>>> Stashed changes
         }
     }
 }

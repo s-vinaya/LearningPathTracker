@@ -2,16 +2,19 @@ using EMPBACKEND.DTOs;
 using EMPBACKEND.Interfaces.Repositories;
 using EMPBACKEND.Interfaces.Services;
 using EMPBACKEND.Models;
+using AutoMapper;
 
 namespace EMPBACKEND.Services
 {
     public class CertificateService : ICertificateService
     {
         private readonly ICertificateRepository _repository;
+        private readonly IMapper _mapper;
 
-        public CertificateService(ICertificateRepository repository)
+        public CertificateService(ICertificateRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<CertificateDto>> GetAllAsync()

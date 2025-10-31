@@ -4,6 +4,7 @@ using EMPBACKEND.Data;
 using EMPBACKEND.DTOs;
 using EMPBACKEND.Models;
 using EMPBACKEND.Interfaces.Services;
+using AutoMapper;
 using BCrypt.Net;
 
 namespace EMPBACKEND.Controllers
@@ -16,13 +17,15 @@ namespace EMPBACKEND.Controllers
         private readonly IJwtService _jwtService;
         private readonly IEmailService _emailService;
         private readonly IPasswordHashingService _passwordHashingService;
+        private readonly IMapper _mapper;
 
-        public AuthController(ApplicationDbContext context, IJwtService jwtService, IEmailService emailService, IPasswordHashingService passwordHashingService)
+        public AuthController(ApplicationDbContext context, IJwtService jwtService, IEmailService emailService, IPasswordHashingService passwordHashingService, IMapper mapper)
         {
             _context = context;
             _jwtService = jwtService;
             _emailService = emailService;
             _passwordHashingService = passwordHashingService;
+            _mapper = mapper;
         }
 
         [HttpPost("register")]
@@ -57,19 +60,7 @@ namespace EMPBACKEND.Controllers
             await _emailService.SendWelcomeEmailAsync(user.Email, user.FirstName, user.LastName);
 
             var token = _jwtService.GenerateToken(user);
-            var userDto = new UserDto
-            {
-                Id = user.Id,
-                Username = user.Username,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                Role = user.Role,
-                DepartmentId = user.DepartmentId,
-                IsActive = user.IsActive,
-                IsApproved = user.IsApproved,
-                CreatedDate = user.CreatedDate
-            };
+            var userDto = _mapper.Map<UserDto>(user);
 
             return Ok(new AuthResponseDto { Token = token, User = userDto });
         }
@@ -103,20 +94,7 @@ namespace EMPBACKEND.Controllers
                 return BadRequest("Your account is pending admin approval. Please contact your administrator.");
 
             var token = _jwtService.GenerateToken(user);
-            var userDto = new UserDto
-            {
-                Id = user.Id,
-                Username = user.Username,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                Role = user.Role,
-                DepartmentId = user.DepartmentId,
-                DepartmentName = user.Department?.Name,
-                IsActive = user.IsActive,
-                IsApproved = user.IsApproved,
-                CreatedDate = user.CreatedDate
-            };
+            var userDto = _mapper.Map<UserDto>(user);
 
             return Ok(new AuthResponseDto { Token = token, User = userDto });
         }

@@ -2,16 +2,29 @@ using EMPBACKEND.DTOs;
 using EMPBACKEND.Interfaces.Services;
 using EMPBACKEND.Interfaces.Repositories;
 using EMPBACKEND.Models;
+<<<<<<< Updated upstream
+=======
+using AutoMapper;
+>>>>>>> Stashed changes
 
 namespace EMPBACKEND.Services
 {
     public class OtpCodeService : IOtpCodeService
     {
         private readonly IOtpCodeRepository _repository;
+<<<<<<< Updated upstream
 
         public OtpCodeService(IOtpCodeRepository repository)
         {
             _repository = repository;
+=======
+        private readonly IMapper _mapper;
+
+        public OtpCodeService(IOtpCodeRepository repository, IMapper mapper)
+        {
+            _repository = repository;
+            _mapper = mapper;
+>>>>>>> Stashed changes
         }
 
         public async Task<IEnumerable<OtpCodeDto>> GetAllAsync()
@@ -117,4 +130,8 @@ namespace EMPBACKEND.Services
             };
         }
     }
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes

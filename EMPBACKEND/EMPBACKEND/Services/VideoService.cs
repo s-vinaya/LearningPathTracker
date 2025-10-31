@@ -2,16 +2,29 @@ using EMPBACKEND.DTOs;
 using EMPBACKEND.Interfaces.Repositories;
 using EMPBACKEND.Interfaces.Services;
 using EMPBACKEND.Models;
+<<<<<<< Updated upstream
+=======
+using AutoMapper;
+>>>>>>> Stashed changes
 
 namespace EMPBACKEND.Services
 {
     public class VideoService : IVideoService
     {
         private readonly IVideoRepository _videoRepository;
+<<<<<<< Updated upstream
 
         public VideoService(IVideoRepository videoRepository)
         {
             _videoRepository = videoRepository;
+=======
+        private readonly IMapper _mapper;
+
+        public VideoService(IVideoRepository videoRepository, IMapper mapper)
+        {
+            _videoRepository = videoRepository;
+            _mapper = mapper;
+>>>>>>> Stashed changes
         }
 
         public async Task<IEnumerable<VideoDto>> GetAllVideoDtosAsync()
@@ -112,4 +125,8 @@ namespace EMPBACKEND.Services
             return await _videoRepository.ExistsAsync(id);
         }
     }
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes

@@ -2,16 +2,29 @@ using EMPBACKEND.DTOs;
 using EMPBACKEND.Interfaces.Services;
 using EMPBACKEND.Interfaces.Repositories;
 using EMPBACKEND.Models;
+<<<<<<< Updated upstream
+=======
+using AutoMapper;
+>>>>>>> Stashed changes
 
 namespace EMPBACKEND.Services
 {
     public class VideoProgressService : IVideoProgressService
     {
         private readonly IVideoProgressRepository _repository;
+<<<<<<< Updated upstream
 
         public VideoProgressService(IVideoProgressRepository repository)
         {
             _repository = repository;
+=======
+        private readonly IMapper _mapper;
+
+        public VideoProgressService(IVideoProgressRepository repository, IMapper mapper)
+        {
+            _repository = repository;
+            _mapper = mapper;
+>>>>>>> Stashed changes
         }
 
         public async Task<IEnumerable<VideoProgressDto>> GetAllVideoProgressAsync()
@@ -158,4 +171,8 @@ namespace EMPBACKEND.Services
             return await _repository.DeleteAsync(id);
         }
     }
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes

@@ -2,16 +2,19 @@ using EMPBACKEND.DTOs;
 using EMPBACKEND.Interfaces.Repositories;
 using EMPBACKEND.Interfaces.Services;
 using EMPBACKEND.Models;
+using AutoMapper;
 
 namespace EMPBACKEND.Services
 {
     public class AssessmentAttemptService : IAssessmentAttemptService
     {
         private readonly IAssessmentAttemptRepository _repository;
+        private readonly IMapper _mapper;
 
-        public AssessmentAttemptService(IAssessmentAttemptRepository repository)
+        public AssessmentAttemptService(IAssessmentAttemptRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<AssessmentAttemptDto>> GetAllAsync()

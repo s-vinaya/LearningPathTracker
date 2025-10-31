@@ -16,12 +16,12 @@ namespace EMPBACKEND.Repositories
 
         public async Task<IEnumerable<Assessment>> GetAllAsync()
         {
-            return await _context.Assessments.ToListAsync();
+            return await _context.Assessments.Include(a => a.Course).ToListAsync();
         }
 
         public async Task<Assessment?> GetByIdAsync(int id)
         {
-            return await _context.Assessments.FindAsync(id);
+            return await _context.Assessments.Include(a => a.Course).FirstOrDefaultAsync(a => a.Id == id);
         }
 
         public async Task<Assessment> CreateAsync(Assessment assessment)
@@ -50,7 +50,7 @@ namespace EMPBACKEND.Repositories
 
         public async Task<IEnumerable<Assessment>> GetByCourseIdAsync(int courseId)
         {
-            return await _context.Assessments.Where(a => a.CourseId == courseId).ToListAsync();
+            return await _context.Assessments.Include(a => a.Course).Where(a => a.CourseId == courseId).ToListAsync();
         }
     }
 }

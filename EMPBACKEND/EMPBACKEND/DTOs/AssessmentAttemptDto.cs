@@ -4,7 +4,9 @@ namespace EMPBACKEND.DTOs
     {
         public int AttemptId { get; set; }
         public int UserId { get; set; }
+        public string UserName { get; set; } = string.Empty;
         public int AssessmentId { get; set; }
+        public string AssessmentName { get; set; } = string.Empty;
         public int Score { get; set; }
         public int MaxScore { get; set; }
         public bool Passed { get; set; }

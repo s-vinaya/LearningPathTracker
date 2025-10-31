@@ -4,6 +4,7 @@ namespace EMPBACKEND.DTOs
     {
         public int Id { get; set; }
         public int UserId { get; set; }
+        public string UserName { get; set; } = string.Empty;
         public string GoalType { get; set; } = string.Empty;
         public int TargetValue { get; set; }
         public int CurrentValue { get; set; }

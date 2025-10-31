@@ -21,7 +21,9 @@ namespace EMPBACKEND.Services
             {
                 AttemptId = a.AttemptId,
                 UserId = a.UserId,
+                UserName = a.User.Username,
                 AssessmentId = a.AssessmentId,
+                AssessmentName = a.Assessment.Title,
                 Score = a.Score,
                 MaxScore = a.MaxScore,
                 Passed = a.Passed,
@@ -39,7 +41,9 @@ namespace EMPBACKEND.Services
             {
                 AttemptId = attempt.AttemptId,
                 UserId = attempt.UserId,
+                UserName = attempt.User.Username,
                 AssessmentId = attempt.AssessmentId,
+                AssessmentName = attempt.Assessment.Title,
                 Score = attempt.Score,
                 MaxScore = attempt.MaxScore,
                 Passed = attempt.Passed,

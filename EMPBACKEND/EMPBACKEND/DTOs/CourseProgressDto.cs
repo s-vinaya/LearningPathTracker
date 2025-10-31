@@ -5,6 +5,7 @@ namespace EMPBACKEND.DTOs
         public int ProgressId { get; set; }
         public int EnrollmentId { get; set; }
         public int CourseId { get; set; }
+        public string CourseName { get; set; } = string.Empty;
         public string Status { get; set; } = string.Empty;
         public decimal PercentComplete { get; set; }
         public DateTime? LastAccessed { get; set; }

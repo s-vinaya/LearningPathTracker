@@ -21,6 +21,7 @@ namespace EMPBACKEND.Services
             {
                 Id = a.Id,
                 CourseId = a.CourseId,
+                CourseName = a.Course.Title,
                 Title = a.Title,
                 Questions = a.Questions,
                 PassingScore = a.PassingScore,
@@ -35,6 +36,7 @@ namespace EMPBACKEND.Services
             {
                 Id = assessment.Id,
                 CourseId = assessment.CourseId,
+                CourseName = assessment.Course.Title,
                 Title = assessment.Title,
                 Questions = assessment.Questions,
                 PassingScore = assessment.PassingScore,
@@ -97,6 +99,7 @@ namespace EMPBACKEND.Services
             {
                 Id = a.Id,
                 CourseId = a.CourseId,
+                CourseName = a.Course.Title,
                 Title = a.Title,
                 Questions = a.Questions,
                 PassingScore = a.PassingScore,

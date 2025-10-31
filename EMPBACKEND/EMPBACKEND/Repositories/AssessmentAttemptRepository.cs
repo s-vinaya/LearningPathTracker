@@ -16,12 +16,12 @@ namespace EMPBACKEND.Repositories
 
         public async Task<IEnumerable<AssessmentAttempt>> GetAllAsync()
         {
-            return await _context.AssessmentAttempts.ToListAsync();
+            return await _context.AssessmentAttempts.Include(a => a.Assessment).Include(u => u.User).ToListAsync();
         }
 
         public async Task<AssessmentAttempt?> GetByIdAsync(int id)
         {
-            return await _context.AssessmentAttempts.FindAsync(id);
+            return await _context.AssessmentAttempts.Include(a => a.Assessment).Include(u => u.User).FirstOrDefaultAsync(a => a.AttemptId == id);
         }
 
         public async Task<AssessmentAttempt> CreateAsync(AssessmentAttempt attempt)
@@ -50,12 +50,12 @@ namespace EMPBACKEND.Repositories
 
         public async Task<IEnumerable<AssessmentAttempt>> GetByUserIdAsync(int userId)
         {
-            return await _context.AssessmentAttempts.Where(a => a.UserId == userId).ToListAsync();
+            return await _context.AssessmentAttempts.Include(a => a.Assessment).Where(a => a.UserId == userId).ToListAsync();
         }
 
         public async Task<IEnumerable<AssessmentAttempt>> GetByAssessmentIdAsync(int assessmentId)
         {
-            return await _context.AssessmentAttempts.Where(a => a.AssessmentId == assessmentId).ToListAsync();
+            return await _context.AssessmentAttempts.Include(a => a.Assessment).Where(a => a.AssessmentId == assessmentId).ToListAsync();
         }
     }
 }

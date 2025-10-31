@@ -2,19 +2,10 @@ using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
 using EMPBACKEND.Utilities;
+using EMPBACKEND.Interfaces.Services;
 
 namespace EMPBACKEND.Services
 {
-    public interface IEmailService
-    {
-        Task SendOtpEmailAsync(string email, string otpCode);
-        Task SendPasswordResetConfirmationAsync(string email);
-        Task SendCourseAssignmentEmailAsync(string email, string courseName);
-        Task SendWelcomeEmailAsync(string email, string firstName, string lastName);
-        Task SendApprovalEmailAsync(string email, string firstName, string lastName);
-        Task SendRejectionEmailAsync(string email, string firstName, string lastName);
-    }
-
     public class EmailService : IEmailService
     {
         private readonly IConfiguration _configuration;
@@ -59,7 +50,7 @@ namespace EMPBACKEND.Services
             await SendEmailAsync(email, EmailConstants.Subjects.Rejection, body);
         }
 
-        private async Task SendEmailAsync(string email, string subject, string body)
+        public async Task SendEmailAsync(string email, string subject, string body)
         {
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress("Employee Learning Portal", _configuration["Email:FromEmail"]));

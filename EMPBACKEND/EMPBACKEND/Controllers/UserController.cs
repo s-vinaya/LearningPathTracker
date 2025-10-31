@@ -4,8 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using EMPBACKEND.Data;
 using EMPBACKEND.DTOs;
 using EMPBACKEND.Models;
-using EMPBACKEND.Services;
+using EMPBACKEND.Interfaces.Services;
 using BCrypt.Net;
+using System.Security.Claims;
 
 namespace EMPBACKEND.Controllers
 {
@@ -25,7 +26,7 @@ namespace EMPBACKEND.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
         {
-            var currentUserId = int.Parse(User.FindFirst("UserId")?.Value ?? "0");
+            var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
             var users = await _context.Users
                 .Where(u => u.Id != currentUserId)
                 .Include(u => u.Department)

@@ -15,9 +15,12 @@ namespace EMPBACKEND.Models
         public DateTime EnrolledDate { get; set; } = DateTime.UtcNow;
         public DateTime? CompletionDate { get; set; }
         
-        public decimal Progress { get; set; } = 0; // 0-100
-        
         [StringLength(50)]
-        public string Status { get; set; } = "InProgress"; // InProgress, Completed, Dropped
+        public string Status { get; set; } = "Enrolled"; // Enrolled, InProgress, Completed, Dropped
+        
+        public decimal Progress { get; set; } = 0;
+        
+        // Navigation properties
+        public ICollection<CourseProgress> CourseProgresses { get; set; } = new List<CourseProgress>();
     }
 }

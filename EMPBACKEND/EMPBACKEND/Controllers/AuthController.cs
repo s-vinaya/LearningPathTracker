@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using EMPBACKEND.Data;
 using EMPBACKEND.DTOs;
 using EMPBACKEND.Models;
-using EMPBACKEND.Services;
+using EMPBACKEND.Interfaces.Services;
 using BCrypt.Net;
 
 namespace EMPBACKEND.Controllers

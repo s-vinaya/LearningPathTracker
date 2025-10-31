@@ -15,6 +15,7 @@ namespace EMPBACKEND.DTOs
         public bool IsActive { get; set; }
         public bool IsApproved { get; set; }
         public DateTime CreatedDate { get; set; }
+        public DateTime UpdatedDate { get; set; }
     }
 
     public class CreateUserDto
@@ -24,12 +25,23 @@ namespace EMPBACKEND.DTOs
         public string Username { get; set; } = string.Empty;
         
         [Required]
+        [StringLength(50)]
+        public string FirstName { get; set; } = string.Empty;
+        
+        [Required]
+        [StringLength(50)]
+        public string LastName { get; set; } = string.Empty;
+        
+        [Required]
         [EmailAddress]
         public string Email { get; set; } = string.Empty;
         
         [Required]
         [MinLength(6)]
         public string Password { get; set; } = string.Empty;
+        
+        [Required]
+        public string Salt { get; set; } = string.Empty;
         
         [Required]
         public string Role { get; set; } = "Employee";
@@ -42,6 +54,14 @@ namespace EMPBACKEND.DTOs
         [Required]
         [StringLength(100)]
         public string Username { get; set; } = string.Empty;
+        
+        [Required]
+        [StringLength(50)]
+        public string FirstName { get; set; } = string.Empty;
+        
+        [Required]
+        [StringLength(50)]
+        public string LastName { get; set; } = string.Empty;
         
         [Required]
         [EmailAddress]

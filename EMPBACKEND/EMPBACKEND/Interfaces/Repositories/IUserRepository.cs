@@ -1,6 +1,6 @@
 using EMPBACKEND.Models;
 
-namespace EMPBACKEND.Interfaces
+namespace EMPBACKEND.Interfaces.Repositories
 {
     public interface IUserRepository
     {

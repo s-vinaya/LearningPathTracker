@@ -4,6 +4,7 @@ namespace EMPBACKEND.Models
 {
     public class OtpCode
     {
+        [Key]
         public int Id { get; set; }
         
         [Required]

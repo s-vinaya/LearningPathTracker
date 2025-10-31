@@ -1,11 +1,11 @@
-namespace EMPBACKEND.Interfaces
+namespace EMPBACKEND.Interfaces.Services
 {
     public interface IEmailService
     {
         Task SendEmailAsync(string toEmail, string subject, string body);
-        Task SendOtpAsync(string toEmail, string otp);
-        Task SendPasswordResetAsync(string toEmail, string resetLink);
-        Task SendCourseAssignmentAsync(string toEmail, string courseName);
+        Task SendOtpEmailAsync(string toEmail, string otp);
+        Task SendPasswordResetConfirmationAsync(string toEmail);
+        Task SendWelcomeEmailAsync(string toEmail, string firstName, string lastName);
         Task SendApprovalEmailAsync(string toEmail, string firstName, string lastName);
         Task SendRejectionEmailAsync(string toEmail, string firstName, string lastName);
     }

@@ -12,11 +12,17 @@ namespace EMPBACKEND.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Video> Videos { get; set; }
-        public DbSet<Enrollment> Enrollments { get; set; }
         public DbSet<Assessment> Assessments { get; set; }
         public DbSet<UserAssessment> UserAssessments { get; set; }
         public DbSet<DailyGoal> DailyGoals { get; set; }
         public DbSet<LearningPlan> LearningPlans { get; set; }
+        public DbSet<LearningPath> LearningPaths { get; set; }
+        public DbSet<LearningPathCourse> LearningPathCourses { get; set; }
+        public DbSet<Enrollment> Enrollments { get; set; }
+        public DbSet<CourseProgress> CourseProgresses { get; set; }
+        public DbSet<AssessmentAttempt> AssessmentAttempts { get; set; }
+        public DbSet<Certificate> Certificates { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
         public DbSet<VideoRequest> VideoRequests { get; set; }
         public DbSet<VideoProgress> VideoProgresses { get; set; }
         public DbSet<OtpCode> OtpCodes { get; set; }

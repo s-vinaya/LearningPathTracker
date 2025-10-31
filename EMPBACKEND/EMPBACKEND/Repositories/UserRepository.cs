@@ -1,5 +1,5 @@
 using EMPBACKEND.Data;
-using EMPBACKEND.Interfaces;
+using EMPBACKEND.Interfaces.Repositories;
 using EMPBACKEND.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -59,7 +59,6 @@ namespace EMPBACKEND.Repositories
 
         public async Task<User> UpdateAsync(User user)
         {
-            user.UpdatedDate = DateTime.UtcNow;
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
             return user;

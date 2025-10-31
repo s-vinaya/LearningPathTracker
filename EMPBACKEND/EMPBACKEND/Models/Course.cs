@@ -18,6 +18,9 @@ namespace EMPBACKEND.Models
         
         public int Duration { get; set; } // in minutes
         
+        [StringLength(500)]
+        public string? VideoUrl { get; set; } // YouTube or other video URL
+        
         public int CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
         public bool IsActive { get; set; } = true;

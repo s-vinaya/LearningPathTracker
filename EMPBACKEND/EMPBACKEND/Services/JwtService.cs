@@ -3,15 +3,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using EMPBACKEND.Models;
+using EMPBACKEND.Interfaces.Services;
 
 namespace EMPBACKEND.Services
 {
-    public interface IJwtService
-    {
-        string GenerateToken(User user);
-        ClaimsPrincipal? ValidateToken(string token);
-    }
-
     public class JwtService : IJwtService
     {
         private readonly IConfiguration _configuration;

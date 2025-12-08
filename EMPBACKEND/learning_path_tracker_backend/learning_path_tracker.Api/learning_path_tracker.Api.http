@@ -1,0 +1,6 @@
+@learning_path_tracker.Api_HostAddress = http://localhost:5194
+
+GET {{learning_path_tracker.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

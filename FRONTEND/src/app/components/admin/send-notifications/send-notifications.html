@@ -1,0 +1,240 @@
+<app-sidebar></app-sidebar>
+<div class="notifications-container">
+  <div class="header">
+    <div>
+      <h1>Send Notifications</h1>
+      <p>Communicate with your learners effectively</p>
+    </div>
+    <button class="compose-btn" (click)="openComposeModal()">+ Compose Notification</button>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-info">
+        <h3>Total Emails Sent</h3>
+        <p class="stat-number">{{ totalSent }}</p>
+      </div>
+      <div class="stat-icon blue"><mat-icon>send</mat-icon></div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-info">
+        <h3>Delivery Rate</h3>
+        <p class="stat-number green">{{ deliveryRate }}</p>
+      </div>
+      <div class="stat-icon green"><mat-icon>check_circle</mat-icon></div>
+    </div>
+  </div>
+
+  <div class="quick-actions">
+    <h2>Quick Actions</h2>
+    <div class="actions-grid">
+      <div class="action-card" (click)="sendCourseReminder()">
+        <div class="action-icon"><mat-icon>alarm</mat-icon></div>
+        <h3>Course Reminder</h3>
+        <p>Remind users about pending courses</p>
+      </div>
+      <div class="action-card" (click)="sendNewCourseAlert()">
+        <div class="action-icon"><mat-icon>add_circle</mat-icon></div>
+        <h3>New Course Alert</h3>
+        <p>Announce new course availability</p>
+      </div>
+      <div class="action-card" (click)="sendAchievementCongrats()">
+        <div class="action-icon"><mat-icon>emoji_events</mat-icon></div>
+        <h3>Achievement Congratulations</h3>
+        <p>Celebrate user achievements</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="recent-section">
+    <div class="section-header">
+      <h2>Recent Notifications</h2>
+      <select [(ngModel)]="selectedStatus">
+        <option value="all">All Status</option>
+        <option value="sent">Sent</option>
+        <option value="draft">Draft</option>
+      </select>
+    </div>
+
+    <div class="notifications-list">
+      <div *ngIf="loading" class="loading">Loading...</div>
+      <div *ngIf="!loading && notifications.length === 0" class="no-data">No notifications found</div>
+      
+      <div *ngFor="let notification of notifications" class="notification-card">
+        <div class="notification-header">
+          <div>
+            <h3>{{ notification.title }}</h3>
+            <span class="badge sent">Sent</span>
+            <span class="badge type">{{ notification.type }}</span>
+          </div>
+          <div class="actions">
+            <button class="icon-btn" title="View" (click)="viewNotification(notification.id)"><mat-icon>visibility</mat-icon></button>
+            <button class="icon-btn" title="Delivery Status" (click)="viewDeliveryStatus(notification.id)"><mat-icon>bar_chart</mat-icon></button>
+            <button class="icon-btn" title="Delete" (click)="deleteNotification(notification.id)"><mat-icon>delete</mat-icon></button>
+          </div>
+        </div>
+        <p class="notification-message">{{ notification.message }}</p>
+        <div class="notification-meta">
+          <span><mat-icon>people</mat-icon> {{ notification.recipientCount }} recipients</span>
+          <span><mat-icon>check_circle</mat-icon> {{ notification.deliveredCount }} delivered</span>
+          <span><mat-icon>schedule</mat-icon> {{ getTimeAgo(notification.createdAt) }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Compose Notification Modal -->
+<div *ngIf="showComposeModal" class="modal-overlay" (click)="closeComposeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Compose Notification</h2>
+      <button class="close-btn" (click)="closeComposeModal()"><mat-icon>close</mat-icon></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Title *</label>
+        <input type="text" [(ngModel)]="newNotification.title" placeholder="Notification title">
+      </div>
+      <div class="form-group">
+        <label>Message *</label>
+        <textarea [(ngModel)]="newNotification.message" rows="5" placeholder="Enter your message"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Type</label>
+          <select [(ngModel)]="newNotification.type">
+            <option value="info">Info</option>
+            <option value="success">Success</option>
+            <option value="warning">Warning</option>
+            <option value="error">Error</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Recipients</label>
+          <select [(ngModel)]="newNotification.recipients">
+            <option value="all">All Users</option>
+            <option value="employees">Employees Only</option>
+            <option value="managers">Managers Only</option>
+            <option value="admins">Admins Only</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="cancel-btn" (click)="closeComposeModal()">Cancel</button>
+      <button class="send-btn" (click)="sendNotification()">Send Notification</button>
+    </div>
+  </div>
+</div>
+
+<!-- View Notification Modal -->
+<div *ngIf="showViewModal" class="modal-overlay" (click)="closeViewModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Notification Details</h2>
+      <button class="close-btn" (click)="closeViewModal()"><mat-icon>close</mat-icon></button>
+    </div>
+    <div class="modal-body" *ngIf="selectedNotification">
+      <div class="form-group">
+        <label>Title</label>
+        <p>{{ selectedNotification.title }}</p>
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <p>{{ selectedNotification.message }}</p>
+      </div>
+      <div class="form-group">
+        <label>Type</label>
+        <p>{{ selectedNotification.type }}</p>
+      </div>
+      <div class="form-group">
+        <label>Created At</label>
+        <p>{{ selectedNotification.createdAt | date:'medium' }}</p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="cancel-btn" (click)="closeViewModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delivery Status Modal -->
+<div *ngIf="showDeliveryModal" class="modal-overlay" (click)="closeDeliveryModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Delivery Status</h2>
+      <button class="close-btn" (click)="closeDeliveryModal()"><mat-icon>close</mat-icon></button>
+    </div>
+    <div class="modal-body" *ngIf="deliveryStatus">
+      <div class="delivery-section">
+        <h3><mat-icon>check_circle</mat-icon> Delivered ({{ deliveryStatus.delivered.length }})</h3>
+        <div class="delivery-list">
+          <div *ngFor="let item of deliveryStatus.delivered" class="delivery-item success">
+            <div>
+              <strong>{{ item.userName }}</strong>
+              <span>{{ item.userEmail }}</span>
+            </div>
+            <span class="status-badge delivered"><mat-icon>check_circle</mat-icon> Delivered</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="delivery-section" *ngIf="deliveryStatus.failed.length > 0">
+        <h3><mat-icon>cancel</mat-icon> Failed ({{ deliveryStatus.failed.length }})</h3>
+        <div class="delivery-list">
+          <div *ngFor="let item of deliveryStatus.failed" class="delivery-item failed">
+            <div>
+              <strong>{{ item.userName }}</strong>
+              <span>{{ item.userEmail }}</span>
+            </div>
+            <span class="status-badge failed"><mat-icon>cancel</mat-icon> Failed</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="cancel-btn" (click)="closeDeliveryModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Top 3 Performers Modal -->
+<div *ngIf="showTop3Modal" class="modal-overlay" (click)="closeTop3Modal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2><mat-icon>emoji_events</mat-icon> Top 3 Performers</h2>
+      <button class="close-btn" (click)="closeTop3Modal()"><mat-icon>close</mat-icon></button>
+    </div>
+    <div class="modal-body">
+      <div class="top3-list">
+        <div *ngFor="let performer of top3Performers; let i = index" class="top3-item" [class.gold]="i === 0" [class.silver]="i === 1" [class.bronze]="i === 2">
+          <div class="rank">
+            <span class="rank-number">{{ i + 1 }}</span>
+            <span class="medal" *ngIf="i === 0"><mat-icon>looks_one</mat-icon></span>
+            <span class="medal" *ngIf="i === 1"><mat-icon>looks_two</mat-icon></span>
+            <span class="medal" *ngIf="i === 2"><mat-icon>looks_3</mat-icon></span>
+          </div>
+          <div class="performer-info">
+            <strong>{{ performer.name }}</strong>
+            <span>{{ performer.email }}</span>
+          </div>
+          <div class="performer-stats">
+            <span><mat-icon>menu_book</mat-icon> {{ performer.completedCourses }} courses</span>
+            <span><mat-icon>school</mat-icon> {{ performer.certificatesEarned }} certificates</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="cancel-btn" (click)="closeTop3Modal()">Cancel</button>
+      <button class="send-btn" (click)="confirmSendCongrats()">Send Congratulations</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Notification -->
+<div *ngIf="showToast" class="toast-notification">
+  {{ toastMessage }}
+</div>

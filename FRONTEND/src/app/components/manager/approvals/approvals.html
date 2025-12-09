@@ -1,0 +1,40 @@
+<app-manager-sidebar></app-manager-sidebar>
+<div class="approvals-container">
+  <div class="header">
+    <h1>Enrollment Approvals</h1>
+    <p>Review and approve employee learning path enrollment requests</p>
+  </div>
+
+  <div class="requests-list">
+    <div *ngIf="loading" class="loading">Loading requests...</div>
+    <div *ngIf="!loading && pendingRequests.length === 0" class="no-requests">
+      No pending enrollment requests
+    </div>
+    
+    <div *ngFor="let request of pendingRequests" class="request-card">
+      <div class="request-header">
+        <div class="employee-info">
+          <h3>{{ request.employeeName }}</h3>
+          <span class="employee-id">ID: {{ request.employeeId }}</span>
+        </div>
+        <div class="request-date">
+          {{ request.requestDate | date:'short' }}
+        </div>
+      </div>
+      
+      <div class="request-details">
+        <p><strong>Learning Path ID:</strong> {{ request.learningPathId }}</p>
+        <p><strong>Status:</strong> <span class="status pending">{{ request.status }}</span></p>
+      </div>
+      
+      <div class="request-actions">
+        <button class="approve-btn" (click)="approveRequest(request.id)">
+          ✓ Approve
+        </button>
+        <button class="reject-btn" (click)="rejectRequest(request.id)">
+          ✗ Reject
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

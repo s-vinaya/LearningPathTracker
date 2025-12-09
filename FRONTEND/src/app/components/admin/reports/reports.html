@@ -1,0 +1,143 @@
+<app-sidebar></app-sidebar>
+<div class="reports-container">
+  <div class="header">
+    <div>
+      <h1>Reports & Analytics</h1>
+      <p>Track performance and generate insights</p>
+    </div>
+    <div class="header-actions">
+      <select [(ngModel)]="selectedPeriod">
+        <option value="last7">Last 7 Days</option>
+        <option value="last30">Last 30 Days</option>
+        <option value="last90">Last 90 Days</option>
+      </select>
+      <button class="export-btn" (click)="exportReport()">📥 Export Report</button>
+    </div>
+  </div>
+
+  <div class="stats-grid" *ngIf="overview">
+    <div class="stat-card">
+      <div class="stat-info">
+        <h3>Course Completions</h3>
+        <p class="stat-number">{{ overview.courseCompletions }}</p>
+        <span class="stat-change" [ngClass]="getChangeClass(overview.courseCompletionsChange)">
+          {{ getChangeIcon(overview.courseCompletionsChange) }} {{ overview.courseCompletionsChange >= 0 ? '+' : '' }}{{ overview.courseCompletionsChange }}% vs last period
+        </span>
+      </div>
+      <div class="stat-icon green">✓</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-info">
+        <h3>Active Learners</h3>
+        <p class="stat-number">{{ overview.activeLearnersCount }}</p>
+        <span class="stat-change" [ngClass]="getChangeClass(overview.activeLearnersChange)">
+          {{ getChangeIcon(overview.activeLearnersChange) }} {{ overview.activeLearnersChange >= 0 ? '+' : '' }}{{ overview.activeLearnersChange }}% vs last period
+        </span>
+      </div>
+      <div class="stat-icon blue">👥</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-info">
+        <h3>Avg. Completion Time</h3>
+        <p class="stat-number">{{ overview.avgCompletionWeeks }}w</p>
+        <span class="stat-change" [ngClass]="getChangeClass(overview.avgCompletionChange)">
+          {{ getChangeIcon(overview.avgCompletionChange) }} {{ overview.avgCompletionChange >= 0 ? '+' : '' }}{{ overview.avgCompletionChange }}% vs last period
+        </span>
+      </div>
+      <div class="stat-icon purple">⏱</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-info">
+        <h3>Satisfaction Score</h3>
+        <p class="stat-number">{{ overview.satisfactionScore }}</p>
+        <span class="stat-change" [ngClass]="getChangeClass(overview.satisfactionChange)">
+          {{ getChangeIcon(overview.satisfactionChange) }} {{ overview.satisfactionChange >= 0 ? '+' : '' }}{{ overview.satisfactionChange }}% vs last period
+        </span>
+      </div>
+      <div class="stat-icon orange">⭐</div>
+    </div>
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h2>Learning Progress Over Time</h2>
+      <div class="chart-wrapper">
+        <p-chart type="line" [data]="progressChartData" [options]="progressChartOptions"></p-chart>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h2>Most Popular Courses</h2>
+      <div class="chart-wrapper">
+        <p-chart type="bar" [data]="popularCoursesData" [options]="popularCoursesOptions"></p-chart>
+      </div>
+    </div>
+  </div>
+
+  <div class="department-section">
+    <h2>Department Performance</h2>
+    <div class="table-wrapper">
+      <table class="performance-table">
+        <thead>
+          <tr>
+            <th>Department</th>
+            <th>Total Users</th>
+            <th>Active Learners</th>
+            <th>Completions</th>
+            <th>Avg. Score</th>
+            <th>Progress</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let dept of departments">
+            <td><strong>{{ dept.department }}</strong></td>
+            <td>{{ dept.totalUsers }}</td>
+            <td>{{ dept.activeLearnersCount }}</td>
+            <td>{{ dept.completions }}</td>
+            <td>{{ dept.avgScore | number:'1.0-0' }}%</td>
+            <td>
+              <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="dept.progress">{{ dept.progress | number:'1.0-0' }}%</div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="bottom-grid">
+    <div class="learners-section">
+      <h2>Top Learners</h2>
+      <div class="learners-list">
+        <div class="learner-item" *ngFor="let learner of topLearners.slice(0, 3); let i = index">
+          <div class="rank">{{ i + 1 }}</div>
+          <div class="avatar">👤</div>
+          <div class="learner-info">
+            <p class="name">{{ learner.name }}</p>
+            <p class="dept">{{ learner.department }}</p>
+          </div>
+          <div class="completions">
+            <span class="count">{{ learner.completions }}</span>
+            <span class="label">completions</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ratings-section">
+      <h2>Popular Courses</h2>
+      <div class="ratings-list">
+        <div class="rating-item" *ngFor="let course of popularCourses.slice(0, 3)">
+          <div class="course-info">
+            <p class="course-name">{{ course.title }}</p>
+            <p class="enrollments">{{ course.enrollments }} enrollments</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

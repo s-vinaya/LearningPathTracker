@@ -1,0 +1,56 @@
+<div class="dashboard-container">
+  <app-employee-sidebar></app-employee-sidebar>
+  
+  <div class="main-content">
+    <div class="course-viewer" *ngIf="!loading && course">
+      <div class="course-header">
+        <button class="back-btn" (click)="goBack()">
+          ← {{learningPathId ? 'Back to Path' : 'Back to Courses'}}
+        </button>
+        <h1>{{course.title}}</h1>
+        <p class="instructor">Instructor: {{course.instructor}}</p>
+      </div>
+
+      <div class="video-container">
+        <div id="youtube-player" *ngIf="!useIframe && videoId"></div>
+        <iframe *ngIf="useIframe && iframeUrl" 
+                [src]="iframeUrl" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+        <div *ngIf="!videoId" class="no-video">
+          <p>No video available for this course</p>
+        </div>
+        <div class="skip-warning" *ngIf="showSkipWarning">
+          ⚠️ You cannot skip ahead! Please watch the video sequentially.
+        </div>
+      </div>
+
+      <div class="progress-section">
+        <div class="progress-header">
+          <h3>Course Progress</h3>
+          <span class="progress-text">{{progressPercent}}% Complete</span>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar" [style.width]="progressBarWidth"></div>
+        </div>
+        <div class="time-info">
+          <span>{{formattedTime}} / {{formattedDuration}}</span>
+        </div>
+        <button *ngIf="progressPercent >= 80" (click)="handleNext()" class="next-btn">
+          {{course.hasQuiz ? 'Take Quiz' : 'Next Course'}} →
+        </button>
+      </div>
+
+      <div class="course-details">
+        <h3>About This Course</h3>
+        <p>{{course.description}}</p>
+      </div>
+    </div>
+
+    <div class="loading" *ngIf="loading">
+      <p>Loading course...</p>
+    </div>
+  </div>
+</div>

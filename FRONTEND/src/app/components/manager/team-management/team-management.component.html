@@ -1,0 +1,233 @@
+<div class="dashboard-container">
+  <div class="header">
+    <div class="welcome">
+      <h1>Team Management</h1>
+      <p>Manage your team members and their assignments.</p>
+    </div>
+    <div class="header-actions">
+      <button class="add-btn" (click)="openAddModal()">
+        <i class="fas fa-plus"></i> Add Team Member
+      </button>
+    </div>
+  </div>
+  <div class="content">
+    <!-- Team Stats -->
+    <div class="stats-grid">
+      <div class="stat-card blue">
+        <div class="stat-icon">
+          <i class="fas fa-users"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ dashboardStats.totalMembers || 0 }}</div>
+          <div class="stat-label">Total Members</div>
+        </div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-icon">
+          <i class="fas fa-user-check"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ dashboardStats.active || 0 }}</div>
+          <div class="stat-label">Active</div>
+        </div>
+      </div>
+      <div class="stat-card orange">
+        <div class="stat-icon">
+          <i class="fas fa-graduation-cap"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ dashboardStats.inTraining || 0 }}</div>
+          <div class="stat-label">In Training</div>
+        </div>
+      </div>
+      <div class="stat-card cyan">
+        <div class="stat-icon">
+          <i class="fas fa-trophy"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ dashboardStats.completedPaths || 0 }}</div>
+          <div class="stat-label">Completed Paths</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Team Members Table -->
+    <div class="table-section">
+      <h3>Team Members</h3>
+      <div *ngIf="loading" style="text-align: center; padding: 20px;">Loading...</div>
+      <div *ngIf="!loading && teamMembers.length === 0" style="text-align: center; padding: 20px;">No team members found</div>
+      <div class="table-container" *ngIf="!loading && teamMembers.length > 0">
+        <table class="team-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Role</th>
+              <th>Department</th>
+              <th>Status</th>
+              <th>Progress</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let member of teamMembers">
+              <td>
+                <div class="member-info">
+                  <i class="fas fa-user-circle"></i>
+                  <span>{{ member.name }}</span>
+                </div>
+              </td>
+              <td>{{ member.role }}</td>
+              <td>{{ member.department }}</td>
+              <td>
+                <span class="status-badge" [ngClass]="getStatusClass(member.status)">{{ member.status }}</span>
+              </td>
+              <td>
+                <div class="progress-container">
+                  <div class="progress-bar">
+                    <div class="progress-fill" [style.width.%]="member.progress"></div>
+                  </div>
+                  <span class="progress-text">{{ member.progress }}%</span>
+                </div>
+              </td>
+              <td>
+                <div class="action-buttons">
+                  <button mat-icon-button color="primary" matTooltip="Assign Learning Path" (click)="navigateToLearningPaths()">
+                    <mat-icon>add_circle</mat-icon>
+                  </button>
+                  <button mat-icon-button color="accent" matTooltip="View Details" (click)="viewEmployeeDetails(member)">
+                    <mat-icon>visibility</mat-icon>
+                  </button>
+                  <button mat-icon-button style="color: #4caf50" matTooltip="View Progress" (click)="viewProgress(member)">
+                    <mat-icon>trending_up</mat-icon>
+                  </button>
+                  <button mat-icon-button style="color: #ff9800" matTooltip="Send Reminder" (click)="sendReminder(member)">
+                    <mat-icon>notifications</mat-icon>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Team Member Modal -->
+<div class="modal-overlay" *ngIf="showAddModal" (click)="closeAddModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Add Team Member</h2>
+      <button class="close-btn" (click)="closeAddModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p>Team members can be added through the Admin User Management panel.</p>
+      <p>Please contact your administrator to add new team members to your department.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="cancel-btn" (click)="closeAddModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Assign Learning Path Modal -->
+<div class="modal-overlay" *ngIf="showAssignModal" (click)="closeAssignModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Assign Learning Path to {{ selectedMember?.name }}</h2>
+      <button class="close-btn" (click)="closeAssignModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="learning-paths-list">
+        <div *ngFor="let path of learningPaths" class="learning-path-item" (click)="assignLearningPath(path.id || path.Id)">
+          <h4>{{ path.title || path.Title }}</h4>
+          <p>{{ path.description || path.Description }}</p>
+          <small>{{ path.courseCount || path.CourseCount }} courses • {{ path.estimatedDuration || path.EstimatedDuration }}h</small>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="cancel-btn" (click)="closeAssignModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Employee Details Modal -->
+<div class="modal-overlay" *ngIf="showDetailsModal" (click)="closeDetailsModal()">
+  <div class="modal-content employee-details-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Employee Details</h2>
+      <button class="close-btn" (click)="closeDetailsModal()">&times;</button>
+    </div>
+    <div class="modal-body" *ngIf="employeeDetails">
+      <div class="employee-profile">
+        <img [src]="employeeDetails.profilePicture || employeeDetails.ProfilePicture || 'https://ui-avatars.com/api/?name=' + (employeeDetails.name || employeeDetails.Name) + '&size=120&background=4a90e2&color=fff'" alt="Employee Photo" class="employee-photo">
+        <div class="employee-info">
+          <h3>{{ employeeDetails.name || employeeDetails.Name }}</h3>
+          <p><strong>Email:</strong> {{ employeeDetails.email || employeeDetails.Email }}</p>
+          <p><strong>Role:</strong> {{ employeeDetails.role || employeeDetails.Role }}</p>
+          <p><strong>Department:</strong> {{ employeeDetails.department || employeeDetails.Department }}</p>
+          <p><strong>Status:</strong> <span class="status-badge" [ngClass]="getStatusClass(employeeDetails.status || employeeDetails.Status)">{{ employeeDetails.status || employeeDetails.Status }}</span></p>
+        </div>
+      </div>
+      <div class="details-section">
+        <h4>Learning Progress</h4>
+        <div class="progress-details">
+          <p><strong>Overall Progress:</strong> {{ employeeDetails.overallProgress || employeeDetails.OverallProgress || 0 }}%</p>
+          <p><strong>Enrolled Courses:</strong> {{ employeeDetails.enrolledCourses || employeeDetails.EnrolledCourses || 0 }}</p>
+          <p><strong>Completed Courses:</strong> {{ employeeDetails.completedCourses || employeeDetails.CompletedCourses || 0 }}</p>
+          <p><strong>Certificates Earned:</strong> {{ employeeDetails.certificatesEarned || employeeDetails.CertificatesEarned || 0 }}</p>
+        </div>
+      </div>
+      <div class="details-section" *ngIf="employeeDetails.learningPaths || employeeDetails.LearningPaths">
+        <h4>Assigned Learning Paths</h4>
+        <div class="learning-paths-details">
+          <div *ngFor="let path of (employeeDetails.learningPaths || employeeDetails.LearningPaths)" class="path-item">
+            <p><strong>{{ path.title || path.Title }}</strong> - {{ path.progress || path.Progress || 0 }}% complete</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="cancel-btn" (click)="closeDetailsModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Employee Progress Modal -->
+<div class="modal-overlay" *ngIf="showProgressModal" (click)="closeProgressModal()">
+  <div class="modal-content employee-details-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Progress Details - {{ selectedMember?.name }}</h2>
+      <button class="close-btn" (click)="closeProgressModal()">&times;</button>
+    </div>
+    <div class="modal-body" *ngIf="employeeProgress">
+      <div class="details-section">
+        <h4>Course Progress</h4>
+        <div class="progress-details">
+          <div *ngFor="let course of (employeeProgress.courses || employeeProgress.Courses)" class="path-item">
+            <p><strong>{{ course.title || course.Title }}</strong></p>
+            <div class="progress-container">
+              <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="course.progress || course.Progress"></div>
+              </div>
+              <span class="progress-text">{{ course.progress || course.Progress }}%</span>
+            </div>
+            <small>Time Spent: {{ course.timeSpent || course.TimeSpent || '0h' }} | Quiz Score: {{ course.quizScore || course.QuizScore || 'N/A' }}</small>
+          </div>
+        </div>
+      </div>
+      <div class="details-section">
+        <h4>Summary</h4>
+        <div class="progress-details">
+          <p><strong>Total Time Spent:</strong> {{ employeeProgress.totalTimeSpent || employeeProgress.TotalTimeSpent || '0h' }}</p>
+          <p><strong>Average Quiz Score:</strong> {{ employeeProgress.avgQuizScore || employeeProgress.AvgQuizScore || 'N/A' }}</p>
+          <p><strong>Completion Rate:</strong> {{ employeeProgress.completionRate || employeeProgress.CompletionRate || 0 }}%</p>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="cancel-btn" (click)="closeProgressModal()">Close</button>
+    </div>
+  </div>
+</div>

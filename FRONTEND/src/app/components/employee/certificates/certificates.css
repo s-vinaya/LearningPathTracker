@@ -1,0 +1,163 @@
+.dashboard-container {
+  margin-left: 260px;
+  min-height: 100vh;
+  background: #f5f7fa;
+}
+
+.header {
+  background: white;
+  padding: 2rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.header h1 {
+  margin: 0 0 0.5rem 0;
+  color: #1a202c;
+}
+
+.header p {
+  margin: 0;
+  color: #718096;
+}
+
+.content {
+  padding: 2rem;
+}
+
+.loading {
+  text-align: center;
+  padding: 4rem;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.no-data {
+  text-align: center;
+  padding: 4rem;
+  color: #9ca3af;
+}
+
+.no-data i {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.certificates-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 1.5rem;
+}
+
+.certificate-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: transform 0.3s;
+}
+
+.certificate-card:hover {
+  transform: translateY(-4px);
+}
+
+.certificate-preview {
+  width: 100%;
+  height: 300px;
+  background: #f5f7fa;
+  border-bottom: 1px solid #e2e8f0;
+  overflow: hidden;
+}
+
+.certificate-preview iframe {
+  display: block;
+  border: none;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.certificate-info {
+  padding: 1.5rem;
+}
+
+.certificate-info h3 {
+  margin: 0 0 0.5rem 0;
+  color: #1a202c;
+  font-size: 1.125rem;
+}
+
+.cert-employee {
+  color: #667eea;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.cert-score {
+  color: #10b981;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.cert-date {
+  color: #718096;
+  font-size: 0.875rem;
+  margin: 0 0 1rem 0;
+}
+
+.cert-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.open-btn, .download-btn {
+  flex: 1;
+  padding: 0.75rem;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  transition: opacity 0.3s;
+}
+
+.open-btn {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.download-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.open-btn:hover, .download-btn:hover {
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    margin-left: 0;
+  }
+
+  .header {
+    padding: 1.5rem;
+  }
+
+  .content {
+    padding: 1rem;
+  }
+}

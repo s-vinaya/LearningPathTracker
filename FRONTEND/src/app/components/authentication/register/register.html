@@ -1,0 +1,89 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-left">
+      <div class="auth-image">
+        <div class="image-overlay">
+          <h2>Join Us Today!</h2>
+          <p>Start your learning journey with industry experts</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="auth-right">
+      <div class="auth-header">
+        <h1>{{ platformName }}</h1>
+        <p>Create your account</p>
+      </div>
+      
+      <div class="auth-tabs">
+        <button class="tab" (click)="switchToLogin()">Login</button>
+        <button class="tab active">Register</button>
+      </div>
+
+      <form (ngSubmit)="onSubmit()" class="auth-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" [(ngModel)]="user.fullName" name="fullName" placeholder="Enter your full name" required>
+          </div>
+
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" [(ngModel)]="user.email" name="email" placeholder="Enter your email" 
+                   (blur)="validateEmail()" (input)="validateEmail()" required>
+            <span *ngIf="emailError" class="validation-error">{{ emailError }}</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" [(ngModel)]="user.password" name="password" placeholder="Create a password" 
+                   (blur)="validatePassword()" (input)="validatePassword()" required>
+            <span *ngIf="passwordError" class="validation-error">{{ passwordError }}</span>
+            <div *ngIf="user.password && passwordStrength.level" class="password-strength">
+              <div class="strength-bar">
+                <div class="strength-fill" [style.width]="passwordStrength.level === 'weak' ? '33%' : passwordStrength.level === 'medium' ? '66%' : '100%'" 
+                     [style.background-color]="passwordStrength.color"></div>
+              </div>
+              <span class="strength-text" [style.color]="passwordStrength.color">{{ passwordStrength.text }}</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Confirm Password</label>
+            <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Confirm your password" 
+                   (blur)="validateConfirmPassword()" (input)="validateConfirmPassword()" required>
+            <span *ngIf="confirmPasswordError" class="validation-error">{{ confirmPasswordError }}</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" [(ngModel)]="user.phoneNumber" name="phoneNumber" placeholder="Enter phone number">
+          </div>
+
+          <div class="form-group">
+            <label>Department</label>
+            <select [(ngModel)]="user.department" name="department" required>
+              <option value="">Select Department</option>
+              <option *ngFor="let dept of departments" [value]="dept.name">{{ dept.name }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Job Title</label>
+          <input type="text" [(ngModel)]="user.jobTitle" name="jobTitle" placeholder="Enter job title">
+        </div>
+
+        <div *ngIf="error" class="error-message">
+          <span>⚠️ {{ error }}</span>
+        </div>
+
+        <button type="submit" class="btn-primary">Create Account</button>
+      </form>
+    </div>
+  </div>
+</div>

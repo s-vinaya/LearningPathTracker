@@ -1,0 +1,231 @@
+<app-sidebar></app-sidebar>
+<div class="quizzes-container">
+  <div class="header">
+    <div>
+      <h1>Manage Quizzes</h1>
+      <p>Create and manage quizzes for courses and learning paths</p>
+    </div>
+    <button class="add-btn" (click)="openModal()">+ Add New Quiz</button>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-info">
+        <h3>Total Quizzes</h3>
+        <p class="stat-number">{{ totalQuizzes }}</p>
+      </div>
+      <div class="stat-icon blue"><mat-icon>quiz</mat-icon></div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-info">
+        <h3>Course Quizzes</h3>
+        <p class="stat-number green">{{ courseQuizzes }}</p>
+      </div>
+      <div class="stat-icon green"><mat-icon>menu_book</mat-icon></div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-info">
+        <h3>Learning Path Quizzes</h3>
+        <p class="stat-number orange">{{ learningPathQuizzes }}</p>
+      </div>
+      <div class="stat-icon orange"><mat-icon>route</mat-icon></div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-info">
+        <h3>Final Quizzes</h3>
+        <p class="stat-number purple">{{ finalQuizzes }}</p>
+      </div>
+      <div class="stat-icon purple"><mat-icon>emoji_events</mat-icon></div>
+    </div>
+  </div>
+
+  <div class="filters">
+    <div class="search-box">
+      <input type="text" placeholder="Search quizzes..." [(ngModel)]="searchTerm" (input)="filterQuizzes()">
+    </div>
+    <select [(ngModel)]="selectedType" (change)="filterQuizzes()">
+      <option value="all">All Types</option>
+      <option value="course">Course Quizzes</option>
+      <option value="learningpath">Learning Path Quizzes</option>
+      <option value="final">Final Quizzes</option>
+    </select>
+  </div>
+
+  <div class="quizzes-grid">
+    <div *ngIf="loading" class="loading">Loading...</div>
+    <div *ngIf="!loading && filteredQuizzes.length === 0" class="no-data">No quizzes found</div>
+    
+    <div *ngFor="let quiz of filteredQuizzes" class="quiz-card">
+      <div class="quiz-header">
+        <h3>{{ quiz.title }}</h3>
+        <span class="status-badge" [class.active]="quiz.isActive">{{ quiz.isActive ? 'Active' : 'Inactive' }}</span>
+      </div>
+      <p class="quiz-description">{{ quiz.description }}</p>
+      <div class="quiz-meta">
+        <div class="meta-item">
+          <span class="label">Type:</span>
+          <span class="value">{{ quiz.isFinalQuiz ? 'Final Quiz' : (quiz.courseId ? 'Course' : 'Learning Path') }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="label">Linked to:</span>
+          <span class="value">{{ quiz.courseName || quiz.learningPathName || 'None' }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="label">Questions:</span>
+          <span class="value">{{ quiz.questions.length }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="label">Passing Score:</span>
+          <span class="value">{{ quiz.passingScore }}%</span>
+        </div>
+        <div class="meta-item">
+          <span class="label">Time Limit:</span>
+          <span class="value">{{ quiz.timeLimit }} min</span>
+        </div>
+      </div>
+      <div class="quiz-actions">
+        <button class="action-btn edit-btn" (click)="editQuiz(quiz)">Edit</button>
+        <button class="action-btn delete-btn" (click)="deleteQuiz(quiz.id)">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showModal" class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ editingQuiz ? 'Edit Quiz' : 'Add New Quiz' }}</h2>
+      <button class="close-btn" (click)="closeModal()"><mat-icon>close</mat-icon></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Title *</label>
+        <input type="text" [(ngModel)]="newQuiz.title" placeholder="Quiz title">
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea [(ngModel)]="newQuiz.description" rows="3" placeholder="Quiz description"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Quiz Type *</label>
+        <select [(ngModel)]="quizType" (change)="onQuizTypeChange()">
+          <option value="course">Course Quiz</option>
+          <option value="learningpath">Learning Path Quiz (Final Assessment)</option>
+        </select>
+      </div>
+      <div class="form-group" *ngIf="quizType === 'course'">
+        <label>Link to Course *</label>
+        <select [(ngModel)]="newQuiz.courseId">
+          <option [ngValue]="null">Select a course</option>
+          <option *ngFor="let course of courses" [ngValue]="course.id">{{ course.title }}</option>
+        </select>
+      </div>
+      <div class="form-group" *ngIf="quizType === 'learningpath'">
+        <label>Link to Learning Path *</label>
+        <select [(ngModel)]="newQuiz.learningPathId">
+          <option [ngValue]="null">Select a learning path</option>
+          <option *ngFor="let path of learningPaths" [ngValue]="path.id">{{ path.title }}</option>
+        </select>
+      </div>
+      <div class="info-box" *ngIf="quizType === 'learningpath'">
+        <strong><mat-icon>info</mat-icon> Learning Path Quiz:</strong> This quiz will be available only after all courses in the learning path are completed and their quizzes are passed. Passing this quiz will mark the learning path as completed and generate a certificate.
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Passing Score (%)</label>
+          <input type="number" [(ngModel)]="newQuiz.passingScore" min="0" max="100">
+        </div>
+        <div class="form-group">
+          <label>Time Limit (minutes)</label>
+          <input type="number" [(ngModel)]="newQuiz.timeLimit" min="1">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="checkbox-label">
+          <input type="checkbox" [(ngModel)]="newQuiz.isActive">
+          <span>Active</span>
+        </label>
+      </div>
+
+      <div class="questions-section">
+        <div class="section-header">
+          <h3>Questions</h3>
+          <button type="button" class="add-question-btn" (click)="addQuestion()">+ Add Question</button>
+        </div>
+        <div cdkDropList (cdkDropListDropped)="dropQuestion($event)">
+        <div *ngFor="let question of newQuiz.questions; let i = index" class="question-card" cdkDrag>
+          <div class="question-header">
+            <span class="drag-handle" cdkDragHandle><mat-icon>drag_indicator</mat-icon></span>
+            <span>Question {{ i + 1 }}</span>
+            <div class="header-actions">
+              <button type="button" class="edit-question-btn" *ngIf="!question.isEditing" (click)="editQuestion(i)"><mat-icon>edit</mat-icon></button>
+              <button type="button" class="save-question-btn" *ngIf="question.isEditing" (click)="saveQuestion(i)"><mat-icon>check</mat-icon></button>
+              <button type="button" class="remove-btn" (click)="removeQuestion(i)"><mat-icon>close</mat-icon></button>
+            </div>
+          </div>
+
+          <div *ngIf="question.isEditing">
+            <div class="form-group">
+              <label>Question *</label>
+              <input type="text" [(ngModel)]="question.question" placeholder="Enter question">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Option A</label>
+                <input type="text" [(ngModel)]="question.optionA" placeholder="Option A">
+              </div>
+              <div class="form-group">
+                <label>Option B</label>
+                <input type="text" [(ngModel)]="question.optionB" placeholder="Option B">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Option C</label>
+                <input type="text" [(ngModel)]="question.optionC" placeholder="Option C">
+              </div>
+              <div class="form-group">
+                <label>Option D</label>
+                <input type="text" [(ngModel)]="question.optionD" placeholder="Option D">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Correct Answer</label>
+                <select [(ngModel)]="question.correctAnswer">
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="C">C</option>
+                  <option value="D">D</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Points</label>
+                <input type="number" [(ngModel)]="question.points" min="1">
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="!question.isEditing" class="question-preview">
+            <div class="preview-question"><strong>Q:</strong> {{ question.question || 'No question entered' }}</div>
+            <div class="preview-options">
+              <div class="preview-option" [class.correct]="question.correctAnswer === 'A'"><strong>A:</strong> {{ question.optionA || '-' }}</div>
+              <div class="preview-option" [class.correct]="question.correctAnswer === 'B'"><strong>B:</strong> {{ question.optionB || '-' }}</div>
+              <div class="preview-option" [class.correct]="question.correctAnswer === 'C'"><strong>C:</strong> {{ question.optionC || '-' }}</div>
+              <div class="preview-option" [class.correct]="question.correctAnswer === 'D'"><strong>D:</strong> {{ question.optionD || '-' }}</div>
+            </div>
+            <div class="preview-meta">Points: {{ question.points }}</div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="cancel-btn" (click)="closeModal()">Cancel</button>
+      <button class="save-btn" (click)="saveQuiz()">{{ editingQuiz ? 'Update' : 'Save' }} Quiz</button>
+    </div>
+  </div>
+</div>

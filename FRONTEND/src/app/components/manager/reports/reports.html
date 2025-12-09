@@ -1,0 +1,149 @@
+<div class="reports-page">
+  <div class="page-header">
+    <h2>Reports & Analytics</h2>
+    <div class="header-actions">
+      <select class="time-filter">
+        <option>Last 30 Days</option>
+        <option>Last 7 Days</option>
+        <option>This Month</option>
+      </select>
+      <button class="generate-btn" (click)="openExportModal()">
+        <mat-icon>download</mat-icon> Export Report
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading reports...</p>
+  </div>
+
+  <!-- Report Charts -->
+  <div *ngIf="!loading" class="reports-grid">
+    <div class="report-card">
+      <div class="report-header">
+        <mat-icon>pie_chart</mat-icon>
+        <h3>Completion Rate Report</h3>
+      </div>
+      <div class="report-content">
+        <div class="completion-chart">
+          <mat-icon class="chart-icon">pie_chart</mat-icon>
+          <div class="completion-rate">
+            <div class="rate-number">{{ completionRate }}%</div>
+            <div class="rate-label">Completion Rate</div>
+            <div class="rate-description">Team learning path completion</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="report-card">
+      <div class="report-header">
+        <mat-icon>show_chart</mat-icon>
+        <h3>Progress Trend</h3>
+      </div>
+      <div class="report-content">
+        <div class="trend-chart">
+          <mat-icon class="chart-icon">show_chart</mat-icon>
+          <div class="trend-info">
+            <div class="trend-title">Monthly Progress Trend</div>
+            <div class="trend-description">Learning progress over time</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Performance Metrics -->
+  <div *ngIf="!loading" class="metrics-section">
+    <h3>Performance Metrics</h3>
+    <div class="metrics-grid">
+      <div class="metric-item">
+        <div class="metric-number blue">{{ metrics.activeLearners }}</div>
+        <div class="metric-label">Active Learners</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-number green">{{ metrics.hoursCompleted }}</div>
+        <div class="metric-label">Hours Completed</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-number orange">{{ metrics.pathsInProgress }}</div>
+        <div class="metric-label">Paths in Progress</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-number cyan">{{ metrics.successRate }}%</div>
+        <div class="metric-label">Success Rate</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detailed Reports Table -->
+  <div *ngIf="!loading" class="detailed-reports">
+    <h3>Detailed Learning Reports</h3>
+    <div *ngIf="detailedReports.length === 0" class="no-data">
+      <p>No learning path data available</p>
+    </div>
+    <div *ngIf="detailedReports.length > 0" class="reports-table">
+      <table class="learning-table">
+        <thead>
+          <tr>
+            <th>Employee</th>
+            <th>Points</th>
+            <th>Completed Courses</th>
+            <th>Certificates</th>
+            <th>Progress</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let employee of detailedReports">
+            <td>
+              <div class="path-info">
+                <mat-icon>person</mat-icon>
+                <span>{{ employee.name }}</span>
+              </div>
+            </td>
+            <td><strong>{{ employee.totalPoints }} pts</strong></td>
+            <td>{{ employee.completedCourses }}</td>
+            <td>{{ employee.certificates }}</td>
+            <td>
+              <div class="completion-bar">
+                <div class="completion-fill" [ngClass]="getCompletionClass(employee.progress)" [style.width.%]="employee.progress"></div>
+                <span class="completion-text">{{ employee.progress }}%</span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Export Modal -->
+<div *ngIf="showExportModal" class="modal-overlay" (click)="closeExportModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Export Report</h2>
+      <button class="close-btn" (click)="closeExportModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <p class="export-info">Select format to export report data</p>
+      <div class="export-options">
+        <button class="export-option-btn" (click)="exportData('excel')">
+          <mat-icon class="export-icon">table_chart</mat-icon>
+          <span class="export-label">Excel (CSV)</span>
+          <span class="export-desc">Spreadsheet format</span>
+        </button>
+        <button class="export-option-btn" (click)="exportData('json')">
+          <mat-icon class="export-icon">code</mat-icon>
+          <span class="export-label">JSON</span>
+          <span class="export-desc">Structured data</span>
+        </button>
+        <button class="export-option-btn" (click)="exportData('pdf')">
+          <mat-icon class="export-icon">picture_as_pdf</mat-icon>
+          <span class="export-label">PDF</span>
+          <span class="export-desc">Document format</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

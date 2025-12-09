@@ -1,0 +1,74 @@
+<div class="sidebar-overlay" *ngIf="sidebarOpen" (click)="closeSidebar()"></div>
+
+<button class="menu-toggle" (click)="toggleSidebar()">
+  <mat-icon>{{ sidebarOpen ? 'close' : 'menu' }}</mat-icon>
+</button>
+
+<div class="sidebar" [class.open]="sidebarOpen">
+  <div class="logo">
+    <div class="logo-icon"><mat-icon>school</mat-icon></div>
+    <div class="logo-text">
+      <h2>{{ platformName }}</h2>
+      <p>Admin Panel</p>
+    </div>
+  </div>
+
+  <nav class="nav-menu">
+    <a routerLink="/admin-dashboard" routerLinkActive="active" class="nav-item" (click)="closeSidebar()">
+      <span class="icon"><mat-icon>dashboard</mat-icon></span>
+      <span>Dashboard</span>
+    </a>
+    <a routerLink="/admin/users" routerLinkActive="active" class="nav-item" (click)="closeSidebar()">
+      <span class="icon"><mat-icon>people</mat-icon></span>
+      <span>Manage Users</span>
+    </a>
+    <a routerLink="/admin/departments" routerLinkActive="active" class="nav-item" (click)="closeSidebar()">
+      <span class="icon"><mat-icon>business</mat-icon></span>
+      <span>Manage Departments</span>
+    </a>
+    <a routerLink="/admin/manage-courses" routerLinkActive="active" class="nav-item" (click)="closeSidebar()">
+      <span class="icon"><mat-icon>menu_book</mat-icon></span>
+      <span>Manage Courses</span>
+    </a>
+    <a routerLink="/admin/learning-paths" routerLinkActive="active" class="nav-item" (click)="closeSidebar()">
+      <span class="icon"><mat-icon>route</mat-icon></span>
+      <span>Learning Paths</span>
+    </a>
+    <a routerLink="/admin/quizzes" routerLinkActive="active" class="nav-item" (click)="closeSidebar()">
+      <span class="icon"><mat-icon>quiz</mat-icon></span>
+      <span>Manage Quizzes</span>
+    </a>
+    <a routerLink="/admin/send-notifications" routerLinkActive="active" class="nav-item" (click)="closeSidebar()">
+      <span class="icon"><mat-icon>notifications</mat-icon></span>
+      <span>Send Notifications</span>
+    </a>
+    <a routerLink="/admin/settings" routerLinkActive="active" class="nav-item" (click)="closeSidebar()">
+      <span class="icon"><mat-icon>settings</mat-icon></span>
+      <span>Settings</span>
+    </a>
+  </nav>
+
+  <div class="user-profile-wrapper">
+    <div class="user-profile" (click)="toggleDropdown()">
+      <div class="avatar">
+        <img *ngIf="userImage" [src]="userImage" alt="Profile">
+        <span *ngIf="!userImage" class="initial">{{ userName.charAt(0).toUpperCase() }}</span>
+      </div>
+      <div class="user-info">
+        <p class="name">{{ userName }}</p>
+        <p class="email">{{ userEmail }}</p>
+      </div>
+      <span class="dropdown-arrow"><mat-icon>{{ showDropdown ? 'expand_less' : 'expand_more' }}</mat-icon></span>
+    </div>
+    <div class="dropdown-menu" *ngIf="showDropdown">
+      <a routerLink="/admin/profile" class="dropdown-item">
+        <span class="icon"><mat-icon>person</mat-icon></span>
+        <span>Profile</span>
+      </a>
+      <a class="dropdown-item" (click)="logout()">
+        <span class="icon"><mat-icon>logout</mat-icon></span>
+        <span>Logout</span>
+      </a>
+    </div>
+  </div>
+</div>

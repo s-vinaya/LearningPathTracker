@@ -1,0 +1,67 @@
+<div class="history-container">
+  <mat-card class="header-card">
+    <mat-card-header>
+      <mat-card-title>Approval History</mat-card-title>
+      <mat-card-subtitle>View all approval decisions and audit logs</mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+
+  <mat-card class="filter-card">
+    <mat-form-field appearance="outline">
+      <mat-label>Filter by Status</mat-label>
+      <mat-select [(ngModel)]="statusFilter" (selectionChange)="applyFilter()">
+        <mat-option value="All">All</mat-option>
+        <mat-option value="Pending">Pending</mat-option>
+        <mat-option value="Approved">Approved</mat-option>
+        <mat-option value="Rejected">Rejected</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-card>
+
+  <mat-card class="table-card">
+    <div *ngIf="loading" class="loading-spinner">
+      <mat-spinner></mat-spinner>
+    </div>
+
+    <div *ngIf="!loading && filteredHistory.length === 0" class="no-data">
+      <p>No approval history found</p>
+    </div>
+
+    <table mat-table [dataSource]="filteredHistory" *ngIf="!loading && filteredHistory.length > 0">
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef>Type</th>
+        <td mat-cell *matCellDef="let item">{{ getTypeLabel(item.type) }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="employeeName">
+        <th mat-header-cell *matHeaderCellDef>Employee</th>
+        <td mat-cell *matCellDef="let item">{{ item.employeeName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let item">
+          <mat-chip [ngClass]="getStatusClass(item.status)">{{ item.status }}</mat-chip>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="reviewerComments">
+        <th mat-header-cell *matHeaderCellDef>Comments</th>
+        <td mat-cell *matCellDef="let item">{{ item.reviewerComments || 'N/A' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef>Created</th>
+        <td mat-cell *matCellDef="let item">{{ item.createdAt | date:'short' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="reviewedAt">
+        <th mat-header-cell *matHeaderCellDef>Reviewed</th>
+        <td mat-cell *matCellDef="let item">{{ item.reviewedAt ? (item.reviewedAt | date:'short') : 'N/A' }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </mat-card>
+</div>

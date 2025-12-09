@@ -1,0 +1,110 @@
+<app-sidebar></app-sidebar>
+<div class="dashboard-container">
+  <div class="header">
+    <div class="welcome">
+      <h1>Welcome, Admin!</h1>
+      <p>Here's what's happening with your learning platform today.</p>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card pink">
+      <div class="stat-info">
+        <h3>Total Users</h3>
+        <p class="stat-number">{{ summary.totalUsers }}</p>
+        <span class="stat-change">Active users in system</span>
+      </div>
+      <div class="stat-icon"><mat-icon>groups</mat-icon></div>
+    </div>
+
+    <div class="stat-card blue">
+      <div class="stat-info">
+        <h3>Active Courses</h3>
+        <p class="stat-number">{{ summary.activeCourses }}</p>
+        <span class="stat-change">Currently available</span>
+      </div>
+      <div class="stat-icon"><mat-icon>menu_book</mat-icon></div>
+    </div>
+
+    <div class="stat-card green">
+      <div class="stat-info">
+        <h3>Courses Completed</h3>
+        <p class="stat-number">{{ summary.coursesCompleted }}</p>
+        <span class="stat-change">Total completions</span>
+      </div>
+      <div class="stat-icon"><mat-icon>check_circle</mat-icon></div>
+    </div>
+
+    <div class="stat-card orange">
+      <div class="stat-info">
+        <h3>Certificates Issued</h3>
+        <p class="stat-number">{{ summary.certificatesIssued }}</p>
+        <span class="stat-change">Total certificates</span>
+      </div>
+      <div class="stat-icon"><mat-icon>school</mat-icon></div>
+    </div>
+
+    <div class="stat-card purple">
+      <div class="stat-info">
+        <h3>Email Delivery Rate</h3>
+        <p class="stat-number">{{ summary.emailDeliveryRate }}%</p>
+        <span class="stat-change">Successful deliveries</span>
+      </div>
+      <div class="stat-icon"><mat-icon>email</mat-icon></div>
+    </div>
+  </div>
+
+  <div class="content-grid">
+    <div class="chart-section">
+      <div class="chart-header">
+        <h2>Learning Engagement</h2>
+        <div class="time-filters">
+          <button [class.active]="selectedRange === 7" (click)="onRangeChange(7)">7 Days</button>
+          <button [class.active]="selectedRange === 30" (click)="onRangeChange(30)">30 Days</button>
+          <button [class.active]="selectedRange === 90" (click)="onRangeChange(90)">90 Days</button>
+        </div>
+      </div>
+      <div class="chart-wrapper">
+        <div *ngIf="loading" class="loading">Loading...</div>
+        <p-chart *ngIf="!loading && chartData" type="line" [data]="chartData" [options]="chartOptions"></p-chart>
+      </div>
+    </div>
+
+    <div class="activities-section">
+      <h2>Recent Activities</h2>
+      <div class="activity-list">
+        <div *ngIf="loading" class="loading">Loading activities...</div>
+        <div *ngIf="!loading && recentActivities.length === 0" class="no-data">No recent activities</div>
+        <div *ngFor="let activity of recentActivities" class="activity-item">
+          <div class="activity-icon" [ngClass]="getActivityIconClass(activity.type)">{{ getActivityIcon(activity.type) }}</div>
+          <div class="activity-content">
+            <p>{{ activity.text }}</p>
+            <span class="time">{{ activity.timeAgo }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="quick-actions">
+    <h2>Quick Actions</h2>
+    <div class="actions-grid">
+      <button class="action-card" routerLink="/admin/users">
+        <div class="action-icon"><mat-icon>people</mat-icon></div>
+        <p>Manage Users</p>
+      </button>
+      <button class="action-card" routerLink="/admin/manage-courses">
+        <div class="action-icon"><mat-icon>book</mat-icon></div>
+        <p>Manage Courses</p>
+      </button>
+      <button class="action-card" routerLink="/admin/departments">
+        <div class="action-icon"><mat-icon>business</mat-icon></div>
+        <p>Manage Departments</p>
+      </button>
+      <button class="action-card" routerLink="/admin/send-notifications">
+        <div class="action-icon"><mat-icon>notifications</mat-icon></div>
+        <p>Send Notification</p>
+      </button>
+    </div>
+  </div>
+</div>

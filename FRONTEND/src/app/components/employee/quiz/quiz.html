@@ -1,0 +1,87 @@
+<app-employee-sidebar></app-employee-sidebar>
+
+<div class="dashboard-container">
+  <div class="header">
+    <h1>Quiz</h1>
+  </div>
+
+  <div class="content">
+    <div *ngIf="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Loading quiz...</p>
+    </div>
+
+    <div *ngIf="!loading && attemptsExhausted" class="attempts-exhausted">
+      <i class="fas fa-exclamation-triangle"></i>
+      <h2>Daily Attempt Limit Reached</h2>
+      <p>You have used all 3 attempts for today.</p>
+      <p class="reset-timer">Quiz resets in: <strong>{{timeUntilReset}}</strong></p>
+      <button (click)="router.navigate(['/employee/learning-paths'])" class="back-btn">
+        <i class="fas fa-arrow-left"></i> Back to Learning Paths
+      </button>
+    </div>
+
+    <div *ngIf="!loading && !submitted && !attemptsExhausted && quiz" class="quiz-container">
+      <div class="quiz-header">
+        <div>
+          <h2>{{quiz.title}}</h2>
+          <p class="quiz-description">{{quiz.description}}</p>
+        </div>
+        <div class="timer" [class.warning]="timeLeft < 60">
+          <i class="fas fa-clock"></i> {{formattedTime}}
+        </div>
+      </div>
+
+      <div *ngFor="let question of quiz.questions; let i = index" class="question-card">
+        <h3>{{i + 1}}. {{question.question}}</h3>
+        <div class="options">
+          <label class="option">
+            <input type="radio" [name]="'question_' + question.id" value="A" [(ngModel)]="answers[question.id]">
+            <span>A. {{question.optionA}}</span>
+          </label>
+          <label class="option">
+            <input type="radio" [name]="'question_' + question.id" value="B" [(ngModel)]="answers[question.id]">
+            <span>B. {{question.optionB}}</span>
+          </label>
+          <label class="option">
+            <input type="radio" [name]="'question_' + question.id" value="C" [(ngModel)]="answers[question.id]">
+            <span>C. {{question.optionC}}</span>
+          </label>
+          <label class="option">
+            <input type="radio" [name]="'question_' + question.id" value="D" [(ngModel)]="answers[question.id]">
+            <span>D. {{question.optionD}}</span>
+          </label>
+        </div>
+      </div>
+
+      <button (click)="submitQuiz()" class="submit-btn" [disabled]="!isQuizComplete">
+        <i class="fas fa-check"></i> Submit Quiz
+      </button>
+    </div>
+
+    <div *ngIf="submitted" class="result-container">
+      <div class="confetti" *ngIf="showConfetti">
+        <div class="confetti-piece" *ngFor="let i of [].constructor(100); let idx = index" [style.left.%]="(idx * 3.7) % 100" [style.animation-delay.s]="(idx * 0.05) % 3"></div>
+      </div>
+      <div class="result-card" [class.passed]="result.passed" [class.failed]="!result.passed">
+        <i [class]="result.passed ? 'fas fa-check-circle' : 'fas fa-times-circle'"></i>
+        <h2>{{result.passed ? 'Congratulations! You Passed!' : 'Quiz Failed'}}</h2>
+        <p class="score">Score: {{result.score}}%</p>
+        <p class="points">Points: {{result.earnedPoints}} / {{result.totalPoints}}</p>
+        <p class="attempts">Attempts Today: {{result.attemptsToday}} / 3</p>
+        <p class="remaining" *ngIf="result.remainingAttempts > 0">Remaining Attempts: {{result.remainingAttempts}}</p>
+        <p class="remaining" *ngIf="result.remainingAttempts === 0 && !result.passed">
+          <strong>No attempts remaining. Quiz resets in: {{timeUntilReset}}</strong>
+        </p>
+        <div class="result-actions">
+          <button *ngIf="!result.passed && result.remainingAttempts > 0" (click)="retakeQuiz()" class="retry-btn">
+            <i class="fas fa-redo"></i> Retake Quiz
+          </button>
+          <button (click)="router.navigate(['/employee/learning-paths'])" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Back to Learning Paths
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

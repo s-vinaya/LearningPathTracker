@@ -1,0 +1,68 @@
+<app-sidebar></app-sidebar>
+<div class="profile-container">
+  <div class="profile-header">
+    <h1>My Profile</h1>
+    <button *ngIf="!isEditing" class="edit-btn" (click)="toggleEdit()"><mat-icon>edit</mat-icon> Edit Profile</button>
+  </div>
+
+  <div class="message" *ngIf="message">{{ message }}</div>
+  <div class="loading" *ngIf="loading">Loading profile...</div>
+
+  <div class="profile-content" *ngIf="profile && !loading">
+    <div class="profile-image-section">
+      <div class="image-wrapper">
+        <img *ngIf="previewUrl" [src]="previewUrl" alt="Profile">
+        <div *ngIf="!previewUrl" class="no-image">{{ profile.fullName.charAt(0).toUpperCase() }}</div>
+      </div>
+      <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" style="display: none">
+      <button class="upload-btn" (click)="fileInput.click()"><mat-icon>photo_camera</mat-icon> Change Photo</button>
+      <button *ngIf="selectedFile" class="save-image-btn" (click)="uploadImage()">Save Photo</button>
+    </div>
+
+    <div class="profile-details">
+      <div class="detail-group">
+        <label>Full Name</label>
+        <input *ngIf="isEditing" [(ngModel)]="profile.fullName" type="text">
+        <p *ngIf="!isEditing">{{ profile.fullName }}</p>
+      </div>
+
+      <div class="detail-group">
+        <label>Email</label>
+        <p>{{ profile.email }}</p>
+      </div>
+
+      <div class="detail-group">
+        <label>Phone Number</label>
+        <input *ngIf="isEditing" [(ngModel)]="profile.phoneNumber" type="text">
+        <p *ngIf="!isEditing">{{ profile.phoneNumber || 'Not provided' }}</p>
+      </div>
+
+      <div class="detail-group">
+        <label>Department</label>
+        <input *ngIf="isEditing" [(ngModel)]="profile.department" type="text">
+        <p *ngIf="!isEditing">{{ profile.department || 'Not provided' }}</p>
+      </div>
+
+      <div class="detail-group">
+        <label>Job Title</label>
+        <input *ngIf="isEditing" [(ngModel)]="profile.jobTitle" type="text">
+        <p *ngIf="!isEditing">{{ profile.jobTitle || 'Not provided' }}</p>
+      </div>
+
+      <div class="detail-group">
+        <label>Role</label>
+        <p>{{ profile.role }}</p>
+      </div>
+
+      <div class="detail-group">
+        <label>Last Login</label>
+        <p>{{ profile.lastLogin | date:'medium' }}</p>
+      </div>
+
+      <div class="action-buttons" *ngIf="isEditing">
+        <button class="save-btn" (click)="saveProfile()" [disabled]="loading">Save Changes</button>
+        <button class="cancel-btn" (click)="cancel()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

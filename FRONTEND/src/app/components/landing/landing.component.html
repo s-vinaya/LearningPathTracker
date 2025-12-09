@@ -1,0 +1,157 @@
+<div class="landing-page">
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand" (click)="showSection('home')" style="cursor: pointer;">
+        <span class="brand-icon">🎓</span>
+        <span class="brand-text">Learning Path Tracker</span>
+      </div>
+      <div class="nav-links">
+        <a href="#" class="nav-link" (click)="showSection('about')">About Us</a>
+        <a href="#" class="nav-link" (click)="showSection('contact')">Contact Us</a>
+        <a href="#" class="nav-link" (click)="showSection('terms')">Terms</a>
+      </div>
+      <div class="nav-actions">
+        <button class="nav-btn" (click)="navigateToLogin()">Log In</button>
+        <button class="nav-btn primary" (click)="navigateToRegister()">Join for Free</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero-section" *ngIf="activeSection === 'home'">
+    <div class="hero-container">
+      <div class="hero-content">
+        <h1 class="hero-title">Learn without limits</h1>
+        <p class="hero-subtitle">Start, switch, or advance your career with comprehensive learning paths, expert instruction, and hands-on quizzes.</p>
+        
+
+
+        <div class="hero-actions">
+          <button class="cta-btn" (click)="navigateToRegister()">Get Started</button>
+        </div>
+      </div>
+      <div class="hero-image">
+        <div class="image-placeholder">
+          <div class="learning-visual">
+            <div class="course-card">
+              <div class="card-header">React Full-Stack</div>
+              <div class="card-content">
+                <div class="content-line">Learn modern React concepts</div>
+                <div class="content-line short">4.8 ⭐ (33 reviews)</div>
+              </div>
+            </div>
+            <div class="progress-indicator">
+              <div class="progress-bar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Us Section -->
+  <section class="content-section" *ngIf="activeSection === 'about'">
+    <div class="content-container">
+      <h1>About Learning Path Tracker</h1>
+      <p>Learning Path Tracker is a comprehensive learning management system designed to empower organizations and individuals in their educational journey.</p>
+      <h2>Our Mission</h2>
+      <p>To democratize access to quality education and enable continuous learning for professionals worldwide.</p>
+      <h2>Our Vision</h2>
+      <p>To become the leading platform for corporate learning and professional development.</p>
+    </div>
+  </section>
+
+  <!-- Contact Us Section -->
+  <section class="content-section" *ngIf="activeSection === 'contact'">
+    <div class="content-container">
+      <h1>Contact Us</h1>
+      <div class="contact-info">
+        <div class="contact-item">
+          <h3>Email</h3>
+          <p>support@learningpathtracker.com</p>
+        </div>
+        <div class="contact-item">
+          <h3>Phone</h3>
+          <p>+1 (555) 123-4567</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Terms Section -->
+  <section class="content-section" *ngIf="activeSection === 'terms'">
+    <div class="content-container">
+      <h1>Terms and Conditions</h1>
+      <h2>1. Acceptance of Terms</h2>
+      <p>By accessing and using Learning Path Tracker, you accept and agree to be bound by the terms and provision of this agreement.</p>
+      <h2>2. Use License</h2>
+      <p>Permission is granted to temporarily access Learning Path Tracker for personal, non-commercial transitory viewing only.</p>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section" *ngIf="activeSection === 'home'">
+    <div class="features-container">
+      <h2 class="section-title">Why learners choose Learning Path Tracker</h2>
+      <div class="features-grid">
+        <div class="feature-item">
+          <div class="feature-icon">📚</div>
+          <h3>Expert-led courses</h3>
+          <p>Learn from industry experts with real-world experience</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🎯</div>
+          <h3>Structured paths</h3>
+          <p>Follow guided learning paths to master new skills</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">📈</div>
+          <h3>Track progress</h3>
+          <p>Monitor your learning journey with detailed analytics</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🏆</div>
+          <h3>Earn certificates</h3>
+          <p>Get recognized for your achievements with certificates</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats-section" *ngIf="activeSection === 'home'">
+    <div class="stats-container">
+      <div class="stat-item">
+        <div class="stat-number">100+</div>
+        <div class="stat-label">Courses</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">50+</div>
+        <div class="stat-label">Learning Paths</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">1000+</div>
+        <div class="stat-label">Learners</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">95%</div>
+        <div class="stat-label">Completion Rate</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links">
+        <a href="#" class="footer-link" (click)="showSection('about')">About Us</a>
+        <a href="#" class="footer-link" (click)="showSection('contact')">Contact Us</a>
+        <a href="#" class="footer-link" (click)="showSection('terms')">Terms and Conditions</a>
+      </div>
+      <div class="footer-text">
+        <p>&copy; 2024 Learning Path Tracker. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</div>

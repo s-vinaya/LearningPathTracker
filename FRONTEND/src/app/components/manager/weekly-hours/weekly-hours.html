@@ -1,0 +1,68 @@
+<div class="weekly-hours-page">
+  <div class="page-header">
+    <h2>Weekly Hours Tracking</h2>
+    <div class="header-actions">
+      <select class="time-filter">
+        <option>This Week</option>
+        <option>Last Week</option>
+        <option>This Month</option>
+      </select>
+      <button class="export-btn">
+        <mat-icon>download</mat-icon> Export
+      </button>
+    </div>
+  </div>
+
+  <!-- Weekly Stats -->
+  <div class="stats-grid">
+    <div class="stat-card blue">
+      <div class="stat-icon">
+        <mat-icon>schedule</mat-icon>
+      </div>
+      <div class="stat-content">
+        <div class="stat-number">156</div>
+        <div class="stat-label">Total Hours</div>
+      </div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-icon">
+        <mat-icon>trending_up</mat-icon>
+      </div>
+      <div class="stat-content">
+        <div class="stat-number">6.5</div>
+        <div class="stat-label">Avg Hours/Person</div>
+      </div>
+    </div>
+    <div class="stat-card orange">
+      <div class="stat-icon">
+        <mat-icon>track_changes</mat-icon>
+      </div>
+      <div class="stat-content">
+        <div class="stat-number">87%</div>
+        <div class="stat-label">Target Achievement</div>
+      </div>
+    </div>
+    <div class="stat-card cyan">
+      <div class="stat-icon">
+        <mat-icon>emoji_events</mat-icon>
+      </div>
+      <div class="stat-content">
+        <div class="stat-number">18</div>
+        <div class="stat-label">Goals Completed</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Weekly Chart -->
+  <div class="chart-container">
+    <div class="chart-header">
+      <mat-icon>bar_chart</mat-icon>
+      <h3>Weekly Learning Hours Overview</h3>
+    </div>
+    <div class="chart-placeholder">
+      <mat-icon class="chart-icon">bar_chart</mat-icon>
+      <p>Weekly Hours Chart</p>
+      <small>Hours spent on learning activities by day</small>
+    </div>
+  </div>
+</div>

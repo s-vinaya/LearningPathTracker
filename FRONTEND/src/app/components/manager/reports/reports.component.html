@@ -1,0 +1,127 @@
+<div class="dashboard-container">
+  <div class="header">
+    <div class="welcome">
+      <h1>Reports & Analytics</h1>
+      <p>View detailed reports and analytics for your team's learning progress.</p>
+    </div>
+    <button class="export-btn" (click)="openExportModal()" style="padding: 0.75rem 1.5rem; background: #6366f1; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500;">
+      <i class="fas fa-download"></i> Export Report
+    </button>
+  </div>
+
+  <div class="content" *ngIf="!loading">
+    <!-- Summary Cards -->
+    <div class="metrics-grid" style="margin-bottom: 2rem;">
+      <div class="metric-item">
+        <div class="metric-number blue">{{ summary.totalEmployees }}</div>
+        <div class="metric-label">Total Employees</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-number green">{{ summary.totalCompletions }}</div>
+        <div class="metric-label">Total Completions</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-number orange">{{ summary.avgCompletionRate }}%</div>
+        <div class="metric-label">Completion Rate</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-number cyan">{{ summary.totalPoints }}</div>
+        <div class="metric-label">Total Points</div>
+      </div>
+    </div>
+
+    <!-- Charts Grid -->
+    <div class="charts-grid">
+      <!-- Course Progress Chart -->
+      <p-card header="Course Progress" class="chart-card">
+        <p-chart type="bar" [data]="courseProgressData" [options]="chartOptions" height="300px"></p-chart>
+      </p-card>
+
+      <!-- Progress Over Time -->
+      <p-card header="Progress Over Time" class="chart-card">
+        <p-chart type="line" [data]="progressOverTimeData" [options]="chartOptions" height="300px"></p-chart>
+      </p-card>
+
+      <!-- Department Stats -->
+      <p-card header="Department Completions" class="chart-card">
+        <p-chart type="pie" [data]="departmentStatsData" [options]="chartOptions" height="300px"></p-chart>
+      </p-card>
+
+      <!-- Employee Points -->
+      <p-card header="Top Employees by Points" class="chart-card">
+        <p-chart type="bar" [data]="employeePointsData" [options]="chartOptions" height="300px"></p-chart>
+      </p-card>
+    </div>
+
+    <!-- Employee Details Table -->
+    <p-card header="Employee Performance Details" [style]="{'margin-top': '2rem'}">
+      <p-table [value]="detailedReports" [paginator]="true" [rows]="10" [tableStyle]="{'min-width': '50rem'}">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>Points</th>
+            <th>Completed</th>
+            <th>In Progress</th>
+            <th>Certificates</th>
+            <th>Avg Progress</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-employee>
+          <tr>
+            <td>{{ employee.name }}</td>
+            <td>{{ employee.email }}</td>
+            <td>{{ employee.department }}</td>
+            <td><strong>{{ employee.totalPoints }}</strong></td>
+            <td>{{ employee.completedCourses }}</td>
+            <td>{{ employee.inProgressCourses }}</td>
+            <td>{{ employee.certificates }}</td>
+            <td>
+              <div class="progress-bar-container">
+                <div class="progress-bar-fill" [style.width.%]="employee.avgProgress" 
+                     [ngClass]="getCompletionClass(employee.avgProgress)"></div>
+                <span class="progress-text">{{ employee.avgProgress | number:'1.0-0' }}%</span>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading reports...</p>
+  </div>
+</div>
+
+<!-- Export Modal -->
+<div *ngIf="showExportModal" class="modal-overlay" (click)="closeExportModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Export Report</h2>
+      <button class="close-btn" (click)="closeExportModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <p class="export-info">Select format to export report data</p>
+      <div class="export-options">
+        <button class="export-option-btn" (click)="exportData('excel')">
+          <span class="export-icon">📊</span>
+          <span class="export-label">Excel (CSV)</span>
+          <span class="export-desc">Spreadsheet format</span>
+        </button>
+        <button class="export-option-btn" (click)="exportData('json')">
+          <span class="export-icon">📋</span>
+          <span class="export-label">JSON</span>
+          <span class="export-desc">Structured data</span>
+        </button>
+        <button class="export-option-btn" (click)="exportData('pdf')">
+          <span class="export-icon">📑</span>
+          <span class="export-label">PDF</span>
+          <span class="export-desc">Document format</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

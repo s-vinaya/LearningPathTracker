@@ -1,0 +1,159 @@
+<app-sidebar></app-sidebar>
+<div class="manage-departments-container">
+  <div class="header">
+    <div>
+      <h1>Manage Departments</h1>
+      <p>Create, edit, and manage departments</p>
+    </div>
+    <button class="add-btn" (click)="openCreateModal()">+ Create Department</button>
+  </div>
+
+  <div *ngIf="loading" class="loading">Loading departments...</div>
+
+  <div *ngIf="!loading" class="departments-grid">
+    <div *ngFor="let dept of departments" class="department-card">
+      <div class="card-header">
+        <h3>{{ dept.name }}</h3>
+        <span class="status-badge" [class.active]="dept.isActive">
+          {{ dept.isActive ? 'Active' : 'Inactive' }}
+        </span>
+      </div>
+      <p class="description">{{ dept.description }}</p>
+      <div class="card-info">
+        <div class="info-item">
+          <span class="label">Manager:</span>
+          <span class="value">{{ dept.managerName || 'Not assigned' }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Employees:</span>
+          <span class="value">{{ dept.employeeCount }}</span>
+        </div>
+      </div>
+      <div class="card-actions">
+        <button class="btn-edit" (click)="openEditModal(dept)">Edit</button>
+        <button class="btn-assign" (click)="openAssignModal(dept)">Assign Employee</button>
+        <button class="btn-view" (click)="openManageEmployeesModal(dept)">Manage Employees</button>
+        <button class="btn-delete" (click)="deleteDepartment(dept.id)">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Create Department Modal -->
+<div *ngIf="showCreateModal" class="modal-overlay" (click)="closeModals()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Create Department</h2>
+      <button class="close-btn" (click)="closeModals()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Department Name *</label>
+        <input type="text" [(ngModel)]="departmentForm.name" placeholder="Enter department name">
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea [(ngModel)]="departmentForm.description" rows="3" placeholder="Enter description"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Assign Manager</label>
+        <select [(ngModel)]="departmentForm.managerId">
+          <option [value]="null">Select Manager</option>
+          <option *ngFor="let manager of managers" [value]="manager.id">{{ manager.name }}</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="closeModals()">Cancel</button>
+      <button class="btn-save" (click)="createDepartment()">Create</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Department Modal -->
+<div *ngIf="showEditModal" class="modal-overlay" (click)="closeModals()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Edit Department</h2>
+      <button class="close-btn" (click)="closeModals()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Department Name *</label>
+        <input type="text" [(ngModel)]="departmentForm.name" placeholder="Enter department name">
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea [(ngModel)]="departmentForm.description" rows="3" placeholder="Enter description"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Assign Manager</label>
+        <select [(ngModel)]="departmentForm.managerId">
+          <option [value]="null">Select Manager</option>
+          <option *ngFor="let manager of managers" [value]="manager.id">{{ manager.name }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Status</label>
+        <select [(ngModel)]="departmentForm.isActive">
+          <option [value]="true">Active</option>
+          <option [value]="false">Inactive</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="closeModals()">Cancel</button>
+      <button class="btn-save" (click)="updateDepartment()">Update</button>
+    </div>
+  </div>
+</div>
+
+<!-- Assign Employee Modal -->
+<div *ngIf="showAssignModal" class="modal-overlay" (click)="closeModals()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Assign Employee to {{ selectedDepartment?.name }}</h2>
+      <button class="close-btn" (click)="closeModals()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Select Employee</label>
+        <select [(ngModel)]="assignForm.userId">
+          <option [value]="null">Select Employee</option>
+          <option *ngFor="let user of unassignedUsers" [value]="user.id">{{ user.name }} ({{ user.email }})</option>
+        </select>
+        <p *ngIf="unassignedUsers.length === 0" class="info-text">No unassigned employees available</p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="closeModals()">Cancel</button>
+      <button class="btn-save" (click)="assignEmployee()">Assign</button>
+    </div>
+  </div>
+</div>
+
+<!-- Manage Employees Modal -->
+<div *ngIf="showManageEmployeesModal" class="modal-overlay" (click)="closeModals()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Manage Employees - {{ selectedDepartment?.name }}</h2>
+      <button class="close-btn" (click)="closeModals()">×</button>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="departmentEmployees.length === 0" class="no-employees">
+        No employees assigned to this department
+      </div>
+      <div *ngIf="departmentEmployees.length > 0" class="employees-list">
+        <div *ngFor="let emp of departmentEmployees" class="employee-item">
+          <div class="employee-info">
+            <div class="employee-name">{{ emp.name }}</div>
+            <div class="employee-email">{{ emp.email }}</div>
+          </div>
+          <div class="employee-actions">
+            <button class="btn-remove" (click)="removeEmployee(emp.id)">Remove</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

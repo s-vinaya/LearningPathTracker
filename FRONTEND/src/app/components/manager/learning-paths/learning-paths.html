@@ -1,0 +1,103 @@
+<div class="learning-paths-page">
+  <div class="page-header">
+    <h2>Assign Learning Paths</h2>
+    <div class="header-actions">
+      <button class="add-btn">
+        <mat-icon>add</mat-icon> Assign Learning Path
+      </button>
+      <button class="reminder-btn">
+        <mat-icon>notifications</mat-icon> Send Reminder
+      </button>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-section">
+    <div class="filter-group">
+      <label>Department</label>
+      <select class="filter-select">
+        <option>Engineering</option>
+        <option>Design</option>
+        <option>Marketing</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Team</label>
+      <select class="filter-select">
+        <option>Development Team</option>
+        <option>QA Team</option>
+        <option>DevOps Team</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Employee</label>
+      <select class="filter-select">
+        <option>All Team Members</option>
+        <option>John Doe</option>
+        <option>Jane Smith</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Learning Paths Grid -->
+  <div class="learning-paths-section">
+    <h3>Learning Paths</h3>
+    <div class="paths-grid">
+      <div class="path-card" *ngFor="let path of learningPaths" [class.selected]="path.title === 'React Development'">
+        <div class="path-header">
+          <h4>{{ path.title }}</h4>
+          <span class="path-level" [ngClass]="path.level.toLowerCase()">{{ path.level }}</span>
+        </div>
+        <p class="path-description">{{ path.description }}</p>
+        <div class="path-meta">
+          <span class="path-duration">{{ path.duration }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Schedule Section -->
+  <div class="schedule-section">
+    <h3>Schedule</h3>
+    <div class="schedule-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Start Date</label>
+          <input type="date" class="form-input" placeholder="dd-mm-yyyy">
+        </div>
+        <div class="form-group">
+          <label>Due Date</label>
+          <input type="date" class="form-input" placeholder="dd-mm-yyyy">
+        </div>
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox"> Repeat Weekly
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Assignment Summary -->
+  <div class="assignment-summary">
+    <h3>Assignment Summary</h3>
+    <div class="summary-stats">
+      <div class="summary-item">
+        <div class="summary-number blue">3</div>
+        <div class="summary-label">Assigned Team Members</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-number green">2</div>
+        <div class="summary-label">Chosen Learning Paths</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-number orange">12</div>
+        <div class="summary-label">Estimated Total Time (hours)</div>
+      </div>
+    </div>
+    <div class="summary-actions">
+      <button class="cancel-btn">Cancel</button>
+      <button class="assign-btn">Assign Learning Paths</button>
+    </div>
+  </div>
+</div>

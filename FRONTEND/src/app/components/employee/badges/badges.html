@@ -1,0 +1,53 @@
+<app-employee-sidebar></app-employee-sidebar>
+
+<div class="dashboard-container">
+  <div class="header">
+    <h1>Badges & Achievements</h1>
+    <p>Your learning milestones</p>
+  </div>
+
+  <div class="content">
+    <div *ngIf="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Loading...</p>
+    </div>
+
+    <div *ngIf="!loading">
+      <div class="streak-card">
+        <i class="fas fa-fire"></i>
+        <div>
+          <h2>{{streaks.current || 0}} Day Streak</h2>
+          <p>Longest: {{streaks.longest || 0}} days</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Badges</h2>
+        <div class="badges-grid">
+          <div *ngFor="let badge of badges" class="badge-card" [class.locked]="!badge.earned">
+            <div class="badge-icon">
+              <i [class]="badge.icon"></i>
+            </div>
+            <h3>{{badge.name}}</h3>
+            <p>{{badge.description}}</p>
+            <span *ngIf="badge.earned" class="earned-date">Earned {{badge.earnedDate | date:'shortDate'}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Achievements</h2>
+        <div class="achievements-list">
+          <div *ngFor="let achievement of achievements" class="achievement-card">
+            <i [class]="achievement.icon"></i>
+            <div class="achievement-info">
+              <h3>{{achievement.name}}</h3>
+              <p>{{achievement.description}}</p>
+              <span class="achievement-date">{{achievement.date | date:'medium'}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

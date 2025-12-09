@@ -1,0 +1,86 @@
+<app-employee-sidebar></app-employee-sidebar>
+
+<div class="dashboard-container">
+  <div class="header">
+    <h1>Learning Paths</h1>
+    <div class="tabs">
+      <button [class.active]="!showAvailable" (click)="showAvailable = false">My Paths</button>
+      <button [class.active]="showAvailable" (click)="showAvailable = true">Browse All</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div *ngIf="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Loading...</p>
+    </div>
+
+    <div *ngIf="!showAvailable">
+      <div *ngIf="!loading && learningPaths.length === 0" class="no-data">
+        <i class="fas fa-inbox"></i>
+        <p>No learning paths enrolled yet. Browse available paths to enroll.</p>
+      </div>
+
+      <div *ngIf="!loading && learningPaths.length > 0" class="paths-grid">
+        <div *ngFor="let path of learningPaths" class="path-card">
+          <div class="card-icon">
+            <i class="fas fa-graduation-cap"></i>
+          </div>
+          <h3 class="card-title">{{path.name}}</h3>
+          <span class="status-badge" [ngClass]="{
+            'status-completed': path.status === 'Completed',
+            'status-progress': path.status === 'In Progress',
+            'status-not-started': path.status === 'Not Started'
+          }">{{path.status}}</span>
+          <div class="card-stats">
+            <span><i class="fas fa-book"></i> {{path.courses ? path.courses.length : path.totalModules}} courses</span>
+          </div>
+          <div class="courses-list" *ngIf="path.courses && path.courses.length > 0">
+            <div *ngFor="let course of path.courses; let i = index" class="course-item">
+              <span class="course-number">{{i + 1}}</span>
+              <span class="course-title">{{course.title}}</span>
+            </div>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="path.progress"></div>
+            </div>
+            <span class="progress-text">{{path.progress}}%</span>
+          </div>
+          <button (click)="viewModules(path.id)" class="view-btn">
+            <i class="fas fa-arrow-right"></i> Continue Learning
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="showAvailable">
+      <div *ngIf="availablePaths.length === 0" class="no-data">
+        <i class="fas fa-inbox"></i>
+        <p>No learning paths available</p>
+      </div>
+
+      <div *ngIf="availablePaths.length > 0" class="paths-grid">
+        <div *ngFor="let path of availablePaths" class="path-card">
+          <div class="card-icon">
+            <i class="fas fa-graduation-cap"></i>
+          </div>
+          <h3 class="card-title">{{path.title}}</h3>
+          <span class="level-badge">{{path.level}}</span>
+          <div class="card-stats">
+            <span><i class="fas fa-book"></i> {{path.courses ? path.courses.length : 0}} courses</span>
+          </div>
+          <div class="courses-list" *ngIf="path.courses && path.courses.length > 0">
+            <div *ngFor="let course of path.courses; let i = index" class="course-item">
+              <span class="course-number">{{i + 1}}</span>
+              <span class="course-title">{{course.title}}</span>
+            </div>
+          </div>
+          <button (click)="enrollInPath(path.id)" class="enroll-btn">
+            <i class="fas fa-plus"></i> Enroll Now
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

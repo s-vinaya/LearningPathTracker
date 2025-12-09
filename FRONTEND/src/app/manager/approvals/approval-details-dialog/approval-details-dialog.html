@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>Approval Request Details</h2>
+
+<mat-dialog-content>
+  <div class="detail-section">
+    <h3>Employee Information</h3>
+    <p><strong>Name:</strong> {{ data.approval.employeeName }}</p>
+    <p><strong>Request Type:</strong> {{ data.approval.type }}</p>
+    <p><strong>Created:</strong> {{ data.approval.createdAt | date:'medium' }}</p>
+  </div>
+
+  <div class="detail-section">
+    <h3>Request Details</h3>
+    <pre class="payload-json">{{ payloadJson | json }}</pre>
+  </div>
+
+  <div class="detail-section">
+    <h3>Manager Comments</h3>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Add your comments</mat-label>
+      <textarea matInput [(ngModel)]="reviewerComments" rows="4" placeholder="Enter your review comments..."></textarea>
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Cancel</button>
+  <button mat-raised-button color="warn" (click)="reject()">Reject</button>
+  <button mat-raised-button color="primary" (click)="approve()">Approve</button>
+</mat-dialog-actions>

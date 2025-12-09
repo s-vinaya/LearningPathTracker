@@ -1,0 +1,38 @@
+<app-employee-sidebar></app-employee-sidebar>
+
+<div class="dashboard-container">
+  <div class="header">
+    <h1>My Notes</h1>
+  </div>
+
+  <div class="content">
+    <div class="note-editor">
+      <textarea [(ngModel)]="newNote" placeholder="Write your note here..." rows="4"></textarea>
+      <button (click)="saveNote()" [disabled]="!newNote.trim()" class="save-btn">
+        <i class="fas fa-save"></i> Save Note
+      </button>
+    </div>
+
+    <div *ngIf="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Loading notes...</p>
+    </div>
+
+    <div *ngIf="!loading && notes.length === 0" class="no-data">
+      <i class="fas fa-sticky-note"></i>
+      <p>No notes yet. Start taking notes!</p>
+    </div>
+
+    <div *ngIf="!loading && notes.length > 0" class="notes-list">
+      <div *ngFor="let note of notes" class="note-card">
+        <div class="note-header">
+          <span class="note-date">{{note.createdAt | date:'short'}}</span>
+          <button (click)="deleteNote(note.id)" class="delete-btn">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+        <p class="note-content">{{note.content}}</p>
+      </div>
+    </div>
+  </div>
+</div>

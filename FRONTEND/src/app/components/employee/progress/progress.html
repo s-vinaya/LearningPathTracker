@@ -1,0 +1,55 @@
+<app-employee-sidebar></app-employee-sidebar>
+
+<div class="dashboard-container">
+  <div class="header">
+    <h1>My Progress</h1>
+    <p>Track your learning journey</p>
+  </div>
+
+  <div class="content">
+    <div *ngIf="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Loading progress...</p>
+    </div>
+
+    <div *ngIf="!loading">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <i class="fas fa-book"></i>
+          <div>
+            <h3>{{progress.totalModules || 0}}</h3>
+            <p>Total Modules</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-check-circle"></i>
+          <div>
+            <h3>{{progress.completedModules || 0}}</h3>
+            <p>Completed</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-clock"></i>
+          <div>
+            <h3>{{progress.totalHours || 0}} mins</h3>
+            <p>Total Minutes</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="paths-progress">
+        <h2>Learning Paths Progress</h2>
+        <div *ngFor="let path of progress.paths" class="path-progress-card">
+          <div class="path-info">
+            <h3>{{path.name}}</h3>
+            <p>{{path.completedModules}} / {{path.totalModules}} modules completed</p>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="path.progress"></div>
+          </div>
+          <span class="progress-percent">{{path.progress}}%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

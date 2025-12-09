@@ -1,0 +1,42 @@
+<app-employee-sidebar></app-employee-sidebar>
+
+<div class="dashboard-container">
+  <div class="header">
+    <h1>My Certificates</h1>
+    <p>Your earned certificates</p>
+  </div>
+
+  <div class="content">
+    <div *ngIf="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Loading certificates...</p>
+    </div>
+
+    <div *ngIf="!loading && certificates.length === 0" class="no-data">
+      <i class="fas fa-certificate"></i>
+      <p>No certificates earned yet</p>
+    </div>
+
+    <div *ngIf="!loading && certificates.length > 0" class="certificates-grid">
+      <div *ngFor="let cert of certificates" class="certificate-card">
+        <div class="certificate-preview" *ngIf="getCertificatePreview(cert.id)">
+          <iframe [src]="getCertificatePreview(cert.id)" width="100%" height="300px" frameborder="0" scrolling="no"></iframe>
+        </div>
+        <div class="certificate-info">
+          <h3>{{cert.certificateType === 'LearningPath' ? cert.learningPathName : cert.courseName}}</h3>
+          <p class="cert-employee">{{cert.employeeName}}</p>
+          <p class="cert-score">Score: {{cert.averageScore}}%</p>
+          <p class="cert-date">Issued: {{cert.issuedAt | date:'mediumDate'}}</p>
+          <div class="cert-actions">
+            <button (click)="openCertificate(cert.id)" class="open-btn">
+              <i class="fas fa-external-link-alt"></i> Open
+            </button>
+            <button (click)="downloadCertificate(cert.id, cert.employeeName)" class="download-btn">
+              <i class="fas fa-download"></i> Download
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

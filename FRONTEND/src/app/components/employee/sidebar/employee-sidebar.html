@@ -1,0 +1,70 @@
+<div class="sidebar-overlay" *ngIf="sidebarOpen" (click)="closeSidebar()"></div>
+
+<button class="menu-toggle" (click)="toggleSidebar()">
+  <mat-icon>{{ sidebarOpen ? 'close' : 'menu' }}</mat-icon>
+</button>
+
+<div class="sidebar" [class.open]="sidebarOpen">
+  <div class="logo">
+    <div class="logo-icon"><mat-icon>school</mat-icon></div>
+    <div class="logo-text">
+      <h2>{{ platformName }}</h2>
+      <p>Employee Portal</p>
+    </div>
+  </div>
+
+  <nav class="nav-menu">
+    <a routerLink="/employee/dashboard" routerLinkActive="active" class="nav-item" (click)="closeSidebar()">
+      <mat-icon class="icon">dashboard</mat-icon>
+      <span>Dashboard</span>
+    </a>
+    <a routerLink="/employee/courses" routerLinkActive="active" class="nav-item" (click)="closeSidebar()">
+      <mat-icon class="icon">menu_book</mat-icon>
+      <span>Browse Courses</span>
+    </a>
+    <a routerLink="/employee/learning-paths" routerLinkActive="active" class="nav-item" (click)="closeSidebar()">
+      <mat-icon class="icon">route</mat-icon>
+      <span>Learning Paths</span>
+    </a>
+    <a routerLink="/employee/progress" routerLinkActive="active" class="nav-item" (click)="closeSidebar()">
+      <mat-icon class="icon">trending_up</mat-icon>
+      <span>My Progress</span>
+    </a>
+    <a routerLink="/employee/certificates" routerLinkActive="active" class="nav-item" (click)="closeSidebar()">
+      <mat-icon class="icon">workspace_premium</mat-icon>
+      <span>Certificates</span>
+    </a>
+    <a routerLink="/employee/weekly-hours" routerLinkActive="active" class="nav-item" (click)="closeSidebar()">
+      <mat-icon class="icon">schedule</mat-icon>
+      <span>Weekly Hours</span>
+    </a>
+    <a routerLink="/employee/course-request" routerLinkActive="active" class="nav-item" (click)="closeSidebar()">
+      <mat-icon class="icon">request_page</mat-icon>
+      <span>Request Course</span>
+    </a>
+  </nav>
+
+  <div class="user-profile-wrapper">
+    <div class="user-profile" (click)="toggleDropdown()">
+      <div class="avatar">
+        <img *ngIf="userImage" [src]="userImage" alt="Profile">
+        <span *ngIf="!userImage" class="initial">{{ userName.charAt(0).toUpperCase() }}</span>
+      </div>
+      <div class="user-info">
+        <p class="name">{{ userName }}</p>
+        <p class="email">{{ userEmail }}</p>
+      </div>
+      <mat-icon class="dropdown-arrow">{{ showDropdown ? 'expand_less' : 'expand_more' }}</mat-icon>
+    </div>
+    <div class="dropdown-menu" *ngIf="showDropdown">
+      <a routerLink="/employee/profile" class="dropdown-item" (click)="closeSidebar()">
+        <mat-icon class="icon">person</mat-icon>
+        <span>Profile</span>
+      </a>
+      <a class="dropdown-item" (click)="logout()">
+        <mat-icon class="icon">logout</mat-icon>
+        <span>Logout</span>
+      </a>
+    </div>
+  </div>
+</div>

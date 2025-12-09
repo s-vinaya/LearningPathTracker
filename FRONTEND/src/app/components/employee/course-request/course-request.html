@@ -1,0 +1,73 @@
+<app-employee-sidebar></app-employee-sidebar>
+
+<div class="request-container">
+  <div class="header">
+    <h1>Course Requests</h1>
+    <button class="btn-primary" (click)="openRequestModal()">
+      <i class="fas fa-plus"></i> Request New Course
+    </button>
+  </div>
+
+  <div class="requests-section">
+    <h2>My Requests</h2>
+    <div *ngIf="myRequests.length === 0" class="empty-state">
+      <i class="fas fa-inbox"></i>
+      <p>No course requests yet</p>
+    </div>
+
+    <div class="requests-grid" *ngIf="myRequests.length > 0">
+      <div *ngFor="let request of myRequests" class="request-card">
+        <div class="request-header">
+          <h3>{{ getCourseNameFromDetails(request.requestDetails) }}</h3>
+          <span class="status-badge" [ngClass]="getStatusClass(request.status)">
+            {{ request.status }}
+          </span>
+        </div>
+        <div class="request-body">
+          <p><strong>Reason:</strong> {{ getReasonFromDetails(request.requestDetails) }}</p>
+          <p><strong>Manager:</strong> {{ request.managerName }}</p>
+          <p><strong>Requested:</strong> {{ request.createdAt | date:'medium' }}</p>
+          <p *ngIf="request.reviewedAt"><strong>Reviewed:</strong> {{ request.reviewedAt | date:'medium' }}</p>
+          <p *ngIf="request.reviewerComments" class="comments">
+            <strong>Manager Comments:</strong> {{ request.reviewerComments }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Request Modal -->
+<div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Request Course Access</h2>
+      <button class="close-btn" (click)="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Course Name</label>
+        <input 
+          type="text" 
+          [(ngModel)]="courseName" 
+          class="form-control" 
+          placeholder="Enter the course name you want to request...">
+      </div>
+      <div class="form-group">
+        <label>Reason for Request</label>
+        <textarea 
+          [(ngModel)]="reason" 
+          class="form-control" 
+          rows="4" 
+          placeholder="Explain why you need access to this course...">
+        </textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="closeModal()">Cancel</button>
+      <button class="btn-primary" (click)="submitRequest()" [disabled]="loading">
+        {{ loading ? 'Submitting...' : 'Submit Request' }}
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+<div class="sidebar-overlay" *ngIf="sidebarOpen" (click)="closeSidebar()"></div>
+
+<button class="menu-toggle" (click)="toggleSidebar()">
+  <mat-icon>{{ sidebarOpen ? 'close' : 'menu' }}</mat-icon>
+</button>
+
+<div class="sidebar" [class.open]="sidebarOpen">
+  <div class="logo">
+    <div class="logo-icon"><mat-icon>school</mat-icon></div>
+    <div class="logo-text">
+      <h2>{{ platformName }}</h2>
+      <p>Manager Panel</p>
+    </div>
+  </div>
+
+  <nav class="nav-menu">
+    <a routerLink="/manager/dashboard" routerLinkActive="active" class="nav-item" (click)="closeSidebar()">
+      <mat-icon class="icon">dashboard</mat-icon>
+      <span>Dashboard</span>
+    </a>
+    <a routerLink="/manager/team" routerLinkActive="active" class="nav-item" (click)="closeSidebar()">
+      <mat-icon class="icon">groups</mat-icon>
+      <span>Team Management</span>
+    </a>
+    <a routerLink="/manager/learning-paths" routerLinkActive="active" class="nav-item" (click)="closeSidebar()">
+      <mat-icon class="icon">route</mat-icon>
+      <span>Learning Paths</span>
+    </a>
+    <a routerLink="/manager/reports" routerLinkActive="active" class="nav-item" (click)="closeSidebar()">
+      <mat-icon class="icon">assessment</mat-icon>
+      <span>Reports</span>
+    </a>
+    <a routerLink="/manager/approvals" routerLinkActive="active" class="nav-item" (click)="closeSidebar()">
+      <mat-icon class="icon">check_circle</mat-icon>
+      <span>Approvals</span>
+    </a>
+  </nav>
+
+  <div class="user-profile-wrapper">
+    <div class="user-profile" (click)="toggleDropdown()">
+      <div class="avatar">
+        <img *ngIf="profileImage" [src]="profileImage" alt="Profile">
+        <mat-icon *ngIf="!profileImage">account_circle</mat-icon>
+      </div>
+      <div class="user-info">
+        <p class="name">{{ userName }}</p>
+        <p class="email">{{ userEmail }}</p>
+      </div>
+      <mat-icon class="dropdown-arrow">{{ showDropdown ? 'expand_less' : 'expand_more' }}</mat-icon>
+    </div>
+    <div class="dropdown-menu" *ngIf="showDropdown">
+      <a class="dropdown-item" routerLink="/manager/profile" (click)="closeSidebar()">
+        <mat-icon class="icon">person</mat-icon>
+        <span>Profile</span>
+      </a>
+      <a class="dropdown-item" (click)="logout()">
+        <mat-icon class="icon">logout</mat-icon>
+        <span>Logout</span>
+      </a>
+    </div>
+  </div>
+</div>

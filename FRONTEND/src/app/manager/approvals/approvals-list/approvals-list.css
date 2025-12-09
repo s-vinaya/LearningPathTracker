@@ -1,0 +1,114 @@
+.approvals-container {
+  padding: 2rem;
+  margin-left: 280px;
+  min-height: 100vh;
+  background: #f8f9fa;
+}
+
+@media (max-width: 1200px) {
+  .approvals-container {
+    margin-left: 0;
+  }
+}
+
+.header-card {
+  margin-bottom: 1.5rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.header-card mat-card-header {
+  padding: 1.5rem;
+}
+
+.header-card mat-card-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.header-card mat-card-subtitle {
+  font-size: 1rem;
+  color: #6b7280;
+}
+
+.table-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  padding: 4rem;
+}
+
+.no-data {
+  text-align: center;
+  padding: 4rem;
+  color: #9ca3af;
+  font-size: 1.125rem;
+}
+
+table {
+  width: 100%;
+}
+
+th.mat-header-cell {
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+td.mat-cell {
+  color: #4b5563;
+  font-size: 0.95rem;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+}
+
+.filter-buttons button {
+  text-transform: none;
+  font-weight: 500;
+}
+
+.status-pending {
+  background-color: #fef3c7;
+  color: #d97706;
+  font-weight: 500;
+  border-radius: 16px;
+  padding: 4px 12px;
+}
+
+.status-approved {
+  background-color: #d1fae5;
+  color: #059669;
+  font-weight: 500;
+  border-radius: 16px;
+  padding: 4px 12px;
+}
+
+.status-rejected {
+  background-color: #fee2e2;
+  color: #dc2626;
+  font-weight: 500;
+  border-radius: 16px;
+  padding: 4px 12px;
+}
+
+button {
+  margin-right: 0.5rem;
+  border-radius: 6px;
+  text-transform: none;
+  font-weight: 500;
+}

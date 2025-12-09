@@ -1,0 +1,78 @@
+<app-employee-sidebar></app-employee-sidebar>
+
+<div class="dashboard-container">
+  <div class="header">
+    <h1>Courses</h1>
+    <div class="tabs">
+      <button [class.active]="!showEnrolled" (click)="showEnrolled = false">Browse Courses</button>
+      <button [class.active]="showEnrolled" (click)="showEnrolled = true">My Enrolled Courses</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div *ngIf="!showEnrolled">
+      <div *ngIf="loading" class="loading">
+        <div class="spinner"></div>
+        <p>Loading courses...</p>
+      </div>
+
+      <div *ngIf="!loading && availableCourses.length === 0" class="no-data">
+        <i class="fas fa-inbox"></i>
+        <p>No courses available</p>
+      </div>
+
+      <div *ngIf="!loading && availableCourses.length > 0" class="courses-grid">
+        <div *ngFor="let course of availableCourses" class="course-card">
+          <div class="course-thumbnail" *ngIf="course.thumbnailUrl">
+            <img [src]="course.thumbnailUrl" [alt]="course.title">
+          </div>
+          <div class="course-content">
+            <h3>{{course.title}}</h3>
+            <p class="course-description">{{course.description}}</p>
+            <div class="course-meta">
+              <span><i class="fas fa-user"></i> {{course.instructor}}</span>
+              <span><i class="fas fa-clock"></i> {{course.durationHours}} mins</span>
+              <span><i class="fas fa-tag"></i> {{course.category}}</span>
+            </div>
+            <button (click)="enrollInCourse(course.id)" class="enroll-btn">
+              Enroll Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="showEnrolled">
+      <div *ngIf="errorMessage" class="error-message">
+        <i class="fas fa-exclamation-circle"></i>
+        <p>{{errorMessage}}</p>
+      </div>
+      
+      <div *ngIf="!errorMessage && enrolledCourses.length === 0" class="no-data">
+        <i class="fas fa-inbox"></i>
+        <p>No enrolled courses yet</p>
+      </div>
+
+      <div *ngIf="enrolledCourses.length > 0" class="courses-grid">
+        <div *ngFor="let course of enrolledCourses" class="course-card" (click)="viewCourse(course.id)">
+          <div class="course-thumbnail" *ngIf="course.thumbnailUrl">
+            <img [src]="course.thumbnailUrl" [alt]="course.title">
+          </div>
+          <div class="course-content">
+            <h3>{{course.title}}</h3>
+            <p class="course-description">{{course.description}}</p>
+            <div class="course-meta">
+              <span><i class="fas fa-user"></i> {{course.instructor}}</span>
+              <span><i class="fas fa-clock"></i> {{course.durationHours}} mins</span>
+              <span><i class="fas fa-tag"></i> {{course.category}}</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="course.progress"></div>
+            </div>
+            <p class="progress-text">{{course.progress}}% complete</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

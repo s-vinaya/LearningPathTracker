@@ -1,0 +1,130 @@
+<div class="landing-container">
+  <nav class="navbar">
+    <div class="nav-content">
+      <div class="logo">
+        <mat-icon class="logo-icon">school</mat-icon>
+        <span class="logo-text">Learn Track</span>
+      </div>
+      <div class="nav-actions">
+        <button mat-button class="nav-btn" (click)="navigateToLogin()">Sign In</button>
+        <button mat-raised-button color="primary" class="cta-btn" (click)="navigateToRegister()">Get Started</button>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Transform Your Career with <span class="gradient-text">Expert Learning</span></h1>
+      <p class="hero-subtitle">Unlock your potential with world-class courses, personalized learning paths, and industry-recognized certifications</p>
+      <div class="hero-actions">
+        <button mat-raised-button color="primary" class="hero-btn primary" (click)="navigateToRegister()">
+          Start Learning Free
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+        <button mat-stroked-button class="hero-btn secondary" (click)="scrollToVerify()">
+          <mat-icon>verified</mat-icon>
+          Verify Certificate
+        </button>
+      </div>
+      <div class="trust-badges">
+        <span class="badge">✓ No Credit Card Required</span>
+        <span class="badge">✓ Industry Recognized</span>
+        <span class="badge">✓ 24/7 Support</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="stats-grid">
+      <div class="stat-item" *ngFor="let stat of stats">
+        <h3 class="stat-value">{{stat.value}}</h3>
+        <p class="stat-label">{{stat.label}}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="section-header">
+      <h2 class="section-title">Why Choose Learn Track?</h2>
+      <p class="section-subtitle">Everything you need to accelerate your learning journey</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card" *ngFor="let feature of features">
+        <div class="feature-icon">
+          <mat-icon>{{feature.icon}}</mat-icon>
+        </div>
+        <h3 class="feature-title">{{feature.title}}</h3>
+        <p class="feature-desc">{{feature.desc}}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="verify-section" id="verify">
+    <div class="verify-container">
+      <div class="verify-header">
+        <mat-icon class="verify-icon">verified_user</mat-icon>
+        <h2 class="verify-title">Verify Certificate</h2>
+        <p class="verify-subtitle">Enter certificate ID to verify authenticity</p>
+      </div>
+      <div class="verify-form">
+        <input type="text" [(ngModel)]="certificateId" placeholder="Enter Certificate ID" class="verify-input">
+        <button mat-raised-button color="primary" (click)="verifyCertificate()" [disabled]="verifying" class="verify-btn">
+          <mat-icon *ngIf="!verifying">search</mat-icon>
+          <span *ngIf="verifying">Verifying...</span>
+          <span *ngIf="!verifying">Verify</span>
+        </button>
+      </div>
+      <div *ngIf="certificateData" class="certificate-result">
+        <div class="result-card">
+          <div class="result-header">
+            <mat-icon class="success-icon">check_circle</mat-icon>
+            <h3>Certificate Verified</h3>
+          </div>
+          <div class="result-details">
+            <div class="detail-row">
+              <span class="detail-label">Name:</span>
+              <span class="detail-value">{{certificateData.employeeName}}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Course:</span>
+              <span class="detail-value">{{certificateData.courseName || certificateData.learningPathName}}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Issued Date:</span>
+              <span class="detail-value">{{certificateData.issuedAt | date:'mediumDate'}}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Certificate ID:</span>
+              <span class="detail-value">{{certificateData.certificateId}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="verifyError" class="error-message">
+        <mat-icon>error</mat-icon>
+        <span>{{verifyError}}</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="cta-content">
+      <h2 class="cta-title">Ready to Start Your Learning Journey?</h2>
+      <p class="cta-subtitle">Join thousands of professionals advancing their careers</p>
+      <button mat-raised-button color="primary" class="cta-large-btn" (click)="navigateToRegister()">
+        Create Free Account
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <mat-icon class="footer-logo">school</mat-icon>
+        <span>Learn Track</span>
+      </div>
+      <p class="footer-text">© 2025 Learn Track. Empowering learners worldwide.</p>
+    </div>
+  </footer>
+</div>

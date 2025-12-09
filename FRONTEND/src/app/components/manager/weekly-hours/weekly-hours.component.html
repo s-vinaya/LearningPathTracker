@@ -1,0 +1,119 @@
+<div class="dashboard-container">
+  <div class="header">
+    <div class="welcome">
+      <h1>Weekly Hours Tracking</h1>
+      <p>Track and manage weekly learning hours for your team.</p>
+    </div>
+    <div class="header-actions">
+      <select class="time-filter" [(ngModel)]="selectedTimeFilter">
+        <option value="This Week">This Week</option>
+        <option value="Last Week">Last Week</option>
+        <option value="This Month">This Month</option>
+      </select>
+      <button class="export-btn">
+        <i class="fas fa-download"></i> Export
+      </button>
+    </div>
+  </div>
+  <div class="content">
+    <!-- Weekly Stats -->
+    <div class="stats-grid">
+      <div class="stat-card blue">
+        <div class="stat-icon">
+          <i class="fas fa-clock"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ weeklyStats.TotalHours || 0 }}</div>
+          <div class="stat-label">Total Hours</div>
+        </div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-icon">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ weeklyStats.AvgHours || 0 }}</div>
+          <div class="stat-label">Avg Hours/Person</div>
+        </div>
+      </div>
+      <div class="stat-card orange">
+        <div class="stat-icon">
+          <i class="fas fa-target"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ weeklyStats.TargetAchievement || 0 }}%</div>
+          <div class="stat-label">Target Achievement</div>
+        </div>
+      </div>
+      <div class="stat-card cyan">
+        <div class="stat-icon">
+          <i class="fas fa-trophy"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ weeklyStats.GoalsCompleted || 0 }}</div>
+          <div class="stat-label">Goals Completed</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weekly Chart -->
+    <div class="chart-container">
+      <div class="chart-header">
+        <i class="fas fa-chart-bar"></i>
+        <h3>Weekly Learning Hours Overview</h3>
+      </div>
+      <div class="chart-placeholder">
+        <i class="fas fa-chart-bar chart-icon"></i>
+        <p>Weekly Hours Chart</p>
+        <small>Hours spent on learning activities by day</small>
+      </div>
+    </div>
+
+    <!-- Individual Hours Breakdown -->
+    <div class="hours-breakdown">
+      <h3>Individual Hours Breakdown</h3>
+      <div *ngIf="loading" class="loading-container">
+        <div class="spinner"></div>
+        <p>Loading weekly hours...</p>
+      </div>
+      <div *ngIf="!loading && employeeHours.length === 0" class="no-data">
+        <p>No employee hours data available</p>
+      </div>
+      <div *ngIf="!loading && employeeHours.length > 0" class="table-container">
+        <table class="hours-table">
+          <thead>
+            <tr>
+              <th>Employee</th>
+              <th>Mon</th>
+              <th>Tue</th>
+              <th>Wed</th>
+              <th>Thu</th>
+              <th>Fri</th>
+              <th>Total</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let employee of employeeHours">
+              <td>
+                <div class="employee-info">
+                  <i class="fas fa-user-circle"></i>
+                  <span>{{ employee.name }}</span>
+                </div>
+              </td>
+              <td>{{ employee.mon }}</td>
+              <td>{{ employee.tue }}</td>
+              <td>{{ employee.wed }}</td>
+              <td>{{ employee.thu }}</td>
+              <td>{{ employee.fri }}</td>
+              <td class="total-hours">{{ employee.total }}</td>
+              <td>
+                <span class="status-badge" [ngClass]="employee.status.toLowerCase().replace(' ', '-')">{{ employee.status }}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

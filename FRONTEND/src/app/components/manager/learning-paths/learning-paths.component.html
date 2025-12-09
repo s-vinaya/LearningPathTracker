@@ -1,0 +1,105 @@
+<div class="dashboard-container">
+  <div class="header">
+    <div class="welcome">
+      <h1>Assign Learning Paths</h1>
+      <p>Assign and manage learning paths for your team.</p>
+    </div>
+  </div>
+  <div class="content">
+    <!-- Team Members Selection -->
+    <div class="team-selection-section">
+      <div class="section-header">
+        <h3>Select Team Members</h3>
+        <label class="checkbox-label">
+          <input type="checkbox" [checked]="selectAll" (change)="toggleSelectAll()"> Select All
+        </label>
+      </div>
+      <div class="members-grid">
+        <div class="member-card" *ngFor="let member of teamMembers" [class.selected]="member.selected" (click)="toggleEmployeeSelection(member)">
+          <input type="checkbox" [checked]="member.selected" (click)="$event.stopPropagation()">
+          <div class="member-info-card">
+            <span class="member-name">{{ member.name }}</span>
+            <div class="assigned-paths" *ngIf="member.assignedPaths && member.assignedPaths.length > 0">
+              <small>Assigned: </small>
+              <span class="path-badge" *ngFor="let path of member.assignedPaths">
+                {{ path.learningPathTitle }}
+                <button class="unassign-btn" (click)="unassignPath($event, member, path)" title="Remove assignment">×</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Learning Paths Section -->
+    <div class="learning-paths-section">
+      <h3>Select Learning Paths</h3>
+      <div class="paths-grid">
+        <div class="path-card" *ngFor="let path of learningPaths" [class.selected]="path.selected" [class.disabled]="path.disabled" (click)="togglePathSelection(path)">
+          <div class="path-header">
+            <h4>{{ path.title }}</h4>
+            <div>
+              <span class="path-level" [ngClass]="path.level?.toLowerCase() || 'beginner'">{{ path.level || 'Beginner' }}</span>
+              <span class="already-assigned" *ngIf="path.disabled">Already Assigned</span>
+            </div>
+          </div>
+          <p class="path-description">{{ path.description }}</p>
+          <div class="path-courses" *ngIf="path.courses && path.courses.length > 0">
+            <h5>Courses ({{ path.courses.length }}):</h5>
+            <ul>
+              <li *ngFor="let course of path.courses">
+                <strong>{{ course.title }}</strong>
+                <span class="course-duration" *ngIf="course.duration"> - {{ course.duration }}</span>
+              </li>
+            </ul>
+          </div>
+          <div class="path-meta">
+            <span class="path-duration"><i class="fas fa-clock"></i> {{ path.duration }}</span>
+            <span class="path-courses-count"><i class="fas fa-book"></i> {{ path.courseCount }} courses</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Schedule & Notes Section -->
+    <div class="schedule-section">
+      <h3>Schedule & Notes</h3>
+      <div class="schedule-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Due Date</label>
+            <input type="date" class="form-input" [(ngModel)]="dueDate">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Manager Notes / Goals</label>
+          <textarea class="form-textarea" [(ngModel)]="managerNotes" placeholder="Add notes or goals for this assignment..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Assignment Summary -->
+    <div class="assignment-summary">
+      <h3>Assignment Summary</h3>
+      <div class="summary-stats">
+        <div class="summary-item">
+          <div class="summary-number blue">{{ selectedEmployees.length }}</div>
+          <div class="summary-label">Selected Team Members</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-number green">{{ selectedPathsCount }}</div>
+          <div class="summary-label">Chosen Learning Paths</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-number orange">{{ totalEstimatedHours.toFixed(1) }}</div>
+          <div class="summary-label">Estimated Total Time (hours)</div>
+        </div>
+      </div>
+      <div class="summary-actions">
+        <button class="cancel-btn" (click)="resetForm()">Cancel</button>
+        <button class="assign-btn" (click)="assignLearningPaths()">Assign to Selected</button>
+        <button class="bulk-assign-btn" (click)="bulkAssignToAll()">Assign to All Team</button>
+      </div>
+    </div>
+  </div>
+</div>

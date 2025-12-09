@@ -1,0 +1,215 @@
+<app-sidebar></app-sidebar>
+<div class="courses-container">
+  <div class="header">
+    <div>
+      <h1>Manage Courses</h1>
+      <p>Create, edit, and organize your learning courses</p>
+    </div>
+    <div class="header-actions">
+      <button class="bulk-btn" (click)="openBulkUploadModal()"><mat-icon>upload</mat-icon> Bulk Upload</button>
+      <button class="add-btn" (click)="openModal()">+ Add New Course</button>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-info">
+        <h3>Total Courses</h3>
+        <p class="stat-number">{{ totalCourses }}</p>
+      </div>
+      <div class="stat-icon blue"><mat-icon>menu_book</mat-icon></div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-info">
+        <h3>Active Courses</h3>
+        <p class="stat-number green">{{ activeCourses }}</p>
+      </div>
+      <div class="stat-icon green"><mat-icon>play_circle</mat-icon></div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-info">
+        <h3>Draft Courses</h3>
+        <p class="stat-number orange">{{ draftCourses }}</p>
+      </div>
+      <div class="stat-icon orange"><mat-icon>edit_note</mat-icon></div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-info">
+        <h3>Enrollments</h3>
+        <p class="stat-number purple">{{ totalEnrollments }}</p>
+      </div>
+      <div class="stat-icon purple"><mat-icon>groups</mat-icon></div>
+    </div>
+  </div>
+
+  <div class="filters">
+    <div class="search-box">
+      <span class="search-icon"><mat-icon>search</mat-icon></span>
+      <input type="text" placeholder="Search courses..." [(ngModel)]="searchTerm" (input)="filterCourses()">
+    </div>
+    <select [(ngModel)]="selectedStatus" (change)="filterCourses()">
+      <option value="all">All Status</option>
+      <option value="active">Active</option>
+      <option value="draft">Draft</option>
+    </select>
+    <select [(ngModel)]="selectedCategory" (change)="filterCourses()">
+      <option value="all">All Categories</option>
+      <option value="programming">Programming</option>
+      <option value="design">Design</option>
+      <option value="marketing">Marketing</option>
+    </select>
+    <button class="clear-btn">Clear Filters</button>
+  </div>
+
+  <div class="courses-grid">
+    <div *ngIf="loading" class="loading">Loading...</div>
+    <div *ngIf="!loading && filteredCourses.length === 0" class="no-data">No courses found</div>
+    
+    <div *ngFor="let course of filteredCourses; let i = index" class="course-card" (click)="playVideo(course.youTubeVideoId)">
+      <div class="course-image" [style.background-image]="'url(' + (course.thumbnailUrl || getCourseImage(i)) + ')'">
+        <span class="status-badge" [class.active]="course.isActive">{{ course.isActive ? 'Active' : 'Draft' }}</span>
+      </div>
+      <div class="course-content">
+        <div class="course-category">{{ course.category || 'Uncategorized' }}</div>
+        <div class="course-duration">{{ formatDuration(course.durationHours) }}</div>
+        <h3>{{ course.title }}</h3>
+        <p>{{ course.description }}</p>
+        <div class="course-footer">
+          <div class="course-meta">
+            <span><mat-icon>person</mat-icon> {{ course.instructor }}</span>
+            <span><mat-icon>people</mat-icon> {{ course.enrollmentCount || 0 }} enrolled</span>
+          </div>
+          <div class="course-actions">
+            <button class="action-btn edit-btn" (click)="$event.stopPropagation(); editCourse(course)">Edit</button>
+            <button class="action-btn delete-btn" (click)="$event.stopPropagation(); deleteCourse(course.id)">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Video Player Modal -->
+  <div class="modal-overlay" *ngIf="showVideoModal" (click)="closeVideoModal()">
+    <div class="modal-content video-modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Course Video</h2>
+        <button class="close-btn" (click)="closeVideoModal()"><mat-icon>close</mat-icon></button>
+      </div>
+      <div class="modal-body">
+        <iframe 
+          [src]="'https://www.youtube.com/embed/' + currentVideoId + '?autoplay=1' | safe" 
+          width="100%" 
+          height="500" 
+          frameborder="0" 
+          allow="autoplay; encrypted-media" 
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Course Modal -->
+  <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ editingCourse ? 'Edit Course' : 'Add New Course' }}</h2>
+        <button class="close-btn" (click)="closeModal()"><mat-icon>close</mat-icon></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>YouTube URL</label>
+          <div class="input-with-button">
+            <input type="text" [(ngModel)]="newCourse.youTubeUrl" (paste)="onYouTubePaste($event)" placeholder="Paste YouTube video URL">
+            <button type="button" class="fetch-btn" (click)="fetchYouTubeData()" [disabled]="!newCourse.youTubeUrl || fetchingYouTube">Fetch</button>
+          </div>
+          <span class="hint" *ngIf="fetchingYouTube"><mat-icon>hourglass_empty</mat-icon> Fetching video details...</span>
+        </div>
+        <div class="form-group">
+          <label>Title *</label>
+          <input type="text" [(ngModel)]="newCourse.title" placeholder="Course title" required>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea [(ngModel)]="newCourse.description" rows="4" placeholder="Course description"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Instructor *</label>
+            <input type="text" [(ngModel)]="newCourse.instructor" placeholder="Instructor name" required>
+          </div>
+          <div class="form-group">
+            <label>Duration (minutes)</label>
+            <input type="number" [(ngModel)]="newCourse.durationHours" placeholder="0">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Category *</label>
+          <select [(ngModel)]="newCourse.category" required>
+            <option value="">Select category</option>
+            <option value="programming">Programming</option>
+            <option value="design">Design</option>
+            <option value="marketing">Marketing</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" [(ngModel)]="newCourse.isActive">
+            <span>Active</span>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="cancel-btn" (click)="closeModal()">Cancel</button>
+        <button class="save-btn" (click)="saveCourse()">{{ editingCourse ? 'Update' : 'Save' }} Course</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bulk Upload Modal -->
+  <div class="modal-overlay" *ngIf="showBulkUploadModal" (click)="closeBulkUploadModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Bulk Upload Courses</h2>
+        <button class="close-btn" (click)="closeBulkUploadModal()"><mat-icon>close</mat-icon></button>
+      </div>
+      <div class="modal-body">
+        <div class="upload-info">
+          <p>Upload a .txt file with one YouTube URL per line</p>
+          <p class="hint">Videos already in the system will be skipped automatically</p>
+        </div>
+        <div class="file-upload">
+          <input type="file" accept=".txt" (change)="onFileSelected($event)" id="fileInput">
+          <label for="fileInput" class="file-label">Choose File</label>
+        </div>
+        <div *ngIf="fetchingBulk" class="fetching-status">
+          <p><mat-icon>hourglass_empty</mat-icon> Fetching video details...</p>
+        </div>
+        <div *ngIf="pendingVideos.length > 0" class="pending-videos">
+          <h3>Pending Videos ({{ pendingVideos.length }})</h3>
+          <div *ngFor="let video of pendingVideos; let i = index" class="pending-video-item">
+            <img [src]="video.thumbnailUrl" alt="thumbnail">
+            <div class="video-details">
+              <input type="text" [(ngModel)]="video.title" placeholder="Title">
+              <input type="text" [(ngModel)]="video.instructor" placeholder="Instructor">
+              <select [(ngModel)]="video.category">
+                <option value="">Select category</option>
+                <option value="programming">Programming</option>
+                <option value="design">Design</option>
+                <option value="marketing">Marketing</option>
+              </select>
+            </div>
+            <button class="remove-btn" (click)="removePendingVideo(i)"><mat-icon>close</mat-icon></button>
+          </div>
+          <button class="upload-all-btn" (click)="uploadBulkCourses()">Upload All</button>
+        </div>
+        <div *ngIf="bulkUploadResult" class="upload-result">
+          <h3><mat-icon>check_circle</mat-icon> Upload Complete!</h3>
+          <p>Successfully Added: {{ bulkUploadResult.successCount }} courses</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

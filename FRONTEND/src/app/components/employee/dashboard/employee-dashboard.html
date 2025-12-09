@@ -1,0 +1,138 @@
+<app-employee-sidebar></app-employee-sidebar>
+
+<div class="dashboard-container">
+  <div class="header">
+    <div class="welcome">
+      <h1>Welcome Back!</h1>
+      <p>Continue your learning journey</p>
+    </div>
+  </div>
+
+  <div class="content" *ngIf="!loading">
+    
+    <!-- Circular Progress Section -->
+    <div class="circular-progress-section">
+      <div class="progress-card">
+        <h3>Overall Progress</h3>
+        <div class="circular-progress-container">
+          <svg class="circular-progress" viewBox="0 0 160 160">
+            <circle class="progress-bg" cx="80" cy="80" r="70"></circle>
+            <circle 
+              class="progress-ring" 
+              cx="80" 
+              cy="80" 
+              r="70"
+              [attr.stroke-dasharray]="getCircularProgress(stats.overallProgress || 0).circumference"
+              [attr.stroke-dashoffset]="getCircularProgress(stats.overallProgress || 0).offset">
+            </circle>
+          </svg>
+          <div class="progress-text">
+            <span class="progress-value">{{stats.overallProgress || 0}}%</span>
+            <span class="progress-label">Complete</span>
+          </div>
+        </div>
+        <div class="progress-legend">
+          <div class="legend-item">
+            <span class="dot course"></span>
+            <span>Courses: {{stats.enrolledCourses || 0}}</span>
+          </div>
+          <div class="legend-item">
+            <span class="dot assignment"></span>
+            <span>Assignments: {{stats.assignedPaths || 0}}</span>
+          </div>
+          <div class="legend-item">
+            <span class="dot test"></span>
+            <span>Completed: {{stats.completedModules || 0}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Leaderboard Section -->
+    <div class="leaderboard-section">
+      <div class="section-header">
+        <h3><mat-icon style="vertical-align: middle;">emoji_events</mat-icon> Leaderboard</h3>
+        <p>Overall Top Performers</p>
+      </div>
+      
+      <div class="podium">
+        <div class="podium-item second" *ngIf="leaderboard.top3[1]">
+          <div class="avatar" [style.background]="'#f59e0b'">
+            <img *ngIf="leaderboard.top3[1].profileImage" [src]="'data:image/jpeg;base64,' + leaderboard.top3[1].profileImage">
+            <span *ngIf="!leaderboard.top3[1].profileImage">{{getInitials(leaderboard.top3[1].fullName)}}</span>
+          </div>
+          <div class="rank-badge">2</div>
+          <h4>{{leaderboard.top3[1].fullName}}</h4>
+          <p>{{leaderboard.top3[1].totalPoints}} pts</p>
+        </div>
+
+        <div class="podium-item first" *ngIf="leaderboard.top3[0]">
+          <div class="crown"><mat-icon>military_tech</mat-icon></div>
+          <div class="avatar" [style.background]="'#10b981'">
+            <img *ngIf="leaderboard.top3[0].profileImage" [src]="'data:image/jpeg;base64,' + leaderboard.top3[0].profileImage">
+            <span *ngIf="!leaderboard.top3[0].profileImage">{{getInitials(leaderboard.top3[0].fullName)}}</span>
+          </div>
+          <div class="rank-badge">1</div>
+          <h4>{{leaderboard.top3[0].fullName}}</h4>
+          <p>{{leaderboard.top3[0].totalPoints}} pts</p>
+        </div>
+
+        <div class="podium-item third" *ngIf="leaderboard.top3[2]">
+          <div class="avatar" [style.background]="'#ef4444'">
+            <img *ngIf="leaderboard.top3[2].profileImage" [src]="'data:image/jpeg;base64,' + leaderboard.top3[2].profileImage">
+            <span *ngIf="!leaderboard.top3[2].profileImage">{{getInitials(leaderboard.top3[2].fullName)}}</span>
+          </div>
+          <div class="rank-badge">3</div>
+          <h4>{{leaderboard.top3[2].fullName}}</h4>
+          <p>{{leaderboard.top3[2].totalPoints}} pts</p>
+        </div>
+      </div>
+
+      <div class="current-user-rank" *ngIf="leaderboard.currentUser">
+        <div class="rank-row">
+          <span class="rank">{{leaderboard.currentUser.rank}}</span>
+          <div class="user-info">
+            <div class="avatar-small">
+              <img *ngIf="leaderboard.currentUser.profileImage" [src]="'data:image/jpeg;base64,' + leaderboard.currentUser.profileImage">
+              <span *ngIf="!leaderboard.currentUser.profileImage">{{getInitials(leaderboard.currentUser.fullName)}}</span>
+            </div>
+            <span>{{leaderboard.currentUser.fullName}} (You)</span>
+          </div>
+          <span class="points">{{leaderboard.currentUser.totalPoints}} pts</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="activity-section">
+      <h3>Recent Activity</h3>
+      <div *ngIf="recentProgress.length === 0" class="empty-state">No recent activity</div>
+      <div *ngFor="let activity of recentProgress" class="activity-item">
+        <div class="activity-progress">
+          <svg class="mini-circular" viewBox="0 0 40 40">
+            <circle class="mini-bg" cx="20" cy="20" r="18"></circle>
+            <circle 
+              class="mini-ring" 
+              cx="20" 
+              cy="20" 
+              r="18"
+              [attr.stroke-dasharray]="113"
+              [attr.stroke-dashoffset]="113 - (activity.progress / 100) * 113">
+            </circle>
+          </svg>
+          <span class="mini-percent">{{activity.progress}}%</span>
+        </div>
+        <div class="activity-details">
+          <h4>{{activity.title}}</h4>
+          <p>{{activity.description}}</p>
+          <small>{{activity.date | date}}</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Loading dashboard...</p>
+  </div>
+</div>

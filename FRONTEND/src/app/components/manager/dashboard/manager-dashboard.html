@@ -1,0 +1,602 @@
+<div class="manager-dashboard">
+  <!-- Sidebar Component -->
+  <app-manager-sidebar [managerProfile]="managerProfile"></app-manager-sidebar>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Header -->
+    <div class="header">
+      <div class="team-info">
+        <i class="fas fa-users"></i>
+        <span>Team: {{ managerProfile.department || 'Development Team' }}</span>
+      </div>
+      <div class="user-info">
+        <span><i class="fas fa-user"></i> {{ managerProfile.name || 'Manager' }}</span>
+        <button class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div class="content" *ngIf="activeTab === 'dashboard'">
+      <!-- Stats Cards -->
+      <div class="stats-grid">
+        <div class="stat-card blue">
+          <div class="stat-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ dashboardStats.TotalMembers || 0 }}</div>
+            <div class="stat-label">Team Members</div>
+          </div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-icon">
+            <i class="fas fa-route"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ dashboardStats.ActivePaths || 0 }}</div>
+            <div class="stat-label">Active Paths</div>
+          </div>
+        </div>
+        <div class="stat-card orange">
+          <div class="stat-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ dashboardStats.CompletionRate || 0 }}%</div>
+            <div class="stat-label">Completion Rate</div>
+          </div>
+        </div>
+        <div class="stat-card cyan">
+          <div class="stat-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ dashboardStats.WeeklyHours || 0 }}</div>
+            <div class="stat-label">Weekly Hours</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Section -->
+      <div class="charts-section">
+        <div class="chart-container">
+          <div class="chart-header">
+            <i class="fas fa-chart-area"></i>
+            <h3>Team Progress Chart - Individual vs Team Performance</h3>
+          </div>
+          <div class="chart-placeholder">
+            <i class="fas fa-chart-area chart-icon"></i>
+            <p>Chart will be displayed here</p>
+            <small>Individual vs Team Performance Analytics</small>
+          </div>
+        </div>
+        <div class="chart-container">
+          <div class="chart-header">
+            <i class="fas fa-clock"></i>
+            <h3>Weekly Hours Tracking - Time Spent Learning by Team Member</h3>
+          </div>
+          <div class="chart-placeholder">
+            <i class="fas fa-chart-bar chart-icon"></i>
+            <p>Chart will be displayed here</p>
+            <small>Weekly Learning Hours by Team Member</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Team Management Content -->
+    <div class="content" *ngIf="activeTab === 'team-management'">
+      <div class="page-header">
+        <h2>Team Management</h2>
+        <button class="add-btn">
+          <i class="fas fa-plus"></i> Add Team Member
+        </button>
+      </div>
+
+      <!-- Team Stats -->
+      <div class="stats-grid">
+        <div class="stat-card blue">
+          <div class="stat-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ dashboardStats.TotalMembers || 0 }}</div>
+            <div class="stat-label">Total Members</div>
+          </div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-icon">
+            <i class="fas fa-user-check"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ dashboardStats.Active || 0 }}</div>
+            <div class="stat-label">Active</div>
+          </div>
+        </div>
+        <div class="stat-card orange">
+          <div class="stat-icon">
+            <i class="fas fa-graduation-cap"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ dashboardStats.InTraining || 0 }}</div>
+            <div class="stat-label">In Training</div>
+          </div>
+        </div>
+        <div class="stat-card cyan">
+          <div class="stat-icon">
+            <i class="fas fa-trophy"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ dashboardStats.CompletedPaths || 0 }}</div>
+            <div class="stat-label">Completed Paths</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Team Members Table -->
+      <div class="table-section">
+        <h3>Team Members</h3>
+        <div class="table-container">
+          <table class="team-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Department</th>
+                <th>Status</th>
+                <th>Progress</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let member of teamMembers">
+                <td>
+                  <div class="member-info">
+                    <i class="fas fa-user-circle"></i>
+                    <span>{{ member.name }}</span>
+                  </div>
+                </td>
+                <td>{{ member.role }}</td>
+                <td>{{ member.department }}</td>
+                <td>
+                  <span class="status-badge" [ngClass]="member.status.toLowerCase()">{{ member.status }}</span>
+                </td>
+                <td>
+                  <div class="progress-container">
+                    <div class="progress-bar">
+                      <div class="progress-fill" [style.width.%]="member.progress"></div>
+                    </div>
+                    <span class="progress-text">{{ member.progress }}%</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="action-buttons">
+                    <button class="action-btn edit" title="Edit">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="action-btn delete" title="Delete">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Learning Paths Content -->
+    <div class="content" *ngIf="activeTab === 'learning-paths'">
+      <div class="page-header">
+        <h2>Assign Learning Paths</h2>
+        <div class="header-actions">
+          <button class="add-btn">
+            <i class="fas fa-plus"></i> Assign Learning Path
+          </button>
+          <button class="reminder-btn">
+            <i class="fas fa-bell"></i> Send Reminder
+          </button>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="filters-section">
+        <div class="filter-group">
+          <label>Department</label>
+          <select class="filter-select">
+            <option>Engineering</option>
+            <option>Design</option>
+            <option>Marketing</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Team</label>
+          <select class="filter-select">
+            <option>Development Team</option>
+            <option>QA Team</option>
+            <option>DevOps Team</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Employee</label>
+          <select class="filter-select">
+            <option>All Team Members</option>
+            <option>John Doe</option>
+            <option>Jane Smith</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Learning Paths Grid -->
+      <div class="learning-paths-section">
+        <h3>Learning Paths</h3>
+        <div class="paths-grid">
+          <div class="path-card" *ngFor="let path of learningPaths">
+            <div class="path-header">
+              <h4>{{ path.title }}</h4>
+              <span class="path-level" [ngClass]="path.level.toLowerCase()">{{ path.level }}</span>
+            </div>
+            <p class="path-description">{{ path.description }}</p>
+            <div class="path-meta">
+              <span class="path-duration">{{ path.duration }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Schedule Section -->
+      <div class="schedule-section">
+        <h3>Schedule</h3>
+        <div class="schedule-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Start Date</label>
+              <input type="date" class="form-input" placeholder="dd-mm-yyyy">
+            </div>
+            <div class="form-group">
+              <label>Due Date</label>
+              <input type="date" class="form-input" placeholder="dd-mm-yyyy">
+            </div>
+            <div class="form-group">
+              <label class="checkbox-label">
+                <input type="checkbox"> Repeat Weekly
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Assignment Summary -->
+      <div class="assignment-summary">
+        <h3>Assignment Summary</h3>
+        <div class="summary-stats">
+          <div class="summary-item">
+            <div class="summary-number blue">3</div>
+            <div class="summary-label">Assigned Team Members</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-number green">2</div>
+            <div class="summary-label">Chosen Learning Paths</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-number orange">12</div>
+            <div class="summary-label">Estimated Total Time (hours)</div>
+          </div>
+        </div>
+        <div class="summary-actions">
+          <button class="cancel-btn">Cancel</button>
+          <button class="assign-btn">Assign Learning Paths</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weekly Hours Content -->
+    <div class="content" *ngIf="activeTab === 'weekly-hours'">
+      <div class="page-header">
+        <h2>Weekly Hours Tracking</h2>
+        <div class="header-actions">
+          <select class="time-filter">
+            <option>This Week</option>
+            <option>Last Week</option>
+            <option>This Month</option>
+          </select>
+          <button class="export-btn">
+            <i class="fas fa-download"></i> Export
+          </button>
+        </div>
+      </div>
+
+      <!-- Weekly Stats -->
+      <div class="stats-grid">
+        <div class="stat-card blue">
+          <div class="stat-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">156</div>
+            <div class="stat-label">Total Hours</div>
+          </div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">6.5</div>
+            <div class="stat-label">Avg Hours/Person</div>
+          </div>
+        </div>
+        <div class="stat-card orange">
+          <div class="stat-icon">
+            <i class="fas fa-target"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">87%</div>
+            <div class="stat-label">Target Achievement</div>
+          </div>
+        </div>
+        <div class="stat-card cyan">
+          <div class="stat-icon">
+            <i class="fas fa-trophy"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">18</div>
+            <div class="stat-label">Goals Completed</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weekly Chart -->
+      <div class="chart-container">
+        <div class="chart-header">
+          <i class="fas fa-chart-bar"></i>
+          <h3>Weekly Learning Hours Overview</h3>
+        </div>
+        <div class="chart-placeholder">
+          <i class="fas fa-chart-bar chart-icon"></i>
+          <p>Weekly Hours Chart</p>
+          <small>Hours spent on learning activities by day</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reports Content -->
+    <div class="content" *ngIf="activeTab === 'reports'">
+      <div class="page-header">
+        <h2>Reports & Analytics</h2>
+        <div class="header-actions">
+          <select class="time-filter">
+            <option>Last 30 Days</option>
+            <option>Last 7 Days</option>
+            <option>This Month</option>
+          </select>
+          <button class="generate-btn">
+            <i class="fas fa-file-pdf"></i> Generate PDF
+          </button>
+        </div>
+      </div>
+
+      <!-- Report Charts -->
+      <div class="reports-grid">
+        <div class="report-card">
+          <div class="report-header">
+            <i class="fas fa-chart-pie"></i>
+            <h3>Completion Rate Report</h3>
+          </div>
+          <div class="report-content">
+            <div class="completion-chart">
+              <i class="fas fa-chart-pie chart-icon"></i>
+              <div class="completion-rate">
+                <div class="rate-number">{{ dashboardStats.CompletionRate || 0 }}%</div>
+                <div class="rate-label">Completion Rate</div>
+                <div class="rate-description">Team learning path completion</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="report-card">
+          <div class="report-header">
+            <i class="fas fa-chart-line"></i>
+            <h3>Progress Trend</h3>
+          </div>
+          <div class="report-content">
+            <div class="trend-chart">
+              <i class="fas fa-chart-line chart-icon"></i>
+              <div class="trend-info">
+                <div class="trend-title">Monthly Progress Trend</div>
+                <div class="trend-description">Learning progress over time</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Performance Metrics -->
+      <div class="metrics-section">
+        <h3>Performance Metrics</h3>
+        <div class="metrics-grid">
+          <div class="metric-item">
+            <div class="metric-number blue">{{ dashboardStats.TotalMembers || 0 }}</div>
+            <div class="metric-label">Active Learners</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-number green">{{ dashboardStats.CompletedPaths || 0 }}</div>
+            <div class="metric-label">Hours Completed</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-number orange">{{ dashboardStats.ActivePaths || 0 }}</div>
+            <div class="metric-label">Paths in Progress</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-number cyan">{{ dashboardStats.CompletionRate || 0 }}%</div>
+            <div class="metric-label">Success Rate</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detailed Reports Table -->
+      <div class="detailed-reports">
+        <h3>Detailed Learning Reports</h3>
+        <div class="reports-table">
+          <table class="learning-table">
+            <thead>
+              <tr>
+                <th>Learning Path</th>
+                <th>Enrolled</th>
+                <th>Completed</th>
+                <th>In Progress</th>
+                <th>Completion Rate</th>
+                <th>Avg. Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let report of detailedReports">
+                <td>
+                  <div class="path-info">
+                    <i class="fas fa-code"></i>
+                    <span>{{ report.pathName }}</span>
+                  </div>
+                </td>
+                <td>{{ report.enrolled }}</td>
+                <td>{{ report.completed }}</td>
+                <td>{{ report.inProgress }}</td>
+                <td>
+                  <div class="completion-bar">
+                    <div class="completion-fill" [style.width.%]="report.completionRate"></div>
+                    <span class="completion-text">{{ report.completionRate }}%</span>
+                  </div>
+                </td>
+                <td>{{ report.avgTime }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Content -->
+    <div class="content" *ngIf="activeTab === 'settings'">
+      <div class="page-header">
+        <h2>Settings</h2>
+      </div>
+
+      <!-- Profile Settings -->
+      <div class="settings-section">
+        <div class="section-header">
+          <i class="fas fa-user"></i>
+          <h3>Profile Settings</h3>
+        </div>
+        <div class="settings-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" class="form-input" [value]="managerProfile.name || 'Manager Name'">
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" class="form-input" [value]="managerProfile.email || 'manager@company.com'">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Department</label>
+              <select class="form-select">
+                <option>{{ managerProfile.department || 'Engineering' }}</option>
+                <option>Design</option>
+                <option>Marketing</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Team</label>
+              <input type="text" class="form-input" value="Development Team">
+            </div>
+          </div>
+          <button class="update-btn">Update Profile</button>
+        </div>
+      </div>
+
+      <!-- Notification Settings -->
+      <div class="settings-section">
+        <div class="section-header">
+          <i class="fas fa-bell"></i>
+          <h3>Notification Settings</h3>
+        </div>
+        <div class="notification-settings">
+          <div class="notification-row">
+            <div class="notification-group">
+              <label class="checkbox-label">
+                <input type="checkbox" checked>
+                <span>Email Notifications</span>
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" checked>
+                <span>Weekly Progress Reports</span>
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox">
+                <span>Course Completion Alerts</span>
+              </label>
+            </div>
+            <div class="notification-group">
+              <label class="checkbox-label">
+                <input type="checkbox" checked>
+                <span>Assignment Reminders</span>
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox">
+                <span>Team Updates</span>
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox">
+                <span>System Notifications</span>
+              </label>
+            </div>
+          </div>
+          <button class="save-btn">Save Preferences</button>
+        </div>
+      </div>
+
+      <!-- Team Settings -->
+      <div class="settings-section">
+        <div class="section-header">
+          <i class="fas fa-users-cog"></i>
+          <h3>Team Settings</h3>
+        </div>
+        <div class="team-settings">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Default Learning Hours/Week</label>
+              <input type="number" class="form-input" value="8">
+            </div>
+            <div class="form-group">
+              <label>Assignment Deadline (Days)</label>
+              <input type="number" class="form-input" value="14">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Reminder Frequency</label>
+              <select class="form-select">
+                <option>Weekly</option>
+                <option>Bi-weekly</option>
+                <option>Monthly</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Auto-assign New Paths</label>
+              <select class="form-select">
+                <option>Disabled</option>
+                <option>Enabled</option>
+              </select>
+            </div>
+          </div>
+          <button class="update-btn">Update Settings</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

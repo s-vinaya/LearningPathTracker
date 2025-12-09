@@ -1,0 +1,78 @@
+<app-employee-sidebar></app-employee-sidebar>
+
+<div class="dashboard-container">
+  <div class="header">
+    <h1>Courses</h1>
+    <button (click)="router.navigate(['/employee/learning-paths'])" class="back-btn">
+      <i class="fas fa-arrow-left"></i> Back to Paths
+    </button>
+  </div>
+
+  <div class="content">
+    <div *ngIf="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Loading courses...</p>
+    </div>
+
+    <div *ngIf="!loading">
+      <div *ngIf="showFinalQuiz" class="final-quiz-banner">
+        <div class="banner-content">
+          <div class="banner-icon">🎓</div>
+          <div class="banner-text">
+            <h3>Final Assessment Available!</h3>
+            <p>You've completed all courses. Take the final quiz to earn your certificate.</p>
+          </div>
+          <button (click)="takeFinalQuiz()" class="final-quiz-btn">
+            <i class="fas fa-trophy"></i> Take Final Quiz
+          </button>
+        </div>
+      </div>
+
+      <div class="modules-list">
+      <div *ngFor="let module of modules; let i = index" class="module-card" [class.locked]="module.locked">
+        <div class="module-number">{{i + 1}}</div>
+        <img *ngIf="module.thumbnail" [src]="module.thumbnail" alt="{{module.name}}" class="module-thumbnail">
+        <div class="module-content">
+          <div class="module-header">
+            <h3>{{module.name}}</h3>
+            <span *ngIf="module.completed" class="completed-badge">
+              <i class="fas fa-check-circle"></i> Completed
+            </span>
+            <span *ngIf="module.locked" class="locked-badge">
+              <i class="fas fa-lock"></i> Locked
+            </span>
+          </div>
+          <div class="progress-section">
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="module.progress"></div>
+            </div>
+            <span class="progress-text">{{module.progress}}% Complete</span>
+          </div>
+          <div class="module-actions">
+            <button *ngIf="!module.locked && module.progress < 80" (click)="startQuiz(module.id)" class="action-btn primary">
+              <i class="fas fa-play"></i> Start Course
+            </button>
+            <button *ngIf="!module.locked && module.progress >= 80 && module.hasQuiz && !module.quizPassed" (click)="takeQuiz(module.id)" class="action-btn primary">
+              <i class="fas fa-clipboard-check"></i> Take Quiz
+            </button>
+            <button *ngIf="!module.locked && module.progress >= 80 && module.hasQuiz && module.quizPassed" class="action-btn success" disabled>
+              <i class="fas fa-check-circle"></i> Quiz Passed
+            </button>
+            <button *ngIf="!module.locked && module.progress >= 80 && !module.hasQuiz" class="action-btn success" disabled>
+              <i class="fas fa-check-circle"></i> Course Completed
+            </button>
+            <button *ngIf="module.locked" class="action-btn primary" disabled>
+              <i class="fas fa-lock"></i> Locked
+            </button>
+            <button (click)="viewNotes(module.id)" class="action-btn" [disabled]="module.locked">
+              <i class="fas fa-sticky-note"></i> Notes
+            </button>
+            <button (click)="viewFlashcards(module.id)" class="action-btn" [disabled]="module.locked">
+              <i class="fas fa-layer-group"></i> Flashcards
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

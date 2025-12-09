@@ -1,0 +1,207 @@
+<app-sidebar></app-sidebar>
+<div class="learning-paths-container">
+  <div class="header">
+    <div>
+      <h1>Learning Paths</h1>
+      <p>Create and manage structured learning journeys</p>
+    </div>
+    <button class="create-btn" (click)="openCreateModal()">+ Create Learning Path</button>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-info">
+        <h3>Total Paths</h3>
+        <p class="stat-number">{{ totalPaths }}</p>
+      </div>
+      <div class="stat-icon blue"><mat-icon>link</mat-icon></div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-info">
+        <h3>Active Paths</h3>
+        <p class="stat-number green">{{ activePaths }}</p>
+      </div>
+      <div class="stat-icon green"><mat-icon>play_circle</mat-icon></div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-info">
+        <h3>Enrollments</h3>
+        <p class="stat-number purple">{{ totalEnrollments }}</p>
+      </div>
+      <div class="stat-icon purple"><mat-icon>groups</mat-icon></div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-info">
+        <h3>Completions</h3>
+        <p class="stat-number orange">{{ totalCompletions }}</p>
+      </div>
+      <div class="stat-icon orange"><mat-icon>emoji_events</mat-icon></div>
+    </div>
+  </div>
+
+  <div class="filters">
+    <div class="search-box">
+      <span class="search-icon"><mat-icon>search</mat-icon></span>
+      <input type="text" placeholder="Search learning paths..." [(ngModel)]="searchTerm" (input)="filterPaths()">
+    </div>
+    <select [(ngModel)]="selectedStatus" (change)="filterPaths()">
+      <option value="all">All Status</option>
+      <option value="active">Active</option>
+      <option value="inactive">Inactive</option>
+    </select>
+    <select [(ngModel)]="selectedLevel" (change)="filterPaths()">
+      <option value="all">All Levels</option>
+      <option value="Beginner">Beginner</option>
+      <option value="Intermediate">Intermediate</option>
+      <option value="Advanced">Advanced</option>
+    </select>
+    <button class="clear-btn">Clear Filters</button>
+  </div>
+
+  <div class="paths-list">
+    <div *ngIf="loading" class="loading">Loading...</div>
+    <div *ngIf="!loading && filteredPaths.length === 0" class="no-data">No learning paths found</div>
+    
+    <div *ngFor="let path of filteredPaths" class="path-card" (click)="openManageCoursesModal(path)">
+      <div class="path-header">
+        <div>
+          <h3>{{ path.title }}</h3>
+          <span class="badge" [class.active]="path.isActive">{{ path.isActive ? 'Active' : 'Inactive' }}</span>
+          <span class="badge level">{{ path.level }}</span>
+        </div>
+        <div class="actions">
+          <button class="action-btn edit-btn" (click)="$event.stopPropagation(); editPath(path)">Edit</button>
+          <button class="action-btn delete-btn" (click)="$event.stopPropagation(); deletePath(path.id)">Delete</button>
+        </div>
+      </div>
+      <p class="path-description">{{ path.description }}</p>
+      <div class="path-meta">
+        <span><mat-icon>schedule</mat-icon> 16 weeks</span>
+        <span><mat-icon>people</mat-icon> {{ path.enrollmentCount || 0 }} enrolled</span>
+        <span><mat-icon>menu_book</mat-icon> {{ path.courses?.length || 0 }} courses</span>
+      </div>
+      <div class="path-steps" *ngIf="(path.courses || []).length > 0">
+        <p class="steps-title">Learning Path Steps:</p>
+        <div class="steps-list">
+          <span *ngFor="let course of (path.courses || []); let i = index" class="step-badge">
+            {{ i + 1 }} {{ course.title }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Learning Path Modal -->
+  <div class="modal-overlay" *ngIf="showCreateModal" (click)="closeCreateModal()">
+    <div class="modal-content create-path-modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ editingPath ? 'Edit Learning Path' : 'Create Learning Path' }}</h2>
+        <button class="close-btn" (click)="closeCreateModal()"><mat-icon>close</mat-icon></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Title *</label>
+          <input type="text" [(ngModel)]="newPath.title" placeholder="Learning path title" required>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea [(ngModel)]="newPath.description" rows="3" placeholder="Learning path description"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Level *</label>
+          <select [(ngModel)]="newPath.level" required>
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" [(ngModel)]="newPath.isActive">
+            <span>Active</span>
+          </label>
+        </div>
+        <div class="courses-section">
+          <div class="section">
+            <h3>Available Courses</h3>
+            <div class="course-grid">
+              <div *ngFor="let course of createAvailableCourses" class="course-card-small" (click)="addCourseToNew(course)">
+                <img [src]="course.thumbnailUrl || 'https://via.placeholder.com/150'" alt="{{ course.title }}">
+                <div class="course-info">
+                  <h4>{{ course.title }}</h4>
+                  <p>{{ course.instructor }}</p>
+                </div>
+              </div>
+              <div *ngIf="createAvailableCourses.length === 0" class="empty-state">No available courses</div>
+            </div>
+          </div>
+          <div class="section">
+            <h3>Selected Courses ({{ createSelectedCourses.length }})</h3>
+            <div class="selected-courses-list" cdkDropList (cdkDropListDropped)="drop($event)">
+              <div *ngFor="let course of createSelectedCourses; let i = index" class="selected-course-item" cdkDrag>
+                <div class="drag-handle" cdkDragHandle><mat-icon>drag_indicator</mat-icon></div>
+                <span class="order-number">{{ i + 1 }}</span>
+                <img [src]="course.thumbnailUrl || 'https://via.placeholder.com/50'" alt="{{ course.title }}">
+                <span class="course-title">{{ course.title }}</span>
+                <button class="remove-btn" (click)="removeCourseFromNew(i)"><mat-icon>close</mat-icon></button>
+              </div>
+              <div *ngIf="createSelectedCourses.length === 0" class="empty-state">No courses selected</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="cancel-btn" (click)="closeCreateModal()">Cancel</button>
+        <button class="save-btn" (click)="createPath()">{{ editingPath ? 'Update' : 'Create' }} Path</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Manage Courses Modal -->
+  <div class="modal-overlay" *ngIf="showManageCoursesModal" (click)="closeManageCoursesModal()">
+    <div class="modal-content manage-courses-modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Manage Courses - {{ selectedPath?.title }}</h2>
+        <button class="close-btn" (click)="closeManageCoursesModal()"><mat-icon>close</mat-icon></button>
+      </div>
+      <div class="modal-body">
+        <div class="courses-section">
+          <div class="section">
+            <h3>Available Courses</h3>
+            <div class="course-list available-courses">
+              <div *ngFor="let course of availableCourses" class="course-item">
+                <span>{{ course.title }}</span>
+                <button class="add-btn" (click)="addCourse(course)">+ Add</button>
+              </div>
+              <div *ngIf="availableCourses.length === 0" class="empty-state">No available courses</div>
+            </div>
+          </div>
+          <div class="section">
+            <h3>Selected Courses ({{ selectedCourses.length }})</h3>
+            <div class="course-list selected-courses">
+              <div *ngFor="let course of selectedCourses; let i = index" class="course-item selected">
+                <div class="course-info">
+                  <span class="order-number">{{ i + 1 }}</span>
+                  <span>{{ course.title }}</span>
+                </div>
+                <div class="course-actions">
+                  <button class="move-btn" (click)="moveUp(i)" [disabled]="i === 0"><mat-icon>arrow_upward</mat-icon></button>
+                  <button class="move-btn" (click)="moveDown(i)" [disabled]="i === selectedCourses.length - 1"><mat-icon>arrow_downward</mat-icon></button>
+                  <button class="remove-btn" (click)="removeCourse(i)">Remove</button>
+                </div>
+              </div>
+              <div *ngIf="selectedCourses.length === 0" class="empty-state">No courses selected</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="cancel-btn" (click)="closeManageCoursesModal()">Cancel</button>
+        <button class="save-btn" (click)="savePathCourses()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>

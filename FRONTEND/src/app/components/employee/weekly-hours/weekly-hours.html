@@ -1,0 +1,50 @@
+<div class="weekly-hours-container">
+  <app-employee-sidebar></app-employee-sidebar>
+  
+  <div class="main-content">
+    <div class="header">
+      <h1>Set Weekly Learning Hours</h1>
+      <p>Choose your preferred time for daily learning reminders</p>
+    </div>
+
+    <div class="schedule-card" *ngIf="!loading">
+      <div class="time-inputs">
+        <div class="input-group">
+          <label for="startTime">Start Time</label>
+          <input 
+            type="time" 
+            id="startTime" 
+            [(ngModel)]="startTime"
+            [disabled]="saving"
+          />
+        </div>
+
+        <div class="input-group">
+          <label for="endTime">End Time</label>
+          <input 
+            type="time" 
+            id="endTime" 
+            [(ngModel)]="endTime"
+            [disabled]="saving"
+          />
+        </div>
+      </div>
+
+      <button 
+        class="save-btn" 
+        (click)="saveSchedule()"
+        [disabled]="saving"
+      >
+        {{ saving ? 'Saving...' : 'Save Schedule' }}
+      </button>
+
+      <div class="message" *ngIf="message" [class.error]="message.includes('Error')">
+        {{ message }}
+      </div>
+    </div>
+
+    <div class="loading" *ngIf="loading">
+      <p>Loading schedule...</p>
+    </div>
+  </div>
+</div>
